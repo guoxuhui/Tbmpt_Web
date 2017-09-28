@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczlys.mapper.YanShouYingXiangMapper">
+
+	<!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+       t.id,t.projectid,t.projectname,t.miaoshu,t.gcbuwei,t.tianqi,t.gongxu,t.banzu,t.bzfuzr,t.jianchaqk,t.yanshour,t.yanshousj,
+       t.create_user as createUser,
+	   t.create_username as createUsername,
+	   t.create_orgz as createOrgz,
+	   t.create_orgzname as createOrgzname,
+	   t.create_time as createTime,
+	   t.update_user as updateUser,
+	   t.update_username as updateUsername,
+	   t.update_orgz as updateOrgz,
+	   t.update_orgzname as updateOrgzname,
+	   t.update_time as updateTime
+    </sql>
+
+ <select id="selectYanShouYingXiangList" resultType="YanShouYingXiang">
+        select
+        <include refid="Base_Column_List" />
+            from GCZL_YSX_INFO t
+        <where>
+        	1=1 
+        	<if test="condition.miaoshu!=null and condition.miaoshu!= ''" >
+       		and  t.miaoshu like '%${condition.miaoshu}%'
+        	</if>
+        	<if test="condition.gcbuwei!=null and condition.gcbuwei!= ''" >
+       		and  t.gcbuwei like '%${condition.gcbuwei}%'
+        	</if>
+        	<if test="condition.gongxu!=null and condition.gongxu!= ''" >
+       		and  t.gongxu like '%${condition.gongxu}%'
+        	</if>
+        	<if test="condition.banzu!=null and condition.banzu!= ''" >
+       		and  t.banzu like '%${condition.banzu}%'
+        	</if>
+        	<if test="condition.yanshousj!=null and condition.yanshousj!= ''" >
+       		and  t.yanshousj like '%${condition.yanshousj}%'
+        	</if>
+        	<if test="condition.startYanshousj!=null and condition.startYanshousj!= ''" >
+       		<![CDATA[  and   t.yanshousj >='${condition.startYanshousj}']]>
+        	</if>
+        	<if test="condition.endYanshousj!=null and condition.endYanshousj!= ''" >
+        	<![CDATA[  and   t.yanshousj <='${condition.endYanshousj}']]>
+        	</if>	
+            <if test="condition.createUser!=null and condition.createUser!= ''" >
+        	<![CDATA[  and   t.create_User ='${condition.createUser}']]>
+        	</if>	 
+        	<if test="condition.yanshour!=null and condition.yanshour!= ''" >
+        	<![CDATA[  and   t.yanshour like '%${condition.yanshour}%']]>
+        	</if>
+        	<if test="condition.projectname!=null and condition.projectname!= ''" >
+        	<![CDATA[  and   t.projectname like '%${condition.projectname}%']]>
+        	</if>
+        </where>
+        	order by t.yanshousj desc  
+        
+    </select>
+
+	<select id="selectReport"  resultType="Map">
+		SELECT
+		substr(t.YANSHOUSJ, 0, 10) as dayTime,
+		count(*) as countByxunjian
+		FROM
+		GCZL_YSX_INFO t
+		WHERE 1=1
+		<if test="datecondition.projectname!=null and datecondition.projectname!= ''" >
+			<![CDATA[  and  t.projectName = '${datecondition.projectname}' ]]>
+		</if>
+		<if test="datecondition.projectId!=null and datecondition.projectId!= ''" >
+			  and  t.projectId = '${datecondition.projectId}'
+		</if>
+		<if test="datecondition.yanshour!=null and datecondition.yanshour!= ''" >
+			<![CDATA[  and   t.yanshour= '${datecondition.yanshour}']]>
+		</if>
+		  <if test="datecondition.startYanshousj!=null and datecondition.startYanshousj!= ''" >
+			<![CDATA[  and   t.yanshousj >='${datecondition.startYanshousj}']]>
+		</if>
+
+		<if test="datecondition.endYanshousj!=null and datecondition.endYanshousj!= ''" >
+			<![CDATA[  and   t.yanshousj <='${datecondition.endYanshousj}']]>
+		</if>
+
+
+		GROUP BY substr(t.YANSHOUSJ, 0, 10)
+		ORDER BY substr(t.YANSHOUSJ, 0, 10) asc
+
+	</select>
+	<!--关联的查询出附件信息-->
+	<select id="selectYanShouYingXiangAndFujianList">
+
+	</select>
+</mapper>

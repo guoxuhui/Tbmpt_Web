@@ -1,0 +1,140 @@
+{
+   "msg" : "",
+   "obj" : [
+      {
+         "plcTime" : "2017-03-29 18:59:40",
+         "tbmInfo" : {
+            "buydate" : "2011-03-01 00:00:00",
+            "contactNumber" : "",
+            "createTime" : "",
+            "createUser" : "",
+            "deleteflag" : 0,
+            "factorydate" : "2012-02-01 00:00:00",
+            "factorynumber" : "682#",
+            "functionaryName" : "",
+            "id" : "20150171",
+            "manageno" : "131-0035",
+            "manufacturer" : "德国【海瑞克】",
+            "model" : "S682",
+            "remark" : "南京地铁宁溧线土建工程TA08标，溧～中盾构区间左线",
+            "specification" : "土压平衡盾构机",
+            "tbmCode" : "131-0035",
+            "tbmName" : "土压平衡盾构机(EPB682)",
+            "tbmState" : 1,
+            "tbmVest" : "中铁一局城市轨道交通工程有限公司",
+            "type" : 0,
+            "updateTime" : "",
+            "updateUser" : ""
+         },
+         "plcInfo" : {
+            "dpyl" : "0.12",
+            "tjsd" : "0.0",
+            "jjhh" : "302",
+            "ztl" : "12382.91",
+            "pzms" : "false",
+            "dpnj" : "0.0",
+            "jjms" : "false",
+            "tjyl" : "31.25"
+         }
+      },
+      {
+         "plcTime" : "2017-03-29 18:59:40",
+         "tbmInfo" : {
+            "buydate" : "",
+            "contactNumber" : "",
+            "createTime" : "2016-12-28 10:55:00",
+            "createUser" : "",
+            "deleteflag" : 0,
+            "factorydate" : "",
+            "factorynumber" : "346#",
+            "functionaryName" : "",
+            "id" : "20150150",
+            "manageno" : "131-0014",
+            "manufacturer" : "德国【海瑞克】",
+            "model" : "S346",
+            "remark" : "武汉2号线南延线一标珞~华区间右线，华~光区间右线",
+            "specification" : "土压平衡盾构机",
+            "tbmCode" : "开拓者4号",
+            "tbmName" : "土压平衡盾构机(EPB346)",
+            "tbmState" : 1,
+            "tbmVest" : "中铁一局城市轨道交通工程有限公司",
+            "type" : 0,
+            "updateTime" : "",
+            "updateUser" : ""
+         },
+         "plcInfo" : {
+            "dpyl" : "0.0",
+            "tjsd" : "0.0",
+            "jjhh" : "317",
+            "ztl" : "0.12",
+            "dpnj" : "0.0",
+            "dpzs" : "0.0",
+            "tjyl" : "0.69"
+         }
+      },
+      {
+         "tbmInfo" : {
+            "buydate" : "2016-05-23",
+            "contactNumber" : "18692204232",
+            "createTime" : "2017-03-20 13:11:19",
+            "createUser" : "系统管理员",
+            "deleteflag" : 0,
+            "factorydate" : "2016-05-23",
+            "factorynumber" : "S-1058",
+            "functionaryName" : "毛知新",
+            "id" : "2e3068ecc4604a20a6e7133c399c9e46",
+            "manageno" : "S-1058",
+            "manufacturer" : "德国（海瑞克）",
+            "model" : "6990",
+            "remark" : "",
+            "specification" : "混合式盾构机",
+            "tbmCode" : "S-1058",
+            "tbmName" : "混合式盾构机S-1058",
+            "tbmState" : 1,
+            "tbmVest" : "中铁一局城市轨道公司",
+            "type" : 0,
+            "updateTime" : "2017-03-20 16:38:06",
+            "updateUser" : "系统管理员"
+         },
+         "plcInfo" : {}
+      },
+      {
+         "plcTime" : "2017-03-29 18:59:45",
+         "tbmInfo" : {
+            "buydate" : "2013-05-21",
+            "contactNumber" : "18666223687",
+            "createTime" : "2017-03-20 16:36:51",
+            "createUser" : "系统管理员",
+            "deleteflag" : 0,
+            "factorydate" : "2013-06-26",
+            "factorynumber" : "540#",
+            "functionaryName" : "杨涛",
+            "id" : "b10bb6ecff144d298e8fbd6b9895ea35",
+            "manageno" : "131-0030",
+            "manufacturer" : "海瑞克",
+            "model" : "S540",
+            "remark" : "",
+            "specification" : "土压平衡盾构机",
+            "tbmCode" : "131-0030",
+            "tbmName" : "土压平衡盾构机(EPB540)",
+            "tbmState" : 0,
+            "tbmVest" : "中铁一局城轨公司",
+            "type" : 0,
+            "updateTime" : "",
+            "updateUser" : ""
+         },
+         "plcInfo" : {
+            "dpyl" : "1.48",
+            "tjsd" : "0.0",
+            "jjhh" : "81",
+            "ztl" : "13436.52",
+            "pzms" : "false",
+            "dpnj" : "0.0",
+            "jjms" : "false",
+            "dpzs" : "0.0",
+            "tjyl" : "0.75"
+         }
+      }
+   ],
+   "success" : true
+}

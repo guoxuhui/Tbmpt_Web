@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.LogMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, login_id AS loginId,login_name AS loginName, role_name AS roleName, sys_name sysName,module_name moduleName,opt_name optName,opt_url optUrl,opt_content AS optContent,opt_status optStatus, client_ip AS clientIp,opt_time optTime, create_time AS createTime
+    </sql>
+
+    <select id="selectSysLogList" resultType="Log">
+        select
+        <include refid="Base_Column_List" />
+        from sys_log ORDER BY create_time DESC
+    </select>
+    
+  
+    
+   <!--  
+    /***
+     * 日志列表 条件查询
+     * @param 分页对象；
+     * @param params 查询条件集合；
+     * @param sysName 操作系统名称；
+     * @param loginName 登陆名；
+     * @param sort 字段名称；
+     * @param order 排序方式；
+     * @return Log 
+     * @author wl_wpg
+     */
+     -->
+     <select id="selectLogList" resultType="Log">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_log 
+        <where>
+        	1=1
+        	<if test=" params.sysName != null and params.sysName != '' ">
+               and sys_name  like '%${params.sysName}%'
+            </if>
+            <if test=" params.loginName != null and params.loginName != '' ">
+               and login_name  like '%${params.loginName}%'
+            </if>
+            <if test=" params.startTime != null and params.startTime != '' ">
+                <![CDATA[ and create_time >= #{params.startTime} ]]>
+            </if>
+            <if test=" params.endTime != null and params.endTime != '' ">
+                <![CDATA[ and create_time <= #{params.endTime} ]]>
+            </if>
+        </where>
+        order by create_time DESC, ${sort} ${order}
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    <select id="selectAll" resultType="Log">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_log ORDER BY create_time DESC
+    </select>
+
+</mapper>

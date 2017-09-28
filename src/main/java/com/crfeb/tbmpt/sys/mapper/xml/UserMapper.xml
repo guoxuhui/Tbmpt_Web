@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.UserMapper">
+
+	<resultMap id="userVoResultMap" type="com.crfeb.tbmpt.sys.model.vo.UserVo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="loginName" property="loginName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="user_type" property="userType" jdbcType="TINYINT" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="orgz_id" property="orgzId" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="empId" property="empId" jdbcType="VARCHAR" />
+		<result column="orgzName" property="orgzName" jdbcType="VARCHAR" />
+
+		<collection property="rolesList" ofType="Role">
+			<id column="roleId" property="id" />
+			<result column="roleName" property="name" />
+		</collection>
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, login_name AS loginName, name, password, user_type AS userType,
+		status, orgz_id AS orgzId,emp_id as empId, create_time AS
+		createTime,cid
+	</sql>
+
+	<select id="selectUserVoById" resultMap="userVoResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		t.id,
+		login_name,
+		t.name,
+		password,
+		user_type,
+		t.status,
+		t.orgz_id,
+		t.create_time,
+		s.name AS orgzName,
+		o.id AS roleId,
+		t.emp_id as empId,
+		o.name AS roleName
+		FROM
+		sys_user t
+		LEFT JOIN sys_user_role r ON t.id = r.user_id
+		LEFT JOIN sys_role o ON r.role_id = o.id
+		LEFT JOIN sys_orgz s ON s.id = t.orgz_id
+		<where>
+			t.id = #{id}
+		</where>
+	</select>
+
+	<select id="selectUserVoPage" resultMap="userVoResultMap">
+		SELECT
+		t.id,
+		login_name AS loginName,
+		t.name,
+		password,
+		user_type,
+		t.status,
+		t.orgz_id,
+		t.create_time AS createTime,
+		s.name AS orgzName,
+		o.id AS roleId,
+		t.emp_id as empId,
+		o.name AS roleName
+		FROM
+		sys_user t
+		LEFT JOIN sys_user_role r ON t.id = r.user_id
+		LEFT JOIN sys_role o ON r.role_id = o.id
+		LEFT JOIN sys_orgz s ON s.id = t.orgz_id
+		<where>
+			t.login_name != 'admin'
+			<if test=" params.loginName != null and params.loginName != '' ">
+				and t.login_name = #{params.loginName}
+			</if>
+			<if test=" params.name != null and params.name != '' ">
+				and t.name = #{params.name}
+			</if>
+			<if test=" params.orgzCode != null and params.orgzCode != '' ">
+				and s.code like '${params.orgzCode}%'
+			</if>
+			<if test=" params.startTime != null and params.startTime != '' ">
+                <![CDATA[ and t.create_time >= #{params.startTime} ]]>
+			</if>
+			<if test=" params.endTime != null and params.endTime != ''   ">
+                <![CDATA[ and t.create_time <= #{params.endTime} ]]>
+			</if>
+		</where>
+		<if test=" sort != null and sort != '' and order != null and order != ''">
+		<![CDATA[ order by ${sort} ${order} ]]>
+                
+        </if>
+	</select>
+
+
+	<select id="getDic" resultMap="userVoResultMap">
+		SELECT
+		t.id,
+		login_name,
+		t.name,
+		password,
+		user_type,
+		t.status,
+		t.orgz_id,
+		t.create_time,
+		s.name AS orgzName,
+		o.id AS roleId,
+		t.emp_id as empId,
+		o.name AS roleName
+		FROM
+		sys_user t
+		LEFT JOIN sys_user_role r ON t.id = r.user_id
+		LEFT JOIN sys_role o ON r.role_id = o.id
+		LEFT JOIN sys_orgz s ON s.id = t.orgz_id
+		<where>
+			<if test=" code != null ">
+				s.code like '${code}%'
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAll" resultMap="userVoResultMap">
+		SELECT
+		t.id,
+		login_name,
+		t.name,
+		password,
+		user_type,
+		t.status,
+		t.orgz_id,
+		t.create_time,
+		s.name AS orgzName,
+		o.id AS roleId,
+		t.emp_id as empId,
+		o.name AS roleName
+		FROM
+		sys_user t
+		LEFT JOIN sys_user_role r ON t.id = r.user_id
+		LEFT JOIN sys_role o ON r.role_id = o.id
+		LEFT JOIN sys_orgz s ON s.id = t.orgz_id
+	</select>
+
+	<select id="selectByOrgzId" resultType="user" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		sys_user t
+		<where>
+			t.orgz_id = #{orgzId}
+		</where>
+	</select>
+	<select id="selectUserCId2" resultType="String" >
+	 SELECT US.CID
+		  FROM SYS_ROLE_RES RR
+		  LEFT JOIN SYS_RES RES
+		    ON RR.RESOURCE_ID = RES.ID
+		  LEFT JOIN SYS_USER_ROLE RLE
+		    ON RR.ROLE_ID = RLE.ROLE_ID
+		  LEFT JOIN SYS_USER US
+		    ON US.ID = RLE.USER_ID
+		 WHERE RES.URL = #{params.url}
+		   AND US.CID IN
+		       (SELECT T.CID
+		          FROM SYS_USER T
+		         RIGHT JOIN SYS_ORGZ ORG
+		            ON T.ORGZ_ID = ORG.ID
+		         WHERE ORG.CODE LIKE
+		               (SELECT Z.CODE
+		                  FROM SYS_ORGZ Z,
+		                       (SELECT ORG.CODE
+		                          FROM SYS_USER T, SYS_ORGZ ORG
+		                         WHERE T.ORGZ_ID = ORG.ID
+		                           AND T.ID = #{params.userId}) ORGCODE
+		                 WHERE Z.TYPE = 1 and LENGTH(ORGCODE.CODE) >= 8
+		                   AND (Z.CODE LIKE ORGCODE.CODE||'%'))||'%'
+		           AND T.ID != #{params.userId})
+    </select>
+	<select id="selectUserCId" resultType="String">
+		SELECT US.CID
+		FROM SYS_ROLE_RES RR
+		LEFT JOIN SYS_RES RES
+		ON RR.RESOURCE_ID = RES.ID
+		LEFT JOIN SYS_USER_ROLE RLE
+		ON RR.ROLE_ID = RLE.ROLE_ID
+		LEFT JOIN SYS_USER US
+		ON US.ID = RLE.USER_ID
+		WHERE RES.URL = #{params.url}
+		AND US.CID IN
+		(SELECT T.CID
+		FROM SYS_USER T
+		RIGHT JOIN SYS_ORGZ ORG
+		ON T.ORGZ_ID = ORG.ID
+		WHERE ORG.CODE LIKE
+		(SELECT Z.CODE
+		FROM SYS_ORGZ Z,
+		(SELECT ORG.CODE
+		FROM SYS_USER T, SYS_ORGZ ORG
+		WHERE T.ORGZ_ID = ORG.ID
+		AND T.ID = #{params.userId}) ORGCODE
+		WHERE Z.TYPE = 1 and LENGTH(ORGCODE.CODE) >= 8
+		AND (Z.CODE LIKE ORGCODE.CODE||'%'))||'%'
+		AND T.ID != #{params.userId})
+	</select>
+	
+    <select id="selectUserByRes" resultType="user">
+		SELECT 
+		
+		US.id, US.login_name AS loginName, US.name, US.password, US.user_type AS userType, US.status, US.orgz_id AS orgzId,US.emp_id as empId, US.create_time AS createTime,US.cid
+
+		FROM SYS_ROLE_RES RR
+		LEFT JOIN SYS_RES RES
+		ON RR.RESOURCE_ID = RES.ID
+		LEFT JOIN SYS_USER_ROLE RLE
+		ON RR.ROLE_ID = RLE.ROLE_ID
+		LEFT JOIN SYS_USER US
+		ON US.ID = RLE.USER_ID
+		WHERE RES.URL = #{params.url}
+		AND US.CID IN
+		(SELECT T.CID
+		FROM SYS_USER T
+		RIGHT JOIN SYS_ORGZ ORG
+		ON T.ORGZ_ID = ORG.ID
+		WHERE ORG.CODE LIKE
+		(SELECT Z.CODE
+		FROM SYS_ORGZ Z,
+		(SELECT ORG.CODE
+		FROM SYS_USER T, SYS_ORGZ ORG
+		WHERE T.ORGZ_ID = ORG.ID
+		AND T.ID = #{params.userId}) ORGCODE
+		WHERE Z.TYPE = 1 and LENGTH(ORGCODE.CODE) >= 8
+		AND (Z.CODE LIKE ORGCODE.CODE||'%'))||'%'
+		AND T.ID != #{params.userId})
+	</select>
+    
+    
+	<select id="selectUserCIdByUrlOrgz" resultType="user" >
+		SELECT 
+		US.id, US.login_name AS loginName, US.name, US.password, US.user_type AS userType, US.status, US.orgz_id AS orgzId,US.emp_id as empId, US.create_time AS createTime,US.cid
+		FROM SYS_ROLE_RES RR
+			LEFT JOIN SYS_RES RES ON RR.RESOURCE_ID = RES.ID
+			LEFT JOIN SYS_USER_ROLE RLE ON RR.ROLE_ID = RLE.ROLE_ID
+			LEFT JOIN SYS_USER US ON US.ID = RLE.USER_ID
+		WHERE 
+		RES.URL = #{params.resUrl} AND 
+		US.CID IN 
+		(SELECT T.CID FROM SYS_USER T RIGHT JOIN SYS_ORGZ ORG ON T.ORGZ_ID = ORG.ID
+		WHERE T.CID IS NOT NULL AND 
+		ORG.CODE LIKE (SELECT CODE||'%' FROM SYS_ORGZ O WHERE O.ID = #{params.orgzId}) OR 
+		ORG.TYPE = '0'
+		)
+    </select>
+
+
+
+	<select id="selectUserByOrgz" resultMap="userVoResultMap">
+		SELECT
+		t.id,
+		login_name AS loginName,
+		t.name,
+		password,
+		user_type,
+		t.status,
+		t.orgz_id,
+		t.create_time AS createTime,
+		s.name AS orgzName,
+		o.id AS roleId,
+		t.emp_id as empId,
+		o.name AS roleName
+		FROM
+		sys_user t
+		LEFT JOIN sys_user_role r ON t.id = r.user_id
+		LEFT JOIN sys_role o ON r.role_id = o.id
+		LEFT JOIN sys_orgz s ON s.id = t.orgz_id
+		<where>
+			t.login_name != 'admin'
+				and s.code like '${code}%'
+
+		</where>
+
+	</select>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.plc.mapper.ProPlcRealMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, TBMID, TBMCODE, TAGTYPE, TAGVALUE,TAGTIME, MS, TAGNAME, BZ
+	</sql>
+
+    <select id="selectProPlcRealXxList" resultType="ProPlcReal">
+        select
+        <include refid="Base_Column_List" />
+            from PRO_PLC_REAL t
+        <where>
+        </where>
+    </select>
+    
+    <select id="selectProPlcRealXxDtoList" resultType="ProPlcRealDto">
+        select
+        <include refid="Base_Column_List" />
+            from PRO_PLC_REAL t
+        <where>
+        </where> 
+    </select>
+    
+    <select id="selectProPlcBzRealXxDtoList" resultType="ProPlcBzRealDto">
+        select
+        	t.ID, w.TBMID, t.TBMCODE, t.TAGTYPE, t.TAGVALUE, t.TAGNAME,t.TAGTIME,t.MS, t.BZ,w.DWID,w.DWNAME
+        from PRO_PLC_REAL t, PRO_PLC_TBMDW w
+        where t.tagname = w.tagname and (w.DWID is not null or w.DWID != '') 
+        <if test="condition.tbmId!=null and condition.tbmId!=''">
+    		<![CDATA[ and  w.tbmId =#{condition.tbmId}]]>
+        </if>
+        <if test="condition.dwIds!=null and condition.dwIds!=''">
+    		<![CDATA[ and  w.DWID in (${condition.dwIds})]]>
+        </if>
+    </select>
+    
+    <select id="selectProSecLinePlcAll" resultType="ProSecLinePlcDto">
+		select
+		p.ORGZ_ID,
+		p.id pro_id ,p.PRO_NAME,
+		s.id section_id,s.SECTION_NAME,
+		l.id line_id,l.LINE_NAME,
+		b.ID TBM_ID, b.TBM_NAME, 
+		w.DWID,w.DWNAME,t.TAGVALUE,t.TAGTIME
+		from PRO_PLC_REAL t, PRO_PLC_TBMDW w,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l,PRO_TBMINFO b
+		where 
+		p.ID = s.PRO_ID and s.id = l.SECTION_ID and l.TBM_ID = b.ID and w.TBMID = b.id and 
+		t.tagname = w.tagname and (w.DWID is not null or w.DWID != '') order by p.id,s.id,l.id,w.TBMID,w.DWID
+    </select>
+</mapper>

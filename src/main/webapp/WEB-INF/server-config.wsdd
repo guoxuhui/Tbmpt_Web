@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<globalConfiguration>
+		<parameter name="adminPassword" value="admin" />
+		<parameter name="attachments.Directory" value="./attachments" />
+		<parameter name="attachments.implementation"
+			value="org.apache.axis.attachments.AttachmentsImpl" />
+		<parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" />
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="session" />
+			</handler>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="request" />
+				<parameter name="extension" value=".jwr" />
+			</handler>
+		</requestFlow>
+	</globalConfiguration>
+	<handler name="LocalResponder"
+		type="java:org.apache.axis.transport.local.LocalResponder" />
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper" />
+	<handler name="Authenticate"
+		type="java:org.apache.axis.handlers.SimpleAuthenticationHandler" />
+	<service name="AdminService" provider="java:MSG">
+		<parameter name="allowedMethods" value="AdminService" />
+		<parameter name="enableRemoteAdmin" value="false" />
+		<parameter name="className" value="org.apache.axis.utils.Admin" />
+		<namespace>http://xml.apache.org/axis/wsdd/</namespace>
+	</service>
+	<service name="Version" provider="java:RPC">
+		<parameter name="allowedMethods" value="getVersion" />
+		<parameter name="className" value="org.apache.axis.Version" />
+	</service>
+	<!-- 新添加的service接口: name表示接口名称 -->
+	<service name="zsjkService" provider="java:RPC">
+		<!-- value中添加对外可以调用的方法 -->
+		<parameter name="allowedMethods"
+			value="getXMXXList,getAllXmljcz,getAQZL,getAllXMjd,getXmxljd,cjjc,gpzlwtmxsj,getXmDjxhztr,zysbwxby,xmsbtr,getAQZLMX,sgzlmx,xmrytr,getclxhztr,getXMXX,gpzl,getXmClydxh,getAllxmrytr,dqxmdljcz,getZysbtr,djxhztr,getXmDjfxnr,getDjLx,sgzl,gpztxx" />
+		<!-- value中添加类在包中所在位置 -->
+		<parameter name="className" value="com.crfeb.tbmpt.webservice.ZsjkService" />
+	</service>
+	<!-- 新添加的service接口: name表示接口名称 -->
+	<service name="jqsjService" provider="java:RPC">
+		<!-- value中添加对外可以调用的方法 -->
+		<parameter name="allowedMethods" value="getSsJqsj,getSsJqsjByXlId,getSsJqsjByDw,getCurrHHByDgjId" />
+		<!-- value中添加类在包中所在位置 -->
+		<parameter name="className" value="com.crfeb.tbmpt.webservice.JqsjService" />
+	</service>
+	<!-- 新添加的service接口: name表示接口名称 -->
+	<service name="reportService" provider="java:RPC">
+		<!-- value中添加对外可以调用的方法 -->
+		<parameter name="allowedMethods"
+			value="gxfx,dgjjcsfx,dgjjcslx,tyyctj,cjzdjcdfx,dgjkyczt,sgjdfx,sgjdxx,dgjdxxtsssj,pcqxsj" />
+		<!-- value中添加类在包中所在位置 -->
+		<parameter name="className" value="com.crfeb.tbmpt.webservice.ReportService" />
+	</service>
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+			<handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler" />
+		</requestFlow>
+	</transport>
+	<transport name="local">
+		<responseFlow>
+			<handler type="LocalResponder" />
+		</responseFlow>
+	</transport>
+</deployment>

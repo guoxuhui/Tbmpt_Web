@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczl.base.mapper.GczlOpenPushMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id,ids,user_id,type
+    </sql>
+
+    <select id="selectGczlOpenPushList" resultType="GczlOpenPush">
+        select id , gczl_id AS gczlId , user_id AS userId, type , nrms , create_time AS createTime , zt , xjzpslt, xjry, update_time AS updateTime from GCZL_XJTS
+        <where>
+        	user_id &lt;&gt; '${condition.user_id}'
+        </where> 
+          order by createTime desc
+    </select>
+</mapper>

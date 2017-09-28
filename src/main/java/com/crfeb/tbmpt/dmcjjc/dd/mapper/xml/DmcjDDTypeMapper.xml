@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dmcjjc.dd.mapper.DmcjDDTypeMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, typename, sortnum, remarks
+    </sql>
+
+    <select id="selectAll" resultType="com.crfeb.tbmpt.dmcjjc.dd.model.DdType">
+        select
+        <include refid="Base_Column_List"/>
+        from dmcj_dd_Type order by sortnum
+    </select>
+</mapper>

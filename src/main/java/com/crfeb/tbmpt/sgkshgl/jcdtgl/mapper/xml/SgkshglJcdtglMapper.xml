@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sgkshgl.jcdtgl.mapper.SgkshglJcdtglMapper">
+
+    <!-- 通用查询结果列   -->
+    <sql id="Base_Column_List">
+        ID,REF_ID AS refId ,REF_NAME AS refName,
+        MAP_TYPE AS mapType,MAP_PATH AS mapPath
+    </sql>
+
+    <select id="selectByrefId" resultType="SgkshglJcdtglDto">
+        select
+        <include refid="Base_Column_List" />
+        from PRO_CAD_MAP m
+        <where>
+			m.REF_ID = #{refId} 
+		</where>
+    </select>
+    
+    <select id="selectByIdList" resultType="SgkshglJcdtglDto">
+        select
+        <include refid="Base_Column_List" />
+        from PRO_CAD_MAP m where  m.REF_ID in
+		<foreach collection="idList" item="refId" index="index" open="(" close=")" separator=","> 
+  			#{refId}        
+		</foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.aqsc.base.mapper.HuiyiJiluMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.xiangmubuId ,t.xiangmubu ,t.hydate ,t.name ,t.adress ,t.content ,t.zhuchiren ,t.chuxiren ,t.jiluren ,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+
+    <select id="selectHuiyiJiluList" resultType="HuiyiJilu">
+        select
+        <include refid="Base_Column_List" />
+            from AQSC_HUIYIJILU t
+        <where>
+        	<if test="condition.name!=null and condition.name!=''">
+       		and  t.name like '%${condition.name}%'
+        	</if>
+        	<if test="condition.adress!=null and condition.adress!=''">
+       		and  t.adress like '%${condition.adress}%'
+        	</if>
+        	<if test="condition.content!=null and condition.content!=''">
+       		and  t.content like '%${condition.content}%'
+        	</if>
+        	<if test="condition.starDay!=null and condition.starDay!=''">
+        		<![CDATA[ and t.hydate >= #{condition.starDay} ]]>
+        	</if>
+        	<if test="condition.endDay!=null and condition.endDay!=''">
+       			<![CDATA[ and t.hydate <= #{condition.endDay} ]]>
+        	</if>
+        	${condition.sqlPurview}
+        </where>
+             <if test=" sort != null and sort != '' and order != null and order != ''">
+                order by ${sort} ${order}
+             </if>
+        	 <!-- order by t.hydate desc -->
+    </select>
+</mapper>

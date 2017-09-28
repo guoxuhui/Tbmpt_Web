@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbClYdXhXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.xmId ,t.yf ,t.clfl ,t.cljhtr ,t.clsjtr,t.danWei
+    </sql>
+
+    <select id="selectZsJkXmbClYdXhXxList" resultType="ZsJkXmbClYdXhXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_ClYdXhxx t
+        <where>
+        </where>
+    </select>
+    
+    
+    <select id="selectZsJkXmbClYdXhDtoXxList" resultType="ZsJkXmbClYdXhXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_ClYdXhxx t
+        <where>
+           <if test="condition.xmId!=null and condition.xmId!=''">
+       		<![CDATA[ and  t.xmId =#{condition.xmId}]]>
+           </if>
+           <if test="condition.strDate!=null and condition.strDate!=''">
+       		<![CDATA[ and  t.yf >=#{condition.strDate}]]>
+           </if>
+            <if test="condition.endDate!=null and condition.endDate!=''">
+       		<![CDATA[ and  t.yf <=#{condition.endDate}]]>
+           </if>
+        </where>
+    </select>
+</mapper>

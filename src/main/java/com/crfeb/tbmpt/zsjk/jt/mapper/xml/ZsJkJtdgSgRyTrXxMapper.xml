@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.jt.mapper.ZsJkJtdgSgRyTrXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.xmZrs ,t.dgdZs ,t.dgdZrs ,t.dgdPjrs 
+    </sql>
+
+    <select id="selectZsJkJtdgSgRyTrXxList" resultType="ZsJkJtdgSgRyTrXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_dgSgRyTrxx t
+        <where>
+        </where>
+    </select>
+    
+    <select id="selectZsJkJtdgSgRyTrXxDataGrid" resultType="ZsJkJtdgSgRyTrXx">
+    	select
+    	<include refid="Base_Column_List" />
+            from zsjk_jt_dgSgRyTrxx t
+        <where>
+        	<if test="condition.xmZrs!=null and condition.xmZrs!=''">
+        	<![CDATA[ t.xmZrs=#{condition.xmZrs}]]>
+        	</if>
+        	<if test="condition.dgdZs!=null and condition.dgdZs!=''">
+        	<![CDATA[ and  t.dgdZs=#{condition.dgdZs}]]>
+        	</if>
+        	<if test="condition.dgdZrs!=null and condition.dgdZrs!=''">
+        	<![CDATA[ and  t.dgdZrs=#{condition.dgdZrs}]]>
+        	</if>
+        	<if test="condition.dgdPjrs!=null and condition.dgdPjrs!=''">
+        	<![CDATA[ and  t.dgdPjrs=#{condition.dgdPjrs}]]>
+        	</if>
+        </where>
+    </select>
+</mapper>

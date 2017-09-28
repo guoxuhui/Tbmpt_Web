@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjj.mapper.DgjjRjjInfoMapper">
+
+     <!--
+       /**
+		* <p>日掘进信息管理Mapper.xml</p>
+		* <p>系统：盾构掘进参数管理系统</p>
+		* <p>模块：基础模块</p>
+		* <p>日期：2017-01-09</p>
+		* @version 1.0
+		* @author wpg
+		*/
+       -->
+     <!-- 多表查询 查询结果列-->
+    <sql id="Rjjinfo_Bzgl_Base_Column_List">
+        b.id as BId, b.FID as xlBh, b.BZ_NAME as bzname, b.START_TIME as startTime, b.END_TIME as endTime,
+        r.id as id, r.sghh as sghh,r.gpbhgjlc as gpbhgjlc,r.sjlx as sjlx,r.sjzx as sjzx,r.sglx as sglx,
+        r.fdkwz as fdkwz, r.zjyl as zjyl, r.tbzjl as tbzjl, r.tbzjwz as tbzjwz,r.gpzjwz as gpzjwz, 
+        r.hxzjsj as hxzjsj, r.ty as ty, r.ctl as ctl, r.pjztl as pjztl, r.pjnj as pjnj,
+        r.sdzx_gc as sdzxgc, r.sdzx_pm as sdzxpm, r.gpazqA as gpazqA,r.gpazqB as gpazqB, r.gpazqC as gpazqC,
+        r.gpazqD as gpazqD,r.gpazhA as gpazhA, r.gpazhB as gpazhB, r.gpazhC as gpazhC,r.gpazhD as gpazhD,
+        r.dgjzx_sp_qk as dgjzxspqk, r.dgjzx_sp_dw as dgjzxspdw, r.dgjzx_cz_qk as dgjzxczqk,r.gjzx_cz_dw as dgjzxczdw,
+        r.dwjx_pzq_s as dwjxpzqs, r.dwjx_pzq_x as dwjxpzqx, r.dwjx_pzq_z as dwjxpzqz,r.dwjx_pzq_y as dwjxpzqy,
+        r.dwjx_pzh_s as dwjxpzhs, r.dwjx_pzh_x as dwjxpzhx,r.dwjx_pzh_z as dwjxpzhz, r.dwjx_pzh_y as dwjxpzhy, 
+        r.gpzt_pzq_gc as gpztpzqgc,r.gpzt_pzq_pm as gpztpzqpm, r.gpzt_pzh_gc as gpztpzhgc, r.gpzt_pzh_pm as gpztpzhpm,
+        r.dgjjwc_qzsj as dgjjwcqzsj, r.sg_rq as sgrq, r.remarks
+        
+    </sql>
+    <!--通过线路Id 查找某线路下 的  班组信息、日掘进信息  -->
+	<select id="selectDgjjRjjInfoList" resultType="DgjjRjjInfoDto">
+		select 
+	    <include refid="Rjjinfo_Bzgl_Base_Column_List" />
+        from dgjj_bzgl b,dgjj_rjjinfo r
+        <where>
+            <if test=" params.XlBh != null and params.XlBh != '' ">
+	            b.FID=#{params.XlBh} and b.id = r.BId  order by r.sg_rq desc  
+	        </if> 
+	    </where> 
+	</select>
+	
+	<!-- 导出查询：通过id 查找某线路下 的  班组信息、日掘进信息  -->
+	<select id="selectDgjjRjjPage" resultType="DgjjRjjInfoDto">
+		select 
+	    <include refid="Rjjinfo_Bzgl_Base_Column_List" />
+        from dgjj_bzgl b,dgjj_rjjinfo r
+        <where>
+            b.id = r.BId
+            <if test=" XlBh != null and XlBh != '' ">
+	            and b.FID=#{XlBh}   
+	        </if>
+			<if test="ids !=null and ids != ''">
+		  		and r.id in (${ids})
+			</if>
+            order by r.sg_rq desc
+	    </where> 
+	</select>
+	
+	<!-- 通过日掘进id查找   班组信息、日掘进信息 -->
+	<select id="selectDgjjRjjById" resultType="DgjjRjjInfoDto">
+		select 
+	    <include refid="Rjjinfo_Bzgl_Base_Column_List" />
+        from dgjj_bzgl b,dgjj_rjjinfo r
+        <where>
+	        r.ID=#{id} and r.BId =b.id
+	    </where> 
+	</select>
+</mapper>

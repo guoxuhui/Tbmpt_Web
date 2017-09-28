@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>施工质量巡检页面</title>
+    <link rel="stylesheet" href="${staticPath}/static/open/css/weui.min.css"/>
+    <link rel="stylesheet" href="${staticPath}/static/open/css/main.css"/>
+
+</head>
+<body ontouchstart>
+    <div class="weui-toptips weui-toptips_warn js_tooltips">错误提示</div>
+
+    <div class="container" id="container">
+        <div class="page input js_show">
+
+            <div class="page__bd">
+
+                <div class="weui-gallery" id="gallery">
+                    <span class="weui-gallery__img" id="galleryImg"></span>
+                    <div class="weui-gallery__opr">
+                        <a href="javascript:" class="weui-gallery__del">
+                            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 提交表单 -->
+                <form id="form" method="post" action="${base!}/html5/jtwz/smz/upload" enctype="multipart/form-data">
+                
+                    <div class="weui-cells__title">所属项目</div>
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">所属工程：</label></div>
+                            <div class="weui-cell__bd">
+                                广州21号线20标
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">区间名称：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2">
+                                    <option value="1">曾钟</option>
+                                    <option value="2">象钟</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">线路名称：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2">
+                                    <option value="1">左线</option>
+                                    <option value="2">右线</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">分部工程：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2">
+                                    <option value="1">分部工程1</option>
+                                    <option value="2">分部工程2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weui-cells__title">施工情况</div>
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 8em;">巡检时间：</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="datetime-local" value="" placeholder="请输入巡检时间"/>
+                            </div>
+                        </div>
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">施工内容：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2" onChange="javascript:onChange('mune_x'+this.value)">
+                                    <option value="1">施工内容1</option>
+                                    <option value="2">施工内容2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">具体位置：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2" onChange="javascript:onChange('mune_x'+this.value)">
+                                    <option value="1">具体位置1</option>
+                                    <option value="2">具体位置2</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="weui-cell weui-cell_select weui-cell_select-after">
+                            <div class="weui-cell__hd">
+                                <label for="" class="weui-label" style="width: 8em;">质量缺陷：</label>
+                            </div>
+                            <div class="weui-cell__bd">
+                                <select class="weui-select" name="select2" onChange="javascript:onChange('mune_x'+this.value)">
+                                    <option value="1">质量缺陷1</option>
+                                    <option value="2">质量缺陷2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="weui-cell">
+                            <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 8em;">施工工段：</label></div>
+                            <div class="weui-cell__bd">
+                                <input class="weui-input" type="text" value="" placeholder="请输入施工工段"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="weui-cells__title">相关图片</div>
+                    <div class="weui-cells weui-cells_form">
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd">
+                                <div class="weui-uploader">
+                                    <div class="weui-uploader__hd">
+                                        <p class="weui-uploader__title">图片上传</p>
+                                        <div class="weui-uploader__info">0/2</div>
+                                    </div>
+                                    <div class="weui-uploader__bd">
+                                        <ul class="weui-uploader__files" id="uploaderFiles">
+                                            
+                                        </ul>
+                                        <div class="weui-uploader__input-box">
+                                            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+                
+                <div class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="javascript:" id="formSubmitBtn">确定</a>
+                </div>
+            </div>
+
+            <div class="page__ft">
+                <a href="#"></a>
+            </div>
+        
+        </div>
+    </div>
+
+    <script src="${staticPath}/static/open/js/zepto.min.js"></script>
+    <script src="${staticPath}/static/open/js/weui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+                $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+                $uploaderInput = $("#uploaderInput"),
+                $uploaderFiles = $("#uploaderFiles")
+                ;
+
+            $uploaderInput.on("change", function(e){
+                var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+                for (var i = 0, len = files.length; i < len; ++i) {
+                    var file = files[i];
+
+                    if (url) {
+                        src = url.createObjectURL(file);
+                    } else {
+                        src = e.target.result;
+                    }
+
+                    $uploaderFiles.append($(tmpl.replace('#url#', src)));
+                }
+            });
+            $uploaderFiles.on("click", "li", function(){
+                $galleryImg.attr("style", this.getAttribute("style"));
+                $gallery.fadeIn(100);
+            });
+            $gallery.on("click", function(){
+                $gallery.fadeOut(100);
+            });
+            
+            var $tooltips = $('.js_tooltips');
+
+            $('#showTooltips').on('click', function(){
+                if ($tooltips.css('display') != 'none') return;
+
+                // toptips的fixed, 如果有`animation`, `position: fixed`不生效
+                $('.page.cell').removeClass('slideIn');
+
+                $tooltips.css('display', 'block');
+                setTimeout(function () {
+                    $tooltips.css('display', 'none');
+                }, 2000);
+            });
+            
+        });
+        var $form = $("#form");
+        // 表单校验
+        $("#formSubmitBtn").on("click", function(){
+            $form.submit();
+        });
+    </script>
+</body>
+</html>

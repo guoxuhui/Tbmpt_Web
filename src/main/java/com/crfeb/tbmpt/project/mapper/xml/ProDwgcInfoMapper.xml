@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProDwgcInfoMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		ID, PRO_ID AS proId, DWGCNAME,REMARKS,DWGCFL
+	</sql>
+	
+	<select id="selectVoList" resultType="ProDwgcVo">
+		select
+		d.ID,d.PRO_ID AS proId,p.PRO_NAME proName, d.DWGCNAME,d.REMARKS,d.DWGCFL
+		from PRO_DWGC_INFO d,PRO_PROJECTINFO p,SYS_ORGZ o
+		<where> 
+			d.pro_id = p.id and p.parent_id = o.id
+		<if test=" params.code != null and params.code != '' ">
+	        and o.code like '%${params.code}%'
+	    </if>
+		<if test=" params.proId != null and params.proId != '' ">
+			and d.pro_id = #{params.proId}
+		</if>
+		<if test=" params.dwgcname != null and params.dwgcname != '' ">
+			and d.DWGCNAME like '%${params.dwgcname}%'
+		</if>
+		</where>
+		<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+			order by ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="selectVoList2" resultType="ProDwgcVo">
+		select
+		d.ID,d.PRO_ID AS proId,p.PRO_NAME proName, d.DWGCNAME,d.REMARKS,d.DWGCFL
+		from PRO_DWGC_INFO d,PRO_PROJECTINFO p
+		<where> 
+			d.pro_id = p.id
+		<if test=" params.proId != null and params.proId != '' ">
+			and d.pro_id = #{params.proId}
+		</if>
+		<if test=" params.dwgcname != null and params.dwgcname != '' ">
+			and d.DWGCNAME like '%${params.dwgcname}%'
+		</if>
+		${params.sqlPurview}
+		</where>
+		<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+			order by ${sort} ${order}
+		</if>
+	</select>
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sgkshgl.jjgjgl.mapper.SgkshglJjgjglMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, L_ID AS lId, RING, LNG, LAT
+	</sql>
+	<select id="selectBylineId" resultType="SgkshglJjgjglDto">
+		select 
+		<include refid="Base_Column_List"/>
+		from PRO_GEO_LINES
+		<where>
+			L_ID = '${lineId}'
+		</where>
+		order by ring ASC
+	</select>
+</mapper>

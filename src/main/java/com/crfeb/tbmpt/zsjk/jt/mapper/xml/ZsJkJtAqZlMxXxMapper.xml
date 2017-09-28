@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.jt.mapper.ZsJkJtAqZlMxXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.sbrq ,t.sbdw ,t.xxfl ,t.xxxx ,t.sbr ,t.tpurl,t.sbdwqc
+    </sql>
+
+    <select id="selectZsJkJtAqZlMxXxList" resultType="ZsJkJtAqZlMxXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_aqzlmxxx t
+        	<where>
+			<if test="condition.sbdw !=null and condition.sbdw != ''">
+		  		 t.SBDW =#{condition.sbdw}
+			</if>
+			<if test="condition.xxfl != null and condition.xxfl != '' ">
+                and t.XXFL =#{condition.xxfl}
+            </if>
+            <if test=" condition.sbr != null and condition.sbr != '' ">
+             	and t.SBR =#{condition.sbr}
+            </if>
+            <if test=" condition.sbrq != null and condition.sbrq != '' ">
+             	and t.SBRQ =#{condition.sbrq}
+            </if>
+            </where>
+    </select>
+    
+    
+     <select id="selectZsJkJtAqZlMxXxListByMap" resultType="ZsJkJtAqZlMxXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_aqzlmxxx t
+        <where>
+           <if test="condition.strTime!=null and condition.strTime!=''">
+       		<![CDATA[ and  t.sbrq >=#{condition.strTime}]]>
+           </if>
+           <if test="condition.endTime!=null and condition.endTime!=''">
+       		<![CDATA[ and  t.sbrq <=#{condition.endTime}]]>
+           </if>
+           <if test="condition.xxfl!=null and condition.xxfl!=''">
+       		 and  t.xxfl = #{condition.xxfl}
+           </if>
+        </where>
+    </select>
+    
+    
+</mapper>

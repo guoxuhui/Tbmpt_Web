@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjj.mapper.DgjjBzglEmpMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, FID, EMP_ID,EMP_NAME 
+	</sql>
+	
+	
+	
+    <select id="selectVoList" resultType="DgjjBzglEmpDto">
+		select     
+		e.id AS　empId,e.NAME AS empName,e.SEX,e.BIRTHDAY,e.PHONE,e.ORGZ_ID,o.name AS orgName
+		from DGJJ_BZGL_EMP d,SYS_EMPLOYEE e,SYS_ORGZ o
+		where
+		d.EMP_ID=e.id and FID=#{bzId} and e.ORGZ_ID = o.id
+	        
+    </select>
+	
+	
+</mapper>

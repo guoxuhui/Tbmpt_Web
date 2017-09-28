@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProProjectjinduMapper">
+	
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, PRO_ID AS proId, QJ_ID AS qjId, XL_ID AS xlId, PRO_NAME AS proName , SECTION_NAME AS sectionName, RQ , RJJNUM, REMARKS
+	</sql>
+	<select id="getLineBySectionId" resultType="ProProjectjindu">
+		select
+		<include refid="Base_Column_List" />
+		from PRO_JINDU_DAY
+		
+	</select>
+	
+	<select id="selectVoList" resultType="ProProjectjinduVo">
+        select
+		j.ID AS id , j.PRO_ID AS proId , j.QJ_ID AS qjId, j.XL_ID AS xlId,p.PRO_NAME AS proName, s.SECTION_NAME AS sectionName, l.LINE_NAME AS lineName ,j.RQ , j.RJJNUM, j.REMARKS	
+        from PRO_JINDU_DAY j,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l where j.pro_id=p.ID and j.qj_id=s.ID and j.xl_id=l.ID      
+        <if test=" params.proId != null and params.proId != '' ">
+            and j.PRO_ID = #{params.proId}
+        </if>
+        <if test=" params.qjId != null and params.qjId != '' ">
+            and j.QJ_ID = #{params.qjId}
+        </if>
+        <if test=" params.xlId != null and params.xlId != '' ">
+            and j.XL_ID = #{params.xlId}
+        </if>
+        <if test=" params.rq != null and params.rq != '' ">
+            and j.RQ = #{params.rq}
+        </if>
+        <if test=" params.startTime != null and params.startTime != ''  ">
+                <![CDATA[ and j.RQ >= #{params.startTime} ]]>
+        </if>
+        <if test=" params.endTime != null and params.endTime != '' ">
+            <![CDATA[ and j.RQ <= #{params.endTime} ]]>
+        </if>
+        order by ${sort} ${order}
+        
+    </select>
+    
+    <select id="selectInfoList" resultType="ProProjectjinduVo">
+        select
+		p.PRO_NAME AS proName, j.RQ AS RQ,j.PRO_ID AS proId
+		from PRO_JINDU_DAY j,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l,SYS_ORGZ o
+		WHERE
+		j.pro_id=p.ID and j.qj_id=s.ID and j.xl_id=l.ID and p.parent_id = o.id
+		<if test=" params.code != null and params.code != '' ">
+	        and o.code like '%${params.code}%'
+	    </if> 
+        <if test=" params.proId != null and params.proId != '' ">
+            and j.PRO_ID = #{params.proId}
+        </if>
+        <if test=" params.qjId != null and params.qjId != '' ">
+            and j.QJ_ID = #{params.qjId}
+        </if>
+        <if test=" params.xlId != null and params.xlId != '' ">
+            and j.XL_ID = #{params.xlId}
+        </if>
+        <if test=" params.startTime != null and params.startTime != ''  ">
+                <![CDATA[ and j.RQ >= #{params.startTime} ]]>
+        </if>
+        <if test=" params.endTime != null and params.endTime != '' ">
+            <![CDATA[ and j.RQ <= #{params.endTime} ]]>
+        </if>
+       
+        GROUP BY RQ,p.PRO_NAME,j.PRO_ID
+    </select>
+    <!-- 调用接口获取用户所拥有的项目信息 -->
+    <select id="selectInfoList2" resultType="ProProjectjinduVo">
+        select
+		p.PRO_NAME AS proName, j.RQ AS RQ,j.PRO_ID AS proId
+		from PRO_JINDU_DAY j,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l
+		WHERE
+		j.pro_id=p.ID and j.qj_id=s.ID and j.xl_id=l.ID
+        <if test=" params.proId != null and params.proId != '' ">
+            and j.PRO_ID = #{params.proId}
+        </if>
+        <if test=" params.qjId != null and params.qjId != '' ">
+            and j.QJ_ID = #{params.qjId}
+        </if>
+        <if test=" params.xlId != null and params.xlId != '' ">
+            and j.XL_ID = #{params.xlId}
+        </if>
+        <if test=" params.startTime != null and params.startTime != ''  ">
+                <![CDATA[ and j.RQ >= #{params.startTime} ]]>
+        </if>
+        <if test=" params.endTime != null and params.endTime != '' ">
+            <![CDATA[ and j.RQ <= #{params.endTime} ]]>
+        </if>
+       	${params.sqlPurview}
+        GROUP BY RQ,p.PRO_NAME,j.PRO_ID
+    </select>
+    
+	<select id="selectDetails" resultType="ProProjectjinduQueryVo" parameterType="string">
+		select		
+		j.ID AS id , j.PRO_ID AS proId , j.QJ_ID AS qjId, j.XL_ID AS xlId,p.PRO_NAME AS proName, s.SECTION_NAME AS sectionName, l.LINE_NAME AS lineName ,j.RQ , j.RJJNUM, j.REMARKS	
+        from PRO_JINDU_DAY j,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l where j.pro_id=p.ID and j.qj_id=s.ID and j.xl_id=l.ID 
+        and j.PRO_ID=#{proId} and j.RQ = #{rq} order by id		
+	</select>
+	<delete id="deleteByTime">
+	delete from PRO_JINDU_DAY where rq=#{time}
+	</delete>
+	
+</mapper>

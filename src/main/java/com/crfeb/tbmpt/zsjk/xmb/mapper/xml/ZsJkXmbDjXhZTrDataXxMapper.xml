@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbDjXhZTrDataXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.fId ,t.x ,t.y ,t.hH 
+    </sql>
+
+    <select id="selectZsJkXmbDjXhZTrDataXxList" resultType="ZsJkXmbDjXhZTrDataXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_DjXhZTrDataxx t
+        <where>
+        </where>
+    </select>
+    
+    
+    <select id="selectZsJkXmbDjXhZTrDataXxDtoList" resultType="ZsJkXmbDjXhZTrDataXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_DjXhZTrDataxx t
+        <where>
+        
+           <if test="condition.fId!=null and condition.fId!=''">
+       		 and  t.fId =#{condition.fId}
+           </if>
+           <if test="condition.qshh!=null and condition.qshh!=''">
+       		<![CDATA[ and  t.hH >=#{condition.qshh}]]>
+           </if>
+            <if test="condition.jzhh!=null and condition.jzhh!=''">
+       		<![CDATA[ and  t.hH <=#{condition.jzhh}]]>
+           </if>
+        </where>
+    </select>
+</mapper>

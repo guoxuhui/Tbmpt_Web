@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.aqxj.xjdgl.mapper.AqxjXjdMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.projectId ,t.projectName ,t.mingCheng ,t.address ,t.xuHao ,t.beiZhu ,t.zeRenrid ,t.zeRenrmc ,t.jianDurid ,t.jianDurmc ,t.jianChapc ,t.typeId ,t.typeName ,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+    
+    <select id="getAll" resultType="AqxjXjd">
+        select
+        <include refid="Base_Column_List" />
+            from ZLXJ_XUNJIAN_D t
+        <where>
+        	1=1
+        </where>
+    </select>
+    
+    <!--根据工程名称查询  -->
+	<select id="selectByProName" resultType="AqxjXjd">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_D t where t.projectName = #{proName}
+    </select>
+    
+     <!--根据巡检点名称查询  -->
+	<select id="selectByMengcheng" resultType="AqxjXjd">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_D t where t.mingCheng = #{mingCheng}
+    </select>
+
+ <!--根据工程名称和巡检点查询  -->
+	<select id="selectByGcAndMc" resultType="AqxjXjd">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_D t where t.mingCheng = #{mingCheng} and t.projectName = #{proName}
+    </select>
+    
+    
+    <!--根据typeId和mingcheng查询  -->
+	<select id="selectByTypIdAndMc" resultType="AqxjXjd">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_D t where t.typeId = #{newId} and t.mingCheng = #{mc}
+    </select>
+    
+    
+    
+    
+    <!--根据巡检点id查询  -->
+	<select id="selectByTypeId" resultType="AqxjXjd">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_D t where t.typeId = #{currId}
+    </select>
+
+    <select id="selectAqxjXjdList" resultType="AqxjXjd">
+        select
+        <include refid="Base_Column_List" />
+            from ZLXJ_XUNJIAN_D t
+        <where>
+        	<if test="condition.projectName!=null and condition.projectName!=''">
+       		and  t.projectName like '%${condition.projectName}%'
+        	</if>
+        	<if test="condition.typeName!=null and condition.typeName!=''">
+       		and  t.typeName like '%${condition.typeName}%'
+        	</if>
+        	<if test="condition.mingCheng!=null and condition.mingCheng!=''">
+       		and  t.mingCheng like '%${condition.mingCheng}%'
+        	</if>
+        	<if test="condition.zeRenrmc!=null and condition.zeRenrmc!=''">
+       		and  t.zeRenrmc like '%${condition.zeRenrmc}%'
+        	</if>
+        	<if test="condition.jianDurmc!=null and condition.jianDurmc!=''">
+       		and  t.jianDurmc like '%${condition.jianDurmc}%'
+        	</if>
+        </where>
+    </select>
+</mapper>

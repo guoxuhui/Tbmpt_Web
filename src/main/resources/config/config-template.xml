@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<configuration>
+    <title>${title}</title>
+    <subtitle>${subtitle}</subtitle>
+    <logo>assets/images/logo.png</logo>
+    <style>
+        <colors>0xFFFFFF,0x333333,0x101010,0x000000,0xFFD700</colors>
+        <alpha>0.8</alpha>
+    </style>
+    
+    <!-- 项目基本信息 -->
+    ${project}
+    
+    <!-- GeometryServer服务  -->
+    <geometryservice url="${mapurl}/Utilities/Geometry/GeometryServer" />
+
+    <!-- 系统组件 -->
+    <widget right="0" bottom="0" config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf"/>
+    <widget right="20" top="55" config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
+    <widget left="0" top="0" config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf"/>
+
+	<!-- 地图相关组件 -->
+    <map wraparound180="true" top="40" addarcgisbasemaps="true">
+    
+		<!--项目图层 -->
+    	<basemaps>
+
+			<!-- mapType : section 区间、line 线路断面 -->
+			<!-- refId : 关联区间或者线路ID -->
+			${maplayers}
+				
+		</basemaps>
+    	
+		<!--业务图层 -->
+        <operationallayers>
+
+			<!-- 根据区间编号过滤  -->
+			<!-- 根据线路编号、线路类型 过滤  -->
+			${featurelayers}
+			
+			<!-- 根据区间编号过滤  -->
+            <layer label="监测点" type="feature" visible="false" alpha="0.8"
+                   popupconfig="popups/PopUp_JcPoint.xml"
+                   url="${mapurl}/MAIN/JCPOINT/FeatureServer/0"/>
+			
+			<!-- 根据线路编号、线路类型 过滤  -->
+			<layer label="线路中线" type="feature" visible="false" alpha="0.8"
+                   popupconfig="popups/PopUp_ZxPoint.xml"
+                   url="${mapurl}/MAIN/ZXLINE/FeatureServer/0"/>
+				   
+        </operationallayers>
+    </map>
+
+	<!-- 业务功能组件 -->
+    <widgetcontainer layout="float">
+    
+    	<!-- 业务组件 -->
+    	${widget}
+
+        <widget label="Print" left="390" top="400"
+                icon="assets/images/i_print.png"
+                config="widgets/Print/PrintWidget.xml"
+                url="widgets/Print/PrintWidget.swf"/>
+
+    </widgetcontainer>
+    
+</configuration>

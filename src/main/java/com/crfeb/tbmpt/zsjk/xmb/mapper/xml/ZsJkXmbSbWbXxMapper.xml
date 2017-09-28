@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbSbWbXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.sbId ,t.rq ,t.sbmc ,t.cs 
+    </sql>
+
+    <select id="selectZsJkXmbSbWbXxList" resultType="ZsJkXmbSbWbXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_SbWbxx t
+        <where>
+        </where>
+    </select>
+    
+    <select id="selectZsJkXmbSbWbXxDtoList" resultType="ZsJkXmbSbWbXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_SbWbxx t
+        <where>
+        
+           <if test="condition.sbId!=null and condition.sbId!=''">
+       		  and  t.sbId =#{condition.sbId}
+           </if>
+           <if test="condition.startTime!=null and condition.startTime!=''">
+       		<![CDATA[ and  t.rq >=#{condition.startTime}]]>
+           </if>
+            <if test="condition.endTime!=null and condition.endTime!=''">
+       		<![CDATA[ and  t.rq <=#{condition.endTime}]]>
+           </if>
+        </where>
+    </select>
+    
+    
+    <select id="selectZsJkXmbSbWbXxDtoListByMonth" resultType="ZsJkXmbSbWbXxDto">
+        select
+        
+             <![CDATA[sbid,sbmc,TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-mm') as rq, SUM(CS) as cs]]>
+             from zsjk_xmb_SbWbxx t
+            <![CDATA[ GROUP BY sbid,sbmc,TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-mm')]]>
+			<![CDATA[HAVING  TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-mm')>=#{condition.startTime}]]>
+			<![CDATA[ AND TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-mm')<=#{condition.endTime}]]>
+			<![CDATA[ and  t.sbId =#{condition.sbId} ]]>
+			<![CDATA[ORDER BY rq]]>
+    </select>
+    
+    <select id="selectZsJkXmbSbWbXxDtoListByWeek" resultType="ZsJkXmbSbWbXxDto">
+        select
+        
+             <![CDATA[sbid,sbmc,TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-IW') as rq, SUM(CS) as cs]]>
+             from zsjk_xmb_SbWbxx t
+            <![CDATA[ GROUP BY sbid,sbmc,TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-IW')]]>
+			<![CDATA[HAVING  TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-IW')>=#{condition.startTime}]]>
+			<![CDATA[ AND TO_CHAR(TO_DATE(RQ, 'yyyy-mm-dd'), 'yyyy-IW')<=#{condition.endTime}]]>
+			<![CDATA[ and  t.sbId =#{condition.sbId} ]]>
+			<![CDATA[ORDER BY rq]]>
+    </select>
+    
+    
+</mapper>

@@ -1,0 +1,89 @@
+<%@page import="com.crfeb.tbmpt.commons.utils.WebUtil"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/commons/global.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>系统推送消息列表</title>
+    <link rel="stylesheet" href="${staticPath}/static/open/css/weui.min.css"/>
+    <link rel="stylesheet" href="${staticPath}/static/open/css/main.css"/>
+    <%
+    	String type = WebUtil.checkDeviceType(request);
+	%>
+</head>
+<body ontouchstart>
+    <div class="weui-toptips weui-toptips_warn js_tooltips">错误提示</div>
+
+    <div class="container" id="container">
+        <div class="page preview js_show">
+            <div class="page__hd">
+                <h1 class="page__title">系统推送消息</h1>
+            </div>
+            <div class="page__bd">
+
+                <div class="weui-form-preview">
+                    <div class="weui-form-preview__hd">
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">管片巡检纪录</label>
+                            <em class="weui-form-preview__value">待审核</em>
+                        </div>
+                    </div>
+                    <div class="weui-form-preview__bd">
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检时间</label>
+                            <span class="weui-form-preview__value">2016-12-12 10:21:30</span>
+                        </div>
+
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检人</label>
+                            <span class="weui-form-preview__value">张三</span>
+                        </div>
+
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检内容</label>
+                            <span class="weui-form-preview__value">很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字</span>
+                        </div>
+                    </div>
+                    <div class="weui-form-preview__ft">
+                        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">审核通过</a>
+                        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">审核失败</a>
+                    </div>
+                </div>
+                <br>
+                <div class="weui-form-preview">
+                    <div class="weui-form-preview__hd">
+                        <label class="weui-form-preview__label">施工巡检纪录</label>
+                        <em class="weui-form-preview__value">已审核</em>
+                    </div>
+                    <div class="weui-form-preview__bd">
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检时间</label>
+                            <span class="weui-form-preview__value">2016-12-12 08:21:30</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检人</label>
+                            <span class="weui-form-preview__value">张三</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">巡检内容</label>
+                            <span class="weui-form-preview__value">很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字</span>
+                        </div>
+                    </div>
+                    <div class="weui-form-preview__ft">
+                        <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">已经整改</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page__ft">
+                <a href="javascript:home()"></a>
+            </div>
+        </div>
+    </div>  
+
+    <script src="${staticPath}/static/open/js/zepto.min.js"></script>
+    <script src="${staticPath}/static/open/js/weui.min.js"></script>
+
+</body>
+</html>

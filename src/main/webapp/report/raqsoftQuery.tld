@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<!--
+	qyx
+	dataSource
+	
+	analyseView
+	analysePage
+  	qyxFolderOnServer
+  	
+  	dqlCategory
+  	fixedTable
+  	outerCondition
+  	dimDataOnServer
+
+	showToolBar
+	showSubTable
+	showNullGroup
+	detectLevel
+-->
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>Runqian Guide Report Tags</shortname>
+  <tag>
+    <name>query</name>
+    <tagclass>com.raqsoft.guide.tag.QueryTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <!-- 相对于web根目录的qyx文件或qyx文件内容 -->
+    <attribute>
+      <name>qyx</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 数据库数据源 -->
+    <attribute>
+      <name>dataSource</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 默认是当前访问的页面 -->
+    <attribute>
+      <name>analysePage</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 服务器上qyx文件的根目录，默认 -->
+    <attribute>
+      <name>qyxFolderOnServer</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 字典里设置的分类项，多个以分号隔开。不设置表示显示全部分类项；否则默认第一个，后面的是可选的 -->
+    <attribute>
+      <name>dqlCategory</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 指定只显示fixedTable表，做单表查询-->
+    <attribute>
+      <name>fixedTable</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!--是否显示子表，默认yes-->
+    <attribute>
+      <name>showSubTable</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!--是否显示顶端工具栏，默认yes-->
+    <attribute>
+      <name>showToolBar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 针对元数据里每个表设置的外部条件json，形如：[{"table":"雇员","exp":"${T}.雇员='2'"},{"table":"省","exp":"${T}.名称='天津'"}] -->
+    <attribute>
+      <name>outerCondition</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 维值数据，多层的维会自动生成树状数据；默认/WEB-INF/files/data/temp/dimData.json，没有这个文件的时候，根据当前dql数据源自动生成，生成后用户可以根据自己的需求自己再修改这些数据 -->
+    <attribute>
+      <name>dimDataOnServer</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 查询和分析模块的文件总路径，是个绝对路径，未设置时使用web应用的根路径；war包形式发布时，没有web应用根路径，使用java.io.tmpdir -->   
+    <attribute>
+      <name>fileHome</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <!-- 最大的维值数，太大的维真实值显示值数据会导致页面变慢，限制每个维的数据条数，默认5000 --> 
+    <attribute>
+      <name>maxDimSize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>       
+    <!-- 是否显示空分组，yes/no/user，默认yes，user表示让用户在界面上自己选 --> 
+    <attribute>
+      <name>showNullGroup</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>       
+    <!-- 侦测字段深度，默认4，0表示让用户在界面上选择 --> 
+    <attribute>
+      <name>detectLevel</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>       
+  </tag>
+	
+	
+  
+</taglib>
+  	
+  	

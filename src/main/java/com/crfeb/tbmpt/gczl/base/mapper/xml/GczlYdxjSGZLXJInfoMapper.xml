@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczl.base.mapper.GczlYdxjSGZLXJInfoMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.gc_Bh as gcBh ,t.qj_Bh as qjBh ,t.xl_Bh as xlBh ,t.sgNr ,t.fbGc_bh as fbGcbh ,t.sgd ,t.jtWz ,t.zlQx ,t.xjZp ,t.xjZpslt ,t.remarks ,t.xjTime ,t.whTime ,t.xjRy ,t.xjBm ,t.sbTime ,t.sbZt ,t.sbRy ,t.sbBm ,t.shTime ,t.shZt ,t.shSm ,t.shRy ,t.shBm ,t.zgfkTime ,t.zgTime ,t.zgZt ,t.zgJg ,t.zgFkry ,t.zgBm ,t.zgRy,t.dwgc_bh as dwgcBh,
+        t.create_user as createUser,
+	    t.create_username as createUsername,
+	    t.create_orgz as createOrgz,
+	    t.create_orgzname as createOrgzname,
+	    t.create_time as createTime,
+	    t.update_user as updateUser,
+	    t.update_username as updateUsername,
+	    t.update_orgz as updateOrgz,
+	    t.update_orgzname as updateOrgzname,
+	    t.update_time as updateTime, 
+	    t.zgjzTime
+    </sql>
+    
+    
+    <!-- 通用查询结果列 包含外键关联名称查询-->
+    <sql id="Base_Column_List2">
+        t.id,t.gc_Bh as gcBh ,t.qj_Bh as qjBh ,t.xl_Bh as xlBh ,t.sgNr ,t.fbGc_bh as fbGcbh ,t.sgd ,t.jtWz ,t.zlQx ,
+		(select filePath from sys_fujian fj where fj.foreignId=t.id and rownum = 1)as xjZp,
+		(select minImgPath from sys_fujian fj where fj.foreignId=t.id and rownum = 1)as xjZpslt,
+        t.remarks ,t.xjTime ,t.whTime ,t.xjRy ,t.xjBm ,t.sbTime ,t.sbZt ,t.sbRy ,t.sbBm ,t.shTime ,t.shZt ,t.shSm ,t.shRy ,t.shBm ,t.zgfkTime ,t.zgTime ,t.zgZt ,t.zgJg ,t.zgFkry ,t.zgBm ,t.zgRy,t.dwgc_bh as dwgcBh,
+        t.create_user as createUser,
+	    t.create_username as createUsername,
+	    t.create_orgz as createOrgz,
+	    t.create_orgzname as createOrgzname,
+	    t.create_time as createTime,
+	    t.update_user as updateUser,
+	    t.update_username as updateUsername,
+	    t.update_orgz as updateOrgz,
+	    t.update_orgzname as updateOrgzname,
+	    t.update_time as updateTime ,
+	   (select prj.pro_name from pro_projectinfo prj where prj.id=t.gc_bh)as gcName,
+       (select sect.section_name from pro_r_project_section sect where sect.id=t.qj_bh)as qjName,
+       (select line.line_name from pro_r_section_line line where line.id=t.xl_bh)as xlName,
+       (select fbgc.fbgcname from PRO_FBGC_INFO fbgc where fbgc.id=t.fbgc_bh)as fbGcName,
+       (select ry.name from sys_user ry where ry.id=t.xjry)as xjRyName,
+       (select bm.name from sys_orgz bm where bm.id=t.xjbm)as xjBmName,
+       (select ry.name from sys_user ry where ry.id=t.sbry)as sbRyName,
+       (select bm.name from sys_orgz bm where bm.id=t.sbbm)as sbBmName,
+       (select ry.name from sys_user ry where ry.id=t.shry)as shRyName,
+       (select bm.name from sys_orgz bm where bm.id=t.shbm)as shBmName,
+       (select ry.name from sys_user ry where ry.id=t.zgfkry)as zgFkryName,
+       (select bm.name from sys_orgz bm where bm.id=t.zgbm)as zgBmName,
+       (select dwgc.dwgcname from PRO_DWGC_INFO dwgc where dwgc.id=t.dwgc_bh)as dwgcName,
+       t.zgjzTime
+    </sql>
+
+    <select id="selectGczlYdxjSGZLXJInfoList" resultType="GczlYdxjSGZLXJInfo">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_XJ_INFO t
+        <where>
+        	1=1 
+        	<if test="condition.sgNr!=null and condition.sgNr!=''">
+       		and  t.sgNr = '${condition.sgNr}'
+        	</if>
+        	<if test="condition.gcBh!=null and condition.gcBh!=''">
+       		and  t.gc_Bh = '${condition.gcBh}'
+        	</if>
+        	<if test="condition.dwgcBh!=null and condition.dwgcBh!=''">
+       		  and  t.dwgc_Bh = '${condition.dwgcBh}'
+        	</if>
+        	<if test="condition.qjBh!=null and condition.qjBh!=''">
+       		and  t.qj_Bh = '${condition.qjBh}'
+        	</if>
+        	<if test="condition.xlBh!=null and condition.xlBh!=''">
+       		and  t.xl_Bh = '${condition.xlBh}'
+        	</if>
+        	<if test="condition.fbGcbh!=null and condition.fbGcbh!=''">
+       		and  t.fbGc_bh = '${condition.fbGcbh}'
+        	</if>
+        	<if test="condition.jtWz!=null and condition.jtWz!=''">
+       		and  t.jtWz = '${condition.jtWz}'
+        	</if>
+        	<if test="condition.zlQx!=null and condition.zlQx!=''">
+       		and  t.zlQx = '${condition.zlQx}'
+        	</if>
+        	<if test="condition.xjTime!=null and condition.xjTime!=''">
+       		and  t.xjTime = '${condition.xjTime}'
+        	</if>
+        	<if test="condition.sbZt!=null and condition.sbZt!=''">
+       		and  t.sbZt = '${condition.sbZt}'
+        	</if>
+        	<if test="condition.shZt!=null and condition.shZt!=''">
+       		and  t.shZt = '${condition.shZt}'
+        	</if>
+        	<if test="condition.zgZt!=null and condition.zgZt!=''">
+       		and  t.zgZt = '${condition.zgZt}'
+        	</if>
+        	<if test="condition.startXjTime!=null and condition.startXjTime!=''">
+       		<![CDATA[  and  t.xjTime >='${condition.startXjTime}']]>  
+        	</if>
+        	<if test="condition.endXjTime!=null and condition.endXjTime!=''">
+       		<![CDATA[  and  t.xjTime <='${condition.endXjTime}']]>
+        	</if>
+        	<if test="condition.autoritySql!=null and condition.autoritySql!=''">
+       		  <![CDATA[  ${condition.autoritySql}]]>
+        	</if>
+        	<if test="condition.id!=null and condition.id!=''">
+       		and  t.id = #{condition.id}
+        	</if>
+        </where>
+        
+         order by t.xjTime desc
+    </select>
+    
+     <select id="selectGczlYdxjSGZLXJInfoDtoList" resultType="GczlYdxjSGZLXJInfoDto">
+        select
+        <include refid="Base_Column_List2" />
+            from GCZLYDXJ_SGZL_XJ_INFO t
+        <where>
+        	1=1 
+        	<if test="condition.sgNr!=null and condition.sgNr!=''">
+       		and  t.sgNr = '${condition.sgNr}'
+        	</if>
+        	<if test="condition.gcBh!=null and condition.gcBh!=''">
+       		and  t.gc_Bh = '${condition.gcBh}'
+        	</if>
+        	<if test="condition.dwgcBh!=null and condition.dwgcBh!=''">
+       		  and  t.dwgc_Bh = '${condition.dwgcBh}'
+        	</if>
+        	<if test="condition.qjBh!=null and condition.qjBh!=''">
+       		and  t.qj_Bh = '${condition.qjBh}'
+        	</if>
+        	<if test="condition.xlBh!=null and condition.xlBh!=''">
+       		and  t.xl_Bh = '${condition.xlBh}'
+        	</if>
+        	<if test="condition.fbGcbh!=null and condition.fbGcbh!=''">
+       		and  t.fbGc_bh = '${condition.fbGcbh}'
+        	</if>
+        	<if test="condition.jtWz!=null and condition.jtWz!=''">
+       		and  t.jtWz = '${condition.jtWz}'
+        	</if>
+        	<if test="condition.zlQx!=null and condition.zlQx!=''">
+       		and  t.zlQx = '${condition.zlQx}'
+        	</if>
+        	<if test="condition.xjTime!=null and condition.xjTime!=''">
+       		and  t.xjTime = '${condition.xjTime}'
+        	</if>
+        	<if test="condition.sbZt!=null and condition.sbZt!=''">
+       		and  t.sbZt = '${condition.sbZt}'
+        	</if>
+        	<if test="condition.shZt!=null and condition.shZt!=''">
+       		and  t.shZt = '${condition.shZt}'
+        	</if>
+        	<if test="condition.zgZt!=null and condition.zgZt!=''">
+       		and  t.zgZt = '${condition.zgZt}'
+        	</if>
+        	<if test="condition.startXjTime!=null and condition.startXjTime!=''">
+       		<![CDATA[  and  t.xjTime >='${condition.startXjTime}']]>  
+        	</if>
+        	<if test="condition.endXjTime!=null and condition.endXjTime!=''">
+       		<![CDATA[  and  t.xjTime <='${condition.endXjTime}']]>
+        	</if>
+        	<if test="condition.autoritySql!=null and condition.autoritySql!=''">
+       		  <![CDATA[  ${condition.autoritySql}]]>
+        	</if>
+        	<if test="condition.id!=null and condition.id!=''">
+       		and  t.id = #{condition.id}
+        	</if>
+        </where>
+        <if test=" (sort != null and sort != '') || (order != null and order != '') ">
+			order by ${sort} ${order}
+		</if>
+         <!-- order by t.xjTime desc -->
+    </select>
+    
+    
+     <select id="selectListByIdsAndOther" resultType="GczlYdxjSGZLXJInfoDto">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_XJ_INFO t
+        <where>
+        	<if test="ids!=null and ids!=''">
+       		 <![CDATA[ and  t.id in (${ids})]]>
+        	</if>
+        	<if test="condition.sbZt!=null and condition.sbZt!=''">
+       		 and  t.sbZt = '${condition.sbZt}'
+        	</if>
+        </where>
+           order by t.xjTime desc
+    </select>
+    
+     <select id="countGczlYdxjSGZLXJInfoStaNum" resultType="int">
+        select nvl(count(1),0) from GCZLYDXJ_SGZL_XJ_INFO t
+        <where>
+             (t.shzt='${condition.type}' OR t.zgzt='${condition.type}' OR t.sbzt='${condition.type}')
+       		  and  t.gc_Bh = '${condition.gcBh}'
+        </where>
+    </select>
+</mapper>

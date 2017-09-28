@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjjdw.tbmdw.mapper.DgjjPlcTbmdwMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, TBMID, TBMCODE, TAGNAME, DWID, DWNAME, DWLX
+	</sql>
+	
+	<select id="selectDataGridList" resultType="DgjjPlcTbmdw">
+		select
+			<include refid="Base_Column_List"/>
+			from PRO_PLC_TBMDW
+			<where>
+				<if test="condition.tbmcode!=null and condition.tbmcode!=''">
+					TBMCODE=#{condition.tbmcode}
+				</if>
+				<if test="condition.tagname!=null and condition.tagname!=''">
+					and TAGNAME like '%${condition.tagname}%'
+				</if>
+				<if test="condition.dwname!=null and condition.dwname!=''">
+					and DWNAME like '%${condition.dwname}%'
+				</if>
+				<if test="condition.dwlx!=null and condition!=''">
+					and DWLX=#{condition.dwlx}
+				</if>
+			</where>
+	</select>
+	
+	<select id="selectTbmCode" resultType="DgjjPlcTbmdwDto">
+		select 
+			<include refid="Base_Column_List"/>
+			from PRO_PLC_TBMDW
+		<where>
+               TBMCODE = ${tbmcode}
+		</where>
+	</select>
+	
+	<select id="selectTbmid" resultType="DgjjPlcTbmdwDto">
+		select 
+			<include refid="Base_Column_List"/>
+			from PRO_PLC_TBMDW
+		<where>
+               TBMID = '${tbmid}'
+		</where>
+	</select>
+</mapper>

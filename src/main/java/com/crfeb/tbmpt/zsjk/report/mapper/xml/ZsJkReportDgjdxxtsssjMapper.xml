@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportDgjdxxtsssjMapper">
+
+    <!-- 通用查询结果列-->
+   <sql id="Base_Column_List">
+        d.id,d.xmId,d.xlId, d.dgjId,d.zc,d.yjj,d.djj, d.zdj,d.fyj,d.lc,
+        d.qksppc,d.jjsppc, d.dwsppc, d.qkczpc,d.jjczpc,d.dwczpc 
+    </sql> 
+
+    <select id="selectDgjdxxtsssjList" resultType="ZsJkReportDgjdxxtsssj">
+        select
+           d.zc,d.yjj,d.djj, d.zdj,d.fyj,d.lc,
+            d.qksppc,d.jjsppc, d.dwsppc, d.qkczpc,d.jjczpc,d.dwczpc 
+            from ZSJK_REPORT_DGJDXXTSSSJ d
+        <where>
+            1=1
+			<if test="params.xmId !=null and params.xmId != ''">
+		  		and d.xmId =#{params.xmId}
+			</if>
+			<if test="params.xlId != null and params.xlId != '' ">
+                and d.xlId =#{params.xlId}
+            </if>
+            <if test=" params.dgjId != null and params.dgjId != '' ">
+             	and d.dgjId =#{params.dgjId}
+            </if>
+                order by  to_number(d.yjj) desc
+        </where>
+    </select> 
+    
+  
+    
+    
+</mapper>

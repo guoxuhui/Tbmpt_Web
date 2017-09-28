@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gcaqxj.mapper.AqxjXjjlDetailMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		CREATE_USERNAME AS createUsername, CREATE_ORGZ AS createOrgz, CREATE_ORGZNAME AS createOrgzname, CREATE_TIME AS createTime, UPDATE_USER AS updateUser, UPDATE_USERNAME AS updateUsername, UPDATE_ORGZ AS updateOrgz, UPDATE_ORGZNAME AS updateOrgzname, UPDATE_TIME AS updateTime, ID,MINGCHENG,ITEMID,CONTENTXUNJIAN,JIANCHAJG
+	</sql>
+
+
+	<!--根据巡检id 查询详细记录-->
+	<select id="selectAllById" resultType="AqxjXjjlDetail">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJJL_DETAIL t
+		<where>
+			1=1
+
+			and  t.ITEMID =  '${detailId}'
+
+		</where>
+		ORDER  by  ID ASC
+	</select>
+</mapper>

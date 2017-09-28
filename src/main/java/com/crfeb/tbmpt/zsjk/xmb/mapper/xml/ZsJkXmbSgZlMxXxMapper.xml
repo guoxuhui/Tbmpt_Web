@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbSgZlMxXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.projectId ,t.sbDate ,t.type ,t.detail ,t.projectName ,t.miaoshu 
+    </sql>
+
+    <select id="selectZsJkXmbSgZlMxXxList" resultType="ZsJkXmbSgZlMxXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_SgZlMxxx t
+        <where>
+        </where>
+    </select>
+    
+    
+    <select id="selectZsJkXmbSgZlMxXxDtoList" resultType="ZsJkXmbSgZlMxXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_SgZlMxxx t
+        <where>
+        
+         <if test="condition.projectId!=null and condition.projectId!=''">
+       		<![CDATA[ and  t.projectId =#{condition.projectId}]]>
+           </if>
+           <if test="condition.type!=null and condition.type!=''">
+       		<![CDATA[ and  t.type like '%${condition.type}%']]>
+           </if>
+            <if test="condition.sbDate!=null and condition.sbDate!=''">
+       		<![CDATA[ and  t.sbDate =#{condition.sbDate}]]>
+           </if>
+        </where>
+    </select>
+    
+    
+</mapper>

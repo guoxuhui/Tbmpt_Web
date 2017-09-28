@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gcaqxj.mapper.AqxjXjflInfoMapper">
+
+	<!-- -->
+	<sql id="Base_Column_List">
+		 t.id,t.typeName,t.remark,t.isParent,t.proiectId,t.proiectName,t.parentId,t.parentName,
+		 t.CREATE_USER AS createUser,
+	   t.CREATE_USERNAME as createUsername,
+	   t.CREATE_ORGZ as createOrgz,
+	   t.CREATE_ORGZNAME as createOrgzname,
+	   t.CREATE_TIME as createTime,
+	   t.UPDATE_USER as updateUser,
+	   t.UPDATE_USERNAME as updateUsername,
+	   t.UPDATE_ORGZ as updateOrgz,
+	   t.UPDATE_ORGZNAME as updateOrgzname,
+	   t.UPDATE_TIME as updateTime
+	</sql>
+<!--查询-->
+	<select id="selectAqxjXjdflList" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+			 from AQXJ_XJFL_INFO t
+		<where>
+			1=1
+			<if test="condition.typeName!=null and condition.typeName!=''">
+				and  t.typeName like '%${condition.typeName}%'
+			</if>
+			<if test="condition.proiectName!=null and condition.proiectName!=''">
+				and  t.proiectName = '${condition.proiectName}'
+			</if>
+			<if test="condition.proId!=null and condition.proId!=''">
+				and  t.proiectId = '${condition.proId}'
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAqxjXjdflParentList" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		<where>
+			t.isParent='0'
+			AND   t.proiectId='${proId}'
+		</where>
+	</select>
+	<select id="selectAqxjXjdflAllList" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		WHERE 1=1
+		<if test="proiectId!=null and proiectId!=''">
+			and t.proiectId='${proiectId}'
+		</if>
+
+	</select>
+
+
+	<!--根据父类id查询子节点信息-->
+	<select id="selectListByParnetId" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		<where>
+			t.parentId=#{parentId}
+		</where>
+
+	</select>
+
+	<!--根据工程id查询巡检分类信息-->
+	<select id="selectByGcId" resultType="AqxjXjflInfo">
+		select distinct
+		<include refid="Base_Column_List"/>
+		from AQXJ_XJFL_INFO t where t.PROIECTID = #{proId} and t.PARENTID is null
+	</select>
+
+
+	<!--根据工程名查询巡检分类信息-->
+	<select id="flList" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		<where>
+			1=1
+			<if test="currentProName!=null and currentProName!=''">
+				and  t.proiectName = #{currentProName}
+			</if>
+		</where>
+	</select>
+
+	<!--根据工程名查询巡检父分类信息-->
+	<select id="selectParentList" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		<where>
+			1=1
+				and  t.proiectName =  '${currentProName}' AND
+				t.isParent='0'
+		</where>
+	</select>
+	<!--根据分类名 工程名查询分类信息-->
+	<select id="selectByTypeNameAndProName" resultType="AqxjXjflInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJFL_INFO t
+		<where>
+			1=1
+			and  t.proiectName = '${currentProName}' AND
+			t.typeName= '${typeName}'
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjjdw.real.mapper.DgjjdwPlcRealMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, TBMID, TBMCODE, TAGNAME, TAGTYPE, TAGVALUE, MS, BZ, TAGTIME
+	</sql>
+	
+	 <select id="selectDgjjdwPlcRealList" resultType="DgjjdwPlcReal">
+        select
+        <include refid="Base_Column_List" />
+            from PRO_PLC_REAL
+        <where>
+         1=1
+			<if test="condition.id !=null and condition.id != ''">
+		  		and ID like '%${condition.id}%'
+			</if>
+			<if test="condition.tbmcode !=null and condition.tbmcode != ''">
+		  		and TBMCODE like '%${condition.tbmcode}%'
+			</if>
+			<if test="condition.tagname !=null and condition.tagname != ''">
+		  		and TAGNAME like '%${condition.tagname}%'
+			</if>
+			 order by ${sort} ${order}
+        </where>
+    </select>
+	
+	
+	<select id="selectTbmCode" resultType="DgjjdwPlcRealDto">
+		select 
+			<include refid="Base_Column_List"/>
+			from PRO_PLC_REAL
+		      where TBMCODE = '${tbmcode}'
+	</select>
+	
+	<select id="selectTbmName" resultType="DgjjdwPlcRealDto">
+		select 
+			<include refid="Base_Column_List"/>
+			from PRO_PLC_REAL
+		      where TAGNAME like '%${tbmName}%'
+		      	and TBMCODE = '${tbmcode}'
+	</select>
+</mapper>

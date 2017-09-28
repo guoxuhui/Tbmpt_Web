@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbDmCjJcXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.xlId ,t.lc ,t.sbDate ,t.dianbh ,t.zhi 
+    </sql>
+
+    <select id="selectZsJkXmbDmCjJcXxList" resultType="ZsJkXmbDmCjJcXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_DmCjJcxx t
+        <where>
+        </where>
+    </select>
+     <select id="selectZsJkXmbDmCjJcXxDtoList" resultType="ZsJkXmbDmCjJcXxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_DmCjJcxx t
+        <where>
+           <if test="condition.xlId!=null and condition.xlId!=''">
+       		and  t.xlId =#{condition.xlId}
+           </if>
+            <if test="condition.dianbh!=null and condition.dianbh!=''">
+       		and  t.dianbh =#{condition.dianbh}
+           </if>
+           <if test="condition.fazhi!=null and condition.fazhi!=''">
+       		<![CDATA[ and  t.zhi >=#{condition.fazhi}]]>
+           </if>
+            <if test="condition.startLc!=null and condition.startLc!=''">
+       		<![CDATA[ and  t.lc >=#{condition.startLc}]]>
+           </if>
+            <if test="condition.endLc!=null and condition.endLc!=''">
+       		<![CDATA[ and  t.lc <=#{condition.endLc}]]>
+           </if>
+        </where>
+    </select>
+</mapper>

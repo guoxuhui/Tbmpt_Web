@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.xmb.mapper.ZsJkXmbXmXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.xmMc ,t.dgjId,t.dgjMc,t.zbjg ,t.xmCz ,t.xmWccz ,t.csdq ,t.zgqds ,t.kgrq ,t.yjwcrq ,t.dtxl ,t.sgbd ,t.fzr ,t.zhs
+         t.dgjczs ,t.qjzc,t.dqhs,t.dqdz,t.dgjzt,t.bjsl
+    </sql>
+
+    <select id="selectZsJkXmbXmXxList" resultType="ZsJkXmbXmXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_xmb_Xmxx t
+        <where>
+        </where>
+    </select>
+</mapper>

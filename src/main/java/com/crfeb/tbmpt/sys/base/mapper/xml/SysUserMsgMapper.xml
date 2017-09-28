@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.base.mapper.SysUserMsgMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, MSGNAME, MSGCONTENT, MSGTYPE, MSGTIME,MSGIMG, STATE, LINKTABLE, LINKID, URL, USERID, ORGZID, REMARK
+	</sql>
+
+
+    <select id="selectDtoList" resultType="com.crfeb.tbmpt.sys.base.model.dto.SysUserMsgDto">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_USER_MSG 
+        <where>
+        	1=1
+        	<if test=" params.userid != null and params.userid != '' ">
+	            and USERID = #{params.userid}
+	        </if>
+            <if test=" params.orgzid != null and params.orgzid != '' ">
+                and ORGZID = #{params.orgzid}
+            </if>
+	        <if test=" params.msgname != null and params.msgname != '' ">
+	            and MSGNAME like '%${params.msgname}%'
+	        </if>
+            <if test=" params.msgtype != null and params.msgtype != '' ">
+                and MSGTYPE = #{params.msgtype}
+            </if>
+            <if test=" params.startTime != null and params.startTime != ''  ">
+                <![CDATA[ and MSGTIME >= #{params.startTime} ]]>
+            </if>
+            <if test=" params.state != null and params.state != '' ">
+                and STATE = #{params.state}
+            </if>
+        </where>
+        order by  ${sort} ${order},MSGTIME desc
+    </select>
+    
+    <update id="updateMsgState">
+		<![CDATA[ 
+  			update SYS_USER_MSG set
+  			STATE = '1'
+  			where USERID = #{userid} 
+	 	]]>
+		<if test=" msgtype != null and msgtype != ''  ">
+        	and MSGTYPE = #{msgtype}
+        </if>
+	</update>
+	
+	<select id="getMsgStats" resultType="java.util.HashMap">
+		select msgtype name, count(id)||'' sum from sys_user_msg 
+		where userid = #{userid} 
+		and state = '0' 
+		group by msgtype
+	</select>
+	
+</mapper>

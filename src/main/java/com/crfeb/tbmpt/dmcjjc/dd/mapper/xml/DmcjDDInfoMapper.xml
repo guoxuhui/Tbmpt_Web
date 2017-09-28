@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dmcjjc.dd.mapper.DmcjDDInfoMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, typename, ddname,sortnum, remarks,ifqy
+	</sql>
+
+	<select id="selectDdInfoPage" resultType="com.crfeb.tbmpt.dmcjjc.dd.model.DdInfo">
+		select
+		<include refid="Base_Column_List" />
+		from dmcj_dd_info
+		<where>
+			1=1
+			<if test=" typeName != null and typeName != '' ">
+               and typename = #{typeName}
+            </if>
+		</where>
+		order by typename, sortnum
+	</select>
+	
+	<select id="selectDdInfos" resultType="com.crfeb.tbmpt.dmcjjc.dd.model.DdInfo">
+		select
+		<include refid="Base_Column_List" />
+		from dmcj_dd_info
+		<if test="list !=null and list.size() &gt; 0">
+			<where>
+				 id in
+					<foreach collection="list" item="id" index="index" open="(" close=")" separator=","> 
+			  			#{id}        
+					</foreach>
+			</where>
+		</if>
+		order by sortnum
+	</select>
+
+	<update id="qy">
+		update dmcj_dd_info set ifqy='启用' where id=#{id}
+	</update>
+	
+	<update id="jy">
+		update dmcj_dd_info set ifqy='禁用' where id=#{id}
+	</update>
+</mapper>

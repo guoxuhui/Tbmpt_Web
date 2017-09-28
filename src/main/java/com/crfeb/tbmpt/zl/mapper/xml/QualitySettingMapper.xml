@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zl.mapper.QualitySettingMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, PRO_NAME AS proName, SECTION, LINE, CUR_JD AS curJd, CUR_UP_CYCLE_NO AS curUpCycleNo, UP_USER AS upUser, LINK_WAY AS linkWay, SET_UP_DAY AS setUpDay
+	</sql>
+	<select id="selectPageList" resultType="QualitySettingVo">
+        select
+        <include refid="Base_Column_List"/>
+        FROM QUALITY_SETTING
+        order by ${sort} ${order}
+    </select>
+    
+    <select id="selectVoList" resultType="QualitySettingVo">
+    	select q.ID, q.PRO_NAME AS proName, q.SECTION, q.LINE, q.CUR_JD AS curJd, q.CUR_UP_CYCLE_NO AS curUpCycleNo, q.UP_USER AS upUser, q.LINK_WAY AS linkWay, q.SET_UP_DAY AS setUpDay,
+    	l.SECTION_ID AS sectionId,s.section_name as sectionName, l.PRO_ID AS proId, p.pro_name as proName1,l.line_name as lineName
+    	FROM QUALITY_SETTING q,PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p
+        <where>
+	        q.PRO_NAME=p.ID AND q.SECTION=s.ID AND q.LINE=l.ID 
+	        <if test=" params.proName != null and params.proName != '' ">
+	            and q.PRO_NAME = '${params.proName}'
+	        </if>
+	        <if test="params.ids !=null and params.ids != ''">
+		  		and P.ID in (${params.ids})
+			</if>
+         </where>
+        order by q.${sort} ${order}
+    </select>
+</mapper>

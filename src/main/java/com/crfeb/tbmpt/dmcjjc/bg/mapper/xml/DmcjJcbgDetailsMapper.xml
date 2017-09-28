@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dmcjjc.bg.mapper.DmcjJcbgDetailsMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, fid,gcbh,jcdno,qujian,xianlu,weizhi,licheng,bcgc,remarks 
+	</sql>
+
+	<select id="selectJcbgDetailPage" resultType="com.crfeb.tbmpt.dmcjjc.info.model.vo.DmcjJcInfoDetailsDto">
+		select d.*,p.csgc,s.section_name as qujianName,l.line_name as xianluName 
+		from dmcj_jcbg_details d
+		left join dmcj_jcpoint p on d.jcdno=p.jcdbh
+		left join pro_r_project_section s on p.qjbh=s.id
+		left join pro_r_section_line l on p.xlbh=l.id 
+		where d.fid=#{fid} 
+		<if test="ids!=null and ids!=''">
+       		and  d.id in  (${ids})
+       </if>
+		order by d.jcdno
+	</select>
+
+	<insert id="batchInsert" parameterType="java.util.List"> 
+	 	insert into DMCJ_JCBG_DETAILS (<include refid="Base_Column_List" />) 
+		 <foreach close=")" collection="list" item="item" index="index" open="(" separator="union"> 
+			select
+			#{item.id},#{item.fid},#{item.gcbh},#{item.jcdNo},#{item.qujian},#{item.xianlu},
+	        #{item.weizhi},#{item.licheng},#{item.bcgc},#{item.remarks}
+			 from dual 
+		</foreach>
+	</insert>
+	
+	<delete id="deleteDetails">
+		delete from DMCJ_JCBG_DETAILS where fid=#{fid}
+	</delete>
+	
+	<delete id="deleteDetailsByIds">
+		delete from DMCJ_JCBG_DETAILS 	where  id in
+		<foreach collection="list" item="id" index="index" open="(" close=")" separator=","> 
+  			#{id}        
+		</foreach>
+	</delete>
+	
+	<select id="selectDetailsWithPoint" resultType="com.crfeb.tbmpt.dmcjjc.info.model.vo.DmcjJcInfoDetailsDto">
+		select d.*,p.csgc,s.section_name as qujianName,l.line_name as xianluName 
+		from dmcj_jcbg_details d
+		left join dmcj_jcpoint p on d.jcdno=p.jcdbh
+		left join pro_r_project_section s on p.qjbh=s.id
+		left join pro_r_section_line l on p.xlbh=l.id 
+		where d.fid=#{fid}
+	</select>
+</mapper>

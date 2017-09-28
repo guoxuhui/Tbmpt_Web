@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportConfig>
+    <!-- 相对于web应用根目录 -->
+    <config>
+      <name>inputFileHome</name>
+      <value>report/reportFiles</value>
+    </config>
+    <!-- 相对于web应用根目录 -->
+    <config>
+      <name>cachePath</name>
+      <value>report/caches</value>
+    </config>
+</reportConfig>

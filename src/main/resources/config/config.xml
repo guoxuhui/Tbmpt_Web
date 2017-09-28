@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<configuration>
+    <title>无锡03号线05标项目</title>
+    <subtitle></subtitle>
+    <logo>assets/images/logo.png</logo>
+    <style>
+        <colors>0xFFFFFF,0x333333,0x101010,0x000000,0xFFFFFF</colors>
+        <alpha>0.8</alpha>
+    </style>
+    
+    <!-- 项目基本信息 -->
+    <project id="b89bc80ae8894c2a84f33ffef04d411c" name="无锡03号线05标项目" 
+    		xmjc="无锡地铁3号线05标土建施工工程包含1站2区间及2个车站剩余工程：山墩凹站车站主体、附属结构及配套工程；无锡火车站、靖海公园站剩余工程；无锡火车站～山墩凹站～靖海公园站两个盾构区间及联络通道。盾构掘进总里程为3779.815m。
+山墩凹站位于锡沪路与马巷路交叉口，车站沿锡沪路布置，呈东西走向，车站为地下二层单柱双跨(局部双柱三跨或单跨)钢筋混凝土箱型框架结构，车站全长466.86m，标准段宽19.7m，车站标准段有效站台处开挖深度15.833m，覆土厚度约3.0m,车站采用明挖顺做法。
+无锡火车站剩余工程有：3号线车站内站台板结构、轨顶排热风道水平板（其中轨顶风道侧墙已施工完成），30轴处排热风道夹层板，5、6号公共区楼扶梯、设备区8号楼梯、区间人防隔断门结构以及局部中板孔洞改造等。
+靖海公园站剩余工程:3号线及三角区内部结构的夹层板、站台板及板下梁（墙）、柱；人防临空墙及门框墙、楼扶梯、区间隔断门；顶板负一层及负二层、设备夹层板预留孔洞及预埋件等。
+无锡火车站～山墩凹站区间：左线起讫里程为ZDK23+651.899～ZDK24+486.900，短链11.255m,区间长度822.899m，右线起讫里程为YDK23+652.746～YDK24+486.900,区间长度835.001m，本区间全长1657.900m。
+山墩凹站～靖海公园站区间左线区间起讫里程为ZDK24+952.160～ZDK26+034.130，长链20.445,区间长度1102.415，右线区间起讫里程为YDK24+952.160～YDK25+971.660,区间长度1019.5，本区间全长2121.915m。" 
+			cjdw="承建单位"
+			jldw="监理单位"
+			jsdw="建设单位"
+			country="国家"
+			area="地区"
+			province="省份"
+			city="城市"
+			imgUrl="assets/images/mini_map.jpg">
+    	<section id="47ea3e3375b04830b78e54e392408cb1" name="山墩凹站～靖海公园站区间" dcqk="沙土层" layerUrl="pm_sj">
+    		<line id="7dcd9f5f5346498eb8f30cba0eb4ecc5" name="左线" zhs="915" layerUrl="pm_sj_zx" tbmId="20150170" tbmMan="方新华" sfrq="2016-05-12" wgrq="2018-12-05"></line>
+    		<line id="a1bd74c1753a421fb3b7faaf4ce03373" name="右线" zhs="849" layerUrl="pm_sj_yx" tbmId="20150171" tbmMan="方新华" sfrq="2016-05-12" wgrq="2018-12-05"></line>
+    	</section>
+    </project>
+    
+    <!-- GeometryServer服务  -->
+    <geometryservice url="http://118.178.93.159:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer" />
+
+    <!-- 系统组件 -->
+    <widget right="0" bottom="0" config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf"/>
+    <widget right="20" top="75" config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
+    <widget left="0" top="0" config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf"/>
+    <widget left="20" top="75" config="widgets/Draw/DrawWidget.xml" url="widgets/Draw/DrawWidget.swf" />
+	<widget left="3" bottom="3" config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf"/>
+	<widget right="250" bottom="3" config="widgets/Bottom/BottomWidget.xml" url="widgets/Bottom/BottomWidget.swf"/>
+
+	<!-- 地图相关组件 -->
+    <map wraparound180="true" addarcgisbasemaps="false" scaleBarVisible="true" scalebar="metric">
+
+		<!--项目图层 -->
+    	<basemaps>
+
+			<!-- mapType : section 区间、line 线路断面 -->
+			<!-- refId : 关联区间或者线路ID -->
+ 			<layer label="山墩凹站～靖海公园站区间" type="tiled" visible="true" layerType="PM" 
+ 				refId="47ea3e3375b04830b78e54e392408cb1"
+ 				url="http://118.178.93.159:6080/arcgis/rest/services/WX0305/PM_SJ/MapServer" 
+ 				icon = "http://118.178.93.159:6080/arcgis/admin/services/WX0305/PM_SJ.MapServer/iteminfo/thumbnail/thumbnail.png?token=PHoM9EX-4yh8fhm3SGjcNQS8xvfQZBM7T8UYa0YXn5oziF4mi5Ix939Kk17-e5D_"/>
+				
+			<layer label="山墩凹站～靖海公园站区间左线断面" type="tiled" visible="false" layerType="DM"  
+				refId="7dcd9f5f5346498eb8f30cba0eb4ecc5"
+				url="http://118.178.93.159:6080/arcgis/rest/services/WX0305/PM_SJ_ZX/MapServer" 
+				icon = "http://118.178.93.159:6080/arcgis/admin/services/WX0305/PM_SJ_ZX.MapServer/iteminfo/thumbnail/thumbnail.png?token=PHoM9EX-4yh8fhm3SGjcNQS8xvfQZBM7T8UYa0YXn5oziF4mi5Ix939Kk17-e5D_"/>
+				
+			<layer label="山墩凹站～靖海公园站区间右线断面" type="tiled" visible="false" layerType="DM"  
+				refId="a1bd74c1753a421fb3b7faaf4ce03373"
+				url="http://118.178.93.159:6080/arcgis/rest/services/WX0305/PM_SJ_YX/MapServer" 
+				icon = "http://118.178.93.159:6080/arcgis/admin/services/WX0305/PM_SJ_YX.MapServer/iteminfo/thumbnail/thumbnail.png?token=PHoM9EX-4yh8fhm3SGjcNQS8xvfQZBM7T8UYa0YXn5oziF4mi5Ix939Kk17-e5D_"/>
+				
+		</basemaps>
+    	
+		<!--业务图层 -->
+        <operationallayers>
+
+			<!-- 根据区间编号过滤  -->
+            <layer label="监测点" type="feature" visible="false" alpha="0.8"
+                   popupconfig="popups/PopUp_JcPoint.xml"
+                   url="http://118.178.93.159:6080/arcgis/rest/services/MAIN/JCPOINT/FeatureServer/0"/>
+				   
+        </operationallayers>
+    </map>
+
+	<!-- 业务功能组件 -->
+	<widgetcontainer layout="float">
+		
+		<widget label="地面沉降趋势" icon="assets/images/i_lego.png" top="180"
+			right="5" config="widgets/HeatTime/HeatTimeWidget.xml" url="widgets/HeatTime/HeatTimeWidget.swf" />
+		<!-- 
+		<widget label="打印" icon="assets/images/i_print.png" top="180"
+			right="5" config="widgets/Print/PrintWidget.xml" url="widgets/Print/PrintWidget.swf" />
+			 -->
+	</widgetcontainer>
+    
+</configuration>

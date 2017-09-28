@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.RegionMapper">
+
+    <!--1 通用查询结果列     id;code;name;type ;seq;pid;  -->
+    <sql id="Base_Column_List">
+        id,code,name,type,seq,pid
+    </sql>
+     
+     
+     
+     <!--2 条件是 父级 pid 为空   通过 序列号   升序 -->
+    <select id="selectByPIdNull" resultType="Region">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from sys_region where pid is null order by seq
+    </select>
+    
+    <!--3 根据 父级id 查询子地区 -->
+    <select id="selectAllByPId" resultType="Region">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from sys_region where pid = #{pId} order by seq
+    </select>
+    
+    
+    <!--4 通过 地区编号 查询 -->
+    <select id="selectAllBycode" resultType="Region">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_region where code like '${code}%' order by seq
+    </select>
+    
+    
+    <!--5 查询 所有 地区 -->
+    <select id="selectAll" resultType="Region">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_region order by seq
+    </select>
+    
+
+    
+    
+   
+    
+    
+    
+    
+</mapper>
+
+
+
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.SysEmployeeMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, NAME, SEX, NATION, BIRTHDAY, CID, PHONE, EMAIL, ADDRESS, CREATE_TIME AS createTime, CREATE_USER AS createUser, UPDATE_TIME AS updateTime, UPDATE_USER AS updateUser, DELETEFLAG, ORGZ_ID AS orgzId, JOB,REMARK
+	</sql>
+
+
+    <select id="selectAll" resultType="SysEmployeeVo">
+        select
+        
+		e.ID, e.NAME, e.SEX, e.NATION, e.BIRTHDAY, e.CID, e.PHONE, e.EMAIL, e.ADDRESS, e.CREATE_TIME AS createTime, 
+		e.CREATE_USER AS createUser, e.UPDATE_TIME AS updateTime, 
+		e.UPDATE_USER AS updateUser, e.DELETEFLAG, e.ORGZ_ID AS orgzId,o.name AS orgzName, e.REMARK,e.JOB
+
+        from SYS_EMPLOYEE e,SYS_ORGZ o
+        where e.ORGZ_ID = o.id 
+        order by e.CREATE_TIME desc
+    </select>
+    
+    <select id="selectSysEmployeeList" resultType="SysEmployeeVo">
+        select
+        
+		e.ID, e.NAME, e.SEX, e.NATION,e.BIRTHDAY, e.CID, e.PHONE, e.EMAIL, e.ADDRESS, e.CREATE_TIME AS createTime, 
+		e.CREATE_USER AS createUser, e.UPDATE_TIME AS updateTime, 
+		e.UPDATE_USER AS updateUser, e.DELETEFLAG, e.ORGZ_ID AS orgzId,o.name  AS  orgzName, e.REMARK,e.JOB
+
+        from SYS_EMPLOYEE e,SYS_ORGZ o
+        <where> 
+	        e.ORGZ_ID = o.id 
+	        <if test=" params.orgzCode != null and params.orgzCode != '' ">
+	            and o.code like '${params.orgzCode}%'
+	        </if>
+	        <if test=" params.name != null and params.name != '' ">
+	            and e.name like '${params.name}%'
+	        </if>
+	        <if test=" params.sex != null and params.sex != '' ">
+	            and e.sex = #{params.sex}
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and e.create_time >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and e.create_time <= #{params.endTime} ]]>
+	        </if>
+        </where>
+        
+        order by ${sort} ${order}
+    </select>
+    
+	<select id="selectByOrgzId" resultType="SysEmployee" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		SYS_EMPLOYEE t
+		<where>
+			t.orgz_id = #{orgzId}
+		</where>
+	</select>
+</mapper>

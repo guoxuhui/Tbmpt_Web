@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportGxfxMapper">
+
+<!-- 通用查询结果列 -->
+<sql id="Base_Column_List">
+	r.id,r.jjzt,r.kssj,r.jssj,r.jjhh
+</sql>
+
+<select id="selectZsJkReportGxfxListByMap" resultType="ZsJkReportGxfxDto">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_report_gxfx r
+        <where>
+           <if test="condition.kssj!=null and condition.kssj!=''">
+       		<![CDATA[ and  r.kssj >=#{condition.kssj}]]>
+           </if>
+            <if test="condition.jssj!=null and condition.jssj!=''">
+       		<![CDATA[ and  r.jssj <=#{condition.jssj}]]>
+           </if>
+           <if test="condition.kshh!=null and condition.kshh!=''">
+           	<![CDATA[and r.jjhh >=#{condition.kshh}]]>
+           </if>
+           <if test="condition.jshh!=null and condition.jshh!=''">
+           	<![CDATA[and r.jjhh <=#{condition.jshh}]]>
+           </if>
+        </where>
+    </select>
+</mapper>

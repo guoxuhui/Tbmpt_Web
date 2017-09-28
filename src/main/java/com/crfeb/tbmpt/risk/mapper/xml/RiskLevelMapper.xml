@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.risk.mapper.RiskLevelMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		  ID, LEVEL_NAME AS levelName, COLOR_FLAG AS colorFlag, RISK_DESC AS riskDesc, SORT
+	</sql>
+   <select id="selectVoList" resultType="RiskLevelVo">
+        select
+        <include refid="Base_Column_List"/>
+        FROM RISK_LEVEL 
+         <where>
+        	1=1
+	        <if test=" params.levelName != null and params.levelName != '' ">
+	            and LEVEL_NAME like '%${params.levelName}%'
+	        </if>
+        </where>
+        
+        order by ${sort} ${order}
+    </select>
+      
+</mapper>

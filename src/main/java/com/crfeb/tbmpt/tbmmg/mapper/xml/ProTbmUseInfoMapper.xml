@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.tbmmg.mapper.ProTbmUseInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, GCID, QJID, XLID, TBMBH, TBM_USE_TIME AS tbmUseTime, TBM_NAME AS tbmName, DA_TIME AS daTime, LK_TIME AS lkTime, SF_TIME AS sfTime, CD_TIME AS cdTime, YS_TIME AS ysTime, WX_TIME AS wxTime, SZDW, PERSON, PHONE, TBM_STATE AS tbmState, RQ
+	</sql>
+	
+    <select id="selectList" resultType="TbmUseInfoDto">
+    	select * 
+		from(
+    	select t.ID,t.GCID,t.QJID,t.XLID,t.TBMBH,t.TBM_USE_TIME AS tbmUseTime,
+		t.TBM_NAME AS tbmName,t.DA_TIME AS daTime,t.LK_TIME AS lkTime,t.SF_TIME AS sfTime,t.CD_TIME AS cdTime,
+		t.YS_TIME AS ysTime,t.WX_TIME AS wxTime,t.SZDW,t.PERSON,t.PHONE,t.TBM_STATE AS tbmState,t.RQ 
+		from PRO_TBM_USE_INFO t
+		where t.GCID is null
+		UNION
+        select t.ID,t.GCID,t.QJID,t.XLID,t.TBMBH,t.TBM_USE_TIME AS tbmUseTime,
+		t.TBM_NAME AS tbmName,t.DA_TIME AS daTime,t.LK_TIME AS lkTime,t.SF_TIME AS sfTime,t.CD_TIME AS cdTime,
+		t.YS_TIME AS ysTime,t.WX_TIME AS wxTime,t.SZDW,t.PERSON,t.PHONE,t.TBM_STATE AS tbmState,t.RQ 
+		from PRO_TBM_USE_INFO t 
+		left join PRO_PROJECTINFO p on t.GCID = p.id 
+		left join PRO_R_PROJECT_SECTION s on t.QJID = s.id 
+		left join PRO_R_SECTION_LINE l on t.XLID = l.id
+		left join PRO_TBMINFO d on t.TBMBH=d.id
+		left join SYS_ORGZ o on p.parent_id = o.id 
+		<where>			
+         	<if test=" params.code != null and params.code != '' ">
+	            o.code like '%${params.code}%'
+	        </if>
+	    </where>
+	    ) t
+	    where
+	    	1=1
+            <if test=" params.tbmName!= null and params.tbmName != '' ">
+                and tbmname = '${params.tbmName}'
+            </if>
+            <if test=" params.szdw != null and params.szdw != '' ">
+                and szdw like '%${params.szdw}%'
+            </if>
+             <if test=" params.person != null and params.person != '' ">
+                and person like '%${params.person}%'
+            </if>
+             <if test=" params.tbmState != null and params.tbmState != '' ">
+                and TBMSTATE like '%${params.tbmState}%'
+            </if>         
+    </select>
+    
+    <!-- 调用接口查询用户拥有的项目权限 -->
+    <select id="selectList2" resultType="TbmUseInfoDto">
+    	select * 
+		from(
+    	select t.ID,t.GCID,t.QJID,t.XLID,t.TBMBH,t.TBM_USE_TIME AS tbmUseTime,
+		t.TBM_NAME AS tbmName,t.DA_TIME AS daTime,t.LK_TIME AS lkTime,t.SF_TIME AS sfTime,t.CD_TIME AS cdTime,
+		t.YS_TIME AS ysTime,t.WX_TIME AS wxTime,t.SZDW,t.PERSON,t.PHONE,t.TBM_STATE AS tbmState,t.RQ 
+		from PRO_TBM_USE_INFO t
+		where t.GCID is null
+		UNION
+        select t.ID,t.GCID,t.QJID,t.XLID,t.TBMBH,t.TBM_USE_TIME AS tbmUseTime,
+		t.TBM_NAME AS tbmName,t.DA_TIME AS daTime,t.LK_TIME AS lkTime,t.SF_TIME AS sfTime,t.CD_TIME AS cdTime,
+		t.YS_TIME AS ysTime,t.WX_TIME AS wxTime,t.SZDW,t.PERSON,t.PHONE,t.TBM_STATE AS tbmState,t.RQ 
+		from PRO_TBM_USE_INFO t 
+		left join PRO_PROJECTINFO p on t.GCID = p.id 
+		left join PRO_R_PROJECT_SECTION s on t.QJID = s.id 
+		left join PRO_R_SECTION_LINE l on t.XLID = l.id
+		left join PRO_TBMINFO d on t.TBMBH=d.id
+	    ) t
+	    where
+	    	1=1
+            <if test=" params.tbmName!= null and params.tbmName != '' ">
+                and tbmname = '${params.tbmName}'
+            </if>
+            <if test=" params.szdw != null and params.szdw != '' ">
+                and szdw like '%${params.szdw}%'
+            </if>
+             <if test=" params.person != null and params.person != '' ">
+                and person like '%${params.person}%'
+            </if>
+             <if test=" params.tbmState != null and params.tbmState != '' ">
+                and TBMSTATE like '%${params.tbmState}%'
+            </if>
+            ${params.sqlPurview}      
+            order by ${sort} ${order}   
+    </select>
+    
+    <select id="selectAllList" resultType="ProTbmUseInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_TBM_USE_INFO
+    </select>
+    
+    <select id="selectByTbmid" resultType="TbmUseInfoDto">
+    	select
+    	<include refid="Base_Column_List"/>
+        from PRO_TBM_USE_INFO
+        where TBMBH=#{tbmid}
+    </select>
+    
+    
+</mapper>

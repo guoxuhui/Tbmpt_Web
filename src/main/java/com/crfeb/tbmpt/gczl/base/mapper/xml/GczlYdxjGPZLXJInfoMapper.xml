@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczl.base.mapper.GczlYdxjGPZLXJInfoMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+           t.id,t.gc_Bh as gcBh ,t.ql_Bh as qlBh ,t.xl_Bh as xlBh,t.hh ,t.dw ,t.typeName ,t.qkms ,t.xjzp ,t.xjzpslt ,t.remarks ,t.xjtime ,t.whtime ,t.xjry ,t.xjbm ,t.sbtime ,t.sbzt ,t.sbry ,t.sbbm ,t.shtime ,t.shzt ,t.shsm ,t.shry ,t.shbm ,t.zgfktime ,t.zgtime ,t.zgzt ,t.zgjg ,t.zgfkry ,t.zgbm ,t.zgry,t.zgjztime 
+    </sql>
+    <sql id="Base_Column_List2">
+	       t.dw,t.gc_Bh as gcBh,
+		   (select prj.pro_name from pro_projectinfo prj where prj.id=t.gc_bh)as gcName,
+		   t.hh,t.id,
+		   t.qkms,t.ql_Bh as qlBh,
+		   (select sect.section_name from pro_r_project_section sect where sect.id=t.ql_bh)as qlName,
+		   t.remarks,t.sbbm,
+		   (select orgz.name from sys_orgz orgz where orgz.id=t.sbbm)as sbbmName,
+		   t.sbry,
+		   (select emp.name from sys_employee emp where emp.id=t.sbry)as sbryName,
+		   t.sbtime,t.sbzt,t.shbm,
+		   (select orgz.name from sys_orgz orgz where orgz.id=t.shbm)as shbmName,
+		   t.shry,
+		   (select emp.name from sys_employee emp where emp.id=t.shry)as shryName,
+		   t.shsm,t.shtime,t.shzt,
+		   t.typeName,t.whtime,t.xjbm,
+		   (select orgz.name from sys_orgz orgz where orgz.id=t.xjbm)as xjbmName,
+		   t.xjry,
+		    (select emp.name from sys_employee emp where emp.id=t.xjry)as xjryName,
+		   t.xjtime,
+		   (select filePath from sys_fujian fj where fj.foreignId=t.id and rownum = 1)as xjzp,
+		   (select minImgPath from sys_fujian fj where fj.foreignId=t.id and rownum = 1)as xjzpslt,
+		   t.xl_Bh as xlBh,
+		   (select line.line_name from pro_r_section_line line where line.id=t.xl_bh)as xlName,
+		   t.zgbm,
+		   (select orgz.name from sys_orgz orgz where orgz.id=t.zgbm)as zgbmName,
+		   t.zgfkry,
+		   (select emp.name from sys_employee emp where emp.id=t.zgfkry)as zgfkryName,
+		   t.zgfktime,t.zgjg,t.zgry,t.zgtime,t.zgzt,
+		   t.create_user as createUser,
+		   t.create_username as createUsername,
+		   t.create_orgz as createOrgz,
+		   t.create_orgzname as createOrgzname,
+		   t.create_time as createTime,
+		   t.update_user as updateUser,
+		   t.update_username as updateUsername,
+		   t.update_orgz as updateOrgz,
+		   t.update_orgzname as updateOrgzname,
+		   t.update_time as updateTime ,
+		   t.zgjzTime
+    </sql>
+
+    <select id="selectGczlYdxjGPZLXJInfoList" resultType="GczlYdxjGPZLXJInfo">
+        select
+        <include refid="Base_Column_List" />
+            from gczlydxj_gpzl_xj_info t
+        <where>
+        	1=1 
+        	<if test="condition.gcBh!=null and condition.gcBh!=''">
+       		and  t.gc_Bh like '%${condition.gcBh}%'
+        	</if>
+        	<if test="condition.typeName!=null and condition.typeName!=''">
+       		and  t.typeName like '%${condition.typeName}%'
+        	</if>
+        	<if test="condition.sbzt!=null and condition.sbzt!=''">
+       		and  t.sbzt like '%${condition.sbzt}%'
+        	</if>
+        	<if test="condition.xjtime!=null and condition.xjtime!=''">
+       		and  t.xjtime like '%${condition.xjtime}%'
+        	</if>
+        	<if test="condition.zgzt!=null and condition.zgzt!=''">
+       		and  t.zgzt like '%${condition.zgzt}%'
+        	</if>
+        	<if test="condition.dw!=null and condition.dw!=''">
+       		and  t.dw like '%${condition.dw}%'
+        	</if>
+        	<if test="condition.shzt!=null and condition.shzt!=''">
+       		and  t.shzt like '%${condition.shzt}%'
+        	</if>
+        	<if test="condition.xjbm!=null and condition.xjbm!=''">
+       		and  t.xjbm like '%${condition.xjbm}%'
+        	</if>
+        	<if test="condition.xjry!=null and condition.xjry!=''">
+       		and  t.xjry like '%${condition.xjry}%'
+        	</if>
+        	<if test="condition.hh!=null and condition.hh!=''">
+       		and  t.hh like '%${condition.hh}%'
+        	</if>
+        	<if test="condition.id!=null and condition.id!=''">
+       		and  t.id = #{condition.id}
+        	</if>
+        </where>
+    </select>
+    
+    <select id="selectGczlYdxjGPZLXJInfoList2" resultType="GczlYdxjGPZLXJInfoDto">
+        select
+        <include refid="Base_Column_List2" />
+            from gczlydxj_gpzl_xj_info t
+        <where>
+        	1=1 
+        	<if test="condition.gcBh!=null and condition.gcBh!=''">
+       			and  t.gc_Bh like '%${condition.gcBh}%'
+        	</if>
+        	<if test="condition.typeName!=null and condition.typeName!=''">
+       			and  t.typeName like '%${condition.typeName}%'
+        	</if>
+        	<if test="condition.sbzt!=null and condition.sbzt!=''">
+       			and  t.sbzt like '%${condition.sbzt}%'
+        	</if>
+        	<if test="condition.xjtime!=null and condition.xjtime!=''">
+       			and  t.xjtime like '%${condition.xjtime}%'
+        	</if>
+        	<if test="condition.zgzt!=null and condition.zgzt!=''">
+       			and  t.zgzt like '%${condition.zgzt}%'
+        	</if>
+        	<if test="condition.dw!=null and condition.dw!=''">
+       			and  t.dw like '%${condition.dw}%'
+        	</if>
+        	<if test="condition.shzt!=null and condition.shzt!=''">
+       			and  t.shzt like '%${condition.shzt}%'
+        	</if>
+        	<if test="condition.xjbm!=null and condition.xjbm!=''">
+       			<![CDATA[ and  t.xjbm = #{condition.xjbm} ]]>
+        	</if>
+        	<if test="condition.xjry!=null and condition.xjry!=''">
+       			and  t.xjry like '%${condition.xjry}%'
+        	</if>
+        	<if test="condition.hh!=null and condition.hh!=''">
+       			and  t.hh like '%${condition.hh}%'
+        	</if>
+        	<if test="condition.qkms!=null and condition.qkms!=''">
+       			and  t.qkms like '%${condition.qkms}%'
+        	</if>
+        	<if test="condition.xjtimeStr!=null and condition.xjtimeStr!=''">
+       			<![CDATA[ and  t.xjtime >= #{condition.xjtimeStr} ]]>
+        	</if>
+        	<if test="condition.xjtimeEnd!=null and condition.xjtimeEnd!=''">
+       			<![CDATA[ and  t.xjtime <= #{condition.xjtimeEnd} ]]>
+        	</if>
+        	<if test="condition.id!=null and condition.id!=''">
+       		and  t.id = #{condition.id}
+        	</if>
+        	${condition.sqlPurview}
+        </where>
+        <if test=" (sort != null and sort != '') || (order != null and order != '') ">
+			order by ${sort} ${order}
+		</if>
+       	 <!-- order by t.sbzt,t.zgzt,t.shzt,t.xjtime desc  -->
+    </select>
+    
+    
+    <select id="selectGczlYdxjGPZLXJInfoById" resultType="GczlYdxjGPZLXJInfoDto">
+        select
+        <include refid="Base_Column_List2" />
+            from gczlydxj_gpzl_xj_info t
+        <where>
+       			<![CDATA[ t.id = #{id} ]]>
+        </where>
+    </select>
+    
+    <select id="findStateNum" resultType="int">
+        select
+          count(t.id) 
+            from gczlydxj_gpzl_xj_info t
+        <where>
+       		<if test="typeName=='未上报' or typeName=='已上报'">
+       			and  t.sbzt = #{typeName}
+        	</if>
+       		<if test="typeName=='未审核' or typeName=='已审核' or typeName=='已打回'">
+       			and  t.shzt = #{typeName}
+        	</if>
+       		<if test="typeName=='未整改' or typeName=='已整改'">
+       			and  t.zgzt = #{typeName}
+        	</if>
+        </where>
+    </select>
+    
+</mapper>

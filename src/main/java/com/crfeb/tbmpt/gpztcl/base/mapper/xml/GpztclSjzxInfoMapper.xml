@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gpztcl.base.mapper.GpztclSjzxInfoMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.GC_BH as gcBh,t.QL_BH as qlBh ,t.XL_BH as xlBh ,t.lc ,t.sjzbX ,t.sjzbY ,t.sjzbH ,t.impman ,t.imptime ,t.remark,t.sxh,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+
+    <select id="selectGpztclSjzxInfoList" resultType="GpztclSjzxInfo">
+        select
+        <include refid="Base_Column_List" />
+            from gpztcl_sjzxinfo t
+        <where>
+        	<if test="condition.xlBh!=null and condition.xlBh!=''">
+       			and  t.xl_bh = #{condition.xlBh}
+        	</if>
+        </where>
+    </select>
+    <select id="selectGpztclSjzxInfoListByXlbh" resultType="GpztclSjzxInfo">
+        select
+        <include refid="Base_Column_List" />
+            from gpztcl_sjzxinfo t
+        <where>
+       			and  t.xl_bh = #{xlbh}
+        </where>
+        	order by t.sxh
+    </select>
+</mapper>

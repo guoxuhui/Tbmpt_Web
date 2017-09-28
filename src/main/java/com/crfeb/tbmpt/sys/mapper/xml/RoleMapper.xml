@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.RoleMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, name, seq, orgz_id, description,create_Time createTime,create_User createUser,update_Time updateTime,update_User updateUser, status
+    </sql>
+
+    <select id="selectAll" resultType="Role">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role order by seq
+    </select>
+
+    <select id="selectResourceIdListByRoleId" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+            e.resource_id AS id
+        FROM
+            sys_role r,sys_role_res e where r.id = e.role_id and 
+            r.id = #{id}
+    </select>
+
+    <select id="selectResourceIdListByRoleIdAndType" resultType="Res"
+            parameterType="java.lang.String">
+        SELECT
+            s.id AS id,
+            s. NAME AS name,
+            s.url AS url,
+            s.description AS description,
+            s.icon AS icon,
+            s.pid AS pid,
+            s.seq AS seq,
+            s. STATUS AS status,
+            s.resource_type AS resource_type,
+            s.create_time AS create_time
+        FROM
+            sys_role r,sys_role_res e,sys_res s where r.id = e.role_id and e.resource_id = s.id and 
+            r.id = #{id} AND s.resource_type = 0 AND s.status=0 order by s.seq
+    </select>
+
+    <select id="selectResourceListByRoleId" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT
+            e.id AS id,
+            s.url AS url
+        FROM
+            sys_role r,sys_role_res e,sys_res s where r.id = e.role_id and e.resource_id = s.id and 
+            r.id = #{id}
+    </select>
+
+    <select id="selectRoleList" resultType="Role">
+        select
+        t.id, t.name, t.seq, t.orgz_id as orgzId, t.description,t.create_Time createTime,t.create_User createUser,t.update_Time updateTime,t.update_User updateUser, t.status
+        from sys_role t left join SYS_ORGZ o on t.ORGZ_ID = o.id			
+        <where>
+        	1=1       	
+         	<if test=" params.orgzCode != null and params.orgzCode != '' ">
+	            and o.code like '%${params.orgzCode}%'
+	        </if>
+        	<if test=" params.orgzId != null and params.orgzId != '' ">
+	           and t.orgz_id = #{params.orgzId}
+	        </if>
+        	<if test=" params.status != null and params.status != -1 ">
+               and t.status = #{params.status}
+            </if>
+            <if test=" params.name != null and params.name != '' ">
+               and t.name = #{params.name}
+            </if>
+            <if test=" params.startTime != null and params.startTime != '' ">
+                <![CDATA[ and t.create_time >= #{params.startTime} ]]>
+            </if>
+            <if test=" params.endTime != null and params.endTime != '' ">
+                <![CDATA[ and t.create_time <= #{params.endTime} ]]>
+            </if>
+        </where>
+        order by ${sort} ${order}
+    </select>
+
+</mapper>

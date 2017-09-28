@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.jt.mapper.ZsJkJtDjXhZTrXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.nd ,t.jhTrz ,t.sjTrz 
+    </sql>
+
+    <select id="selectZsJkJtDjXhZTrXxList" resultType="ZsJkJtDjXhZTrXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_djxhztrxx t
+        <where>
+        </where>
+    </select>
+    
+    <select id="selectZsJkJtDjXhZTrXxDataGrid" resultType="ZsJkJtDjXhZTrXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_djxhztrxx t
+        <where>
+        <if test="condition.nd!=null and condition.nd!=''">
+        <![CDATA[t.nd=#{condition.nd}]]>
+        </if>
+        <if test="condition.jhTrz!=null and condition.jhTrz!=''">
+        <![CDATA[ and t.jhTrz=#{condition.jhTrz}]]>
+        </if>
+        <if test="condition.sjTrz!=null and condition.sjTrz!=''">
+        <![CDATA[ and t.sjTrz=#{condition.sjTrz}]]>
+        </if>
+        </where>
+    </select>
+</mapper>

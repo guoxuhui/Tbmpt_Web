@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.aqsc.base.mapper.SpecialManMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.name ,t.sex ,t.workType ,t.renyuanType ,t.fazhengjiguan ,t.zhengjianhaoma ,t.quzhengriqi ,t.fushengriqi ,t.youxiaoqi ,t.jinchangriqi ,t.lichangriqi ,t.remark ,t.cardno,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+
+    <select id="selectSpecialManList" resultType="SpecialMan">
+        select
+        <include refid="Base_Column_List" />
+            from AQSC_SPECIALMAN t
+        <where>
+        	<if test="condition.name!=null and condition.name!=''">
+       		and  t.name like '%${condition.name}%'
+        	</if>
+        	<if test="condition.sex!=null and condition.sex!=''">
+       		and  t.sex like '%${condition.sex}%'
+        	</if>
+        	<if test="condition.workType!=null and condition.workType!=''">
+       		and  t.workType like '%${condition.workType}%'
+        	</if>
+        	<if test="condition.renyuanType!=null and condition.renyuanType!=''">
+       		and  t.renyuanType like '%${condition.renyuanType}%'
+        	</if>
+        	<if test="condition.zhengjianhaoma!=null and condition.zhengjianhaoma!=''">
+       		and  t.zhengjianhaoma like '%${condition.zhengjianhaoma}%'
+        	</if>
+        	<if test="condition.remark!=null and condition.remark!=''">
+       			and  t.remark like '%${condition.remark}%'
+        	</if>
+        	<if test="condition.queryStarDate!=null and condition.queryStarDate!=''">
+       			<![CDATA[ and t.jinchangriqi >= #{condition.queryStarDate} ]]>
+        	</if>
+        	<if test="condition.queryEndDate!=null and condition.queryEndDate!=''">
+       			<![CDATA[ and t.jinchangriqi <= #{condition.queryEndDate} ]]>
+        	</if>
+        	${condition.sqlPurview}
+        </where>
+        order by t.create_time desc
+    </select>
+    
+    
+    <select id="selectSpecialManDtoList" resultType="SpecialManDto">
+        select
+        <include refid="Base_Column_List" />
+            from AQSC_SPECIALMAN t
+        <where>
+        	<if test="condition.name!=null and condition.name!=''">
+       		and  t.name like '%${condition.name}%'
+        	</if>
+        	<if test="condition.sex!=null and condition.sex!=''">
+       		and  t.sex like '%${condition.sex}%'
+        	</if>
+        	<if test="condition.workType!=null and condition.workType!=''">
+       		and  t.workType like '%${condition.workType}%'
+        	</if>
+        	<if test="condition.renyuanType!=null and condition.renyuanType!=''">
+       		and  t.renyuanType like '%${condition.renyuanType}%'
+        	</if>
+        	<if test="condition.zhengjianhaoma!=null and condition.zhengjianhaoma!=''">
+       		and  t.zhengjianhaoma like '%${condition.zhengjianhaoma}%'
+        	</if>
+        	${condition.sqlPurview}
+        </where>
+         <if test=" sort != null and sort != '' and order != null and order != ''">
+                order by ${sort} ${order}
+        </if>
+    </select>
+</mapper>

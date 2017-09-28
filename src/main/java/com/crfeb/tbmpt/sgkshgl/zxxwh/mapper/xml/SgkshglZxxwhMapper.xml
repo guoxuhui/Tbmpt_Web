@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sgkshgl.zxxwh.mapper.SgkshglZxxwhMapper">
+
+    <!-- 通用查询结果列   -->
+    <sql id="Base_Column_List">
+        z.OBJECTID ,z.PRO_ID AS proId, z.PRO_NAME AS proName, 
+		z.SEC_ID AS sectionId,z.SEC_NAME AS sectionName, z.L_ID AS lineId,
+		z.L_NAME AS lineName, z.hh, z.lc, z.x, z.y, z.z, z.type
+    </sql>
+
+
+    <select id="selectList" resultType="SgkshglZxxwhDto">
+        select
+        <include refid="Base_Column_List" />
+        from TBMPT_SP.ZXLINE z ,SYS_ORGZ o,PRO_PROJECTINFO p
+        <where>
+         	z.PRO_ID = p.ID and p.parent_id = o.id 
+         	<if test=" params.code != null and params.code != '' ">
+		        and o.code like '%${params.code}%'
+		    </if>
+	        <if test=" params.inquireId != null and params.inquireId != '' ">
+	            and z.PRO_ID = #{params.inquireId} 
+	            or z.SEC_ID = #{params.inquireId} 
+	            or z.L_ID = #{params.inquireId}
+	        </if>
+	        <if test=" params.proId != null and params.proId != '' ">
+	            and z.PRO_ID = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and z.SEC_ID = #{params.sectionId}
+	        </if>
+	       <if test=" params.lineId != null and params.lineId != '' ">
+	            and z.L_ID = #{params.lineId}
+	        </if>
+	        <if test=" params.type != null and params.type != '' ">
+	            and z.TYPE = #{params.type}
+	        </if>
+	        <if test=" params.hh != null and params.hh != '' ">
+	            and z.HH = #{params.hh}
+	        </if>
+        </where>
+        
+        order by ${sort} ${order}
+    </select>
+    <!-- 添加：查询Id 值最大 的 一条  返回Id-->
+    <select id="selectMaxId" resultType="SgkshglZxxwhDto">
+        select
+        OBJECTID
+        from TBMPT_SP.ZXLINE
+        where rownum = 1 
+        order by OBJECTID desc
+    </select>
+
+    <!-- 添加：查询Id 值最大 的 一条  返回Id-->
+    <select id="selectAdd" resultType="SgkshglZxxwh">
+        select
+        <include refid="Base_Column_List" />
+        from TBMPT_SP.ZXLINE z
+       
+    </select>
+    
+</mapper>

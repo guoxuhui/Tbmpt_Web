@@ -1,0 +1,36 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+</head>
+<script language=javascript>
+	function showReport( rpx, matchScreen, bkColor ) {
+		var url = "mbReport.jsp?rpx=" + encodeURIComponent( rpx );
+		if( matchScreen != null ) url += "&match=" + matchScreen;
+		if( bkColor != null ) url += "&bkcolor=" + bkColor;
+		document.location = url;
+	}
+	function showParam( arg, rpx, matchScreen ) {
+		var url = "mbParam.jsp?arg=" + encodeURIComponent( arg ) + "&rpx=" + encodeURIComponent( rpx );
+		if( matchScreen != null ) url += "&match=" + matchScreen;
+		document.location = url;
+	}
+	function setShareUrl() {
+		window.reportApp.setShareUrl( document.location.href );
+	}
+</script>
+<body style="margin:1px"> 
+	<div onclick="showReport( '/mb/网格式报表.rpx' )">普通报表</div>
+	<div onclick="showReport( '/mb/echart.rpx' )">echarts统计图</div>
+	<div onclick="showReport( '/mb/match.rpx', '1' )">按报表宽自适应</div>
+	<div onclick="showReport( '/mb/match.rpx', '2' )">按报表高自适应</div>
+	<div onclick="showReport( '/mb/match.rpx', '3' )">竖屏按高，横屏按宽自适应</div>
+	<div onclick="showReport( '/mb/match.rpx', '4' )">竖屏按宽，横屏按高自适应</div>
+	<div onclick="showReport( '/mb/列宽自适应.rpx' )">列宽自适应</div>
+	<div onclick="document.location='scan.jsp'">二维码扫描输入</div>
+	<div onclick="showReport( '/mb/phone.rpx', '1' )">长按报表中的电话号码拨号</div>
+	<div onclick="showParam( '/mb/下拉联动_arg.rpx', '/mb/下拉联动.rpx' )">参数表单一</div>
+	<div onclick="showReport( '/mb/phone_1.rpx','1','black')">业务快照</div>
+	
+</body>
+</html>

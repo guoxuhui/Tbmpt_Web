@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.tbmmg.mapper.ProTbmDgstateInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID,TBMZT,SBGLH,SZWZ,DGJ,Y_STOP_DAYS YSTOPDAYS,Y_GZSTOP_DAYS YGZSTOPDAYS,MAN_TEL MANTEL,REMARKS,ZB,RIQI
+	</sql>
+
+    <select id="getWzZb" resultType="com.crfeb.tbmpt.tbmmg.model.ProTbmDgstateInfo">
+        select t.szwz,t.zb from PRO_TBM_DGSTATE t 
+        <where>
+        	1=1
+            <if test="riqi != null and riqi != '' ">
+               and t.riqi = #{riqi}
+            </if>
+        </where>
+        group by t.szwz,t.zb 
+    </select>
+    
+    <select id="getTbmInfo" resultType="com.crfeb.tbmpt.tbmmg.model.ProTbmDgstateInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_TBM_DGSTATE t 
+        <where>
+        	1=1
+            <if test="riqi != null and riqi != '' ">
+               and t.riqi = #{riqi}
+            </if>
+        </where>
+    </select>
+    
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjjdw.dwsjzh.mapper.DgjjdDwsjzhMapper">
+
+	<!-- 通用查询结果列 ID, DWNAME, KD_START, KD_END, DATA_START, DATA_END, DW, DATA_ZF, CAL_TYPE, DGJNAME, REMARKS-->
+	<sql id="Base_Column_List">
+		
+		ID,DWNAME,KD_START AS kdStart,KD_END AS kdEnd,DATA_START AS dataStart,DATA_END AS dataEnd,DW,DATA_ZF AS dataZf,CAL_TYPE AS calType,DGJNAME,REMARKS
+	</sql>
+	
+	<select id="selectDataGridList" resultType="DgjjdDwsjzh">
+		select
+			<include refid="Base_Column_List"/>
+			from DWDATAZHH
+			<where>
+		         1=1 
+				<if test="condition.dwname!=null and condition.dwname!=''">
+					and DWNAME like '%${condition.dwname}%'
+				</if>
+				<if test="condition.dgjname!=null and condition.dgjname!=''">
+					and DGJNAME like '%${condition.dgjname}%'
+				</if> 
+			</where>
+			order by ${sort} ${order} 
+	</select>
+	 
+    <select id="selectList" resultType="DgjjdDwsjzh">
+		select
+			<include refid="Base_Column_List"/>
+			from DWDATAZHH
+			<where>
+		         1=1  
+		        
+		          and DWNAME like '%${dwNameT}%' 
+				 
+				 and DGJNAME =  '${dgjNameT}' 
+			</where> 
+	</select>
+</mapper>

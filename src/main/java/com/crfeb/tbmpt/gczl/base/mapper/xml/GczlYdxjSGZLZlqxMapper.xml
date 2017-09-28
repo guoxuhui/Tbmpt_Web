@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczl.base.mapper.GczlYdxjSGZLZlqxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.zlQx ,t.sortNum ,t.ifQy ,t.remarks ,t.sgNr,
+        t.create_user as createUser,
+	   t.create_username as createUsername,
+	   t.create_orgz as createOrgz,
+	   t.create_orgzname as createOrgzname,
+	   t.create_time as createTime,
+	   t.update_user as updateUser,
+	   t.update_username as updateUsername,
+	   t.update_orgz as updateOrgz,
+	   t.update_orgzname as updateOrgzname,
+	   t.update_time as updateTime
+    </sql>
+
+    <select id="selectGczlYdxjSGZLZlqxList" resultType="GczlYdxjSGZLZlqx">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_ZLQX t
+        <where>
+        	1=1 
+        	<if test="condition.sgNr!=null and condition.sgNr!=''">
+       		and  t.sgNr like '%${condition.sgNr}%'
+        	</if>
+        </where>
+         order by t.SORTNUM 
+    </select>
+    
+    <!-- 根据施工内容查询质量缺陷信息-->
+    <select id="selectGczlYdxjSGZLZlqxListBySgNr" resultType="GczlYdxjSGZLZlqx">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_ZLQX t
+        <where>
+             1=1
+            <choose>
+                <when test="sgNrId!=null and sgNrId!=''">
+                       and  t.sgNr='${sgNrId}'
+                </when>
+                <otherwise>
+                       and 1=2
+                 </otherwise>
+            </choose>
+        </where>
+         order by t.SORTNUM 
+    </select>
+    
+     <!-- 根据施工内容id集合查询质量缺陷信息-->
+    <select id="selectBySgNrIds" resultType="GczlYdxjSGZLZlqx">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_ZLQX t
+        <where>
+             1=1
+            <choose>
+                <when test="sgNrIds!=null and sgNrIds!=''">
+                       and  t.sgNr in(${sgNrIds})
+                </when>
+                <otherwise>
+                       and 1=2
+                 </otherwise>
+            </choose>
+        </where>
+         order by t.SORTNUM 
+    </select>
+    
+    
+    
+    
+    <!-- 根据质量缺陷实体信息查询质量缺陷信息-->
+    <select id="selectList" resultType="GczlYdxjSGZLZlqx">
+        select
+        <include refid="Base_Column_List" />
+            from GCZLYDXJ_SGZL_ZLQX t
+        <where>
+             1=1
+            <if test="entity.sgNr!=null and entity.sgNr!=''">
+       		 and  t.sgNr ='${entity.sgNr}'
+        	</if>
+        	<if test="entity.ifQy!=null and entity.ifQy!=''">
+       		 and  t.ifQy ='${entity.ifQy}'
+        	</if>
+        </where>
+         order by t.SORTNUM 
+    </select>
+</mapper>

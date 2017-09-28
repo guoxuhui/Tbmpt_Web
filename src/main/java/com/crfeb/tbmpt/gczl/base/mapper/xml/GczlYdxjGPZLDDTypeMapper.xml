@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gczl.base.mapper.GczlYdxjGPZLDDTypeMapper">
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, typename as typeName, sortnum as sortNum, ifqy as ifQy, remarks
+    </sql>
+    <select id="selectGczlYdxjGPZLDDTypeList" resultType="GczlYdxjGPZLDDType">
+        select
+        <include refid="Base_Column_List" />
+        from gczlydxj_gpzl_dd_Type 
+        <where>
+        	typename like '%${condition.typeName}%' 
+        </where>
+        	ORDER BY sortnum
+    </select>
+</mapper>

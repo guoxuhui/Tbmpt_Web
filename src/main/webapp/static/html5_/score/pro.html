@@ -1,0 +1,347 @@
+<html xmlns="http://www.w3.org/1999/xhtml" style="user-select: none;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>项目概况</title>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/iconfont.css" rel="stylesheet">
+<link href="../css/home/iconfont.css" rel="stylesheet">
+<link href="../css/main.css" rel="stylesheet">
+<link href="../css/score/sco-drive.css" rel="stylesheet">
+</head>
+<body onload="OnLoad()">
+
+	<div class="m-container band">
+		<div class="scoDrive-block0 band">
+			<h1 class="block-title">
+<!-- 				<i class="scoDrive-icons title-icon4"></i> -->
+				<span class="block-txt"
+					id="prosellinName">上海9号线10标 金桥~申江 上行线</span>
+			</h1>
+		</div>
+		<div class="scoDrive-block1 band">
+			<div class="l-block1">
+				<div id="box"></div>
+			</div>
+			<div class="r-block1">
+				<p class="pcontent"></p>
+			</div>
+		</div>
+		<div class="scoDrive-block3 band">
+			<h1 class="block-title">
+				<i class="scoDrive-icons title-icon7"></i><span class="block-txt">盾构施工进度</span>
+			</h1>
+			<ul>
+				<li>
+					<div class="block3-li-container">
+						<span class="block3-li-title">平均环数</span>
+						<p class="block3-li-data" id="ageRing"></p>
+					</div>
+				</li>
+				<li>
+					<div class="block3-li-container">
+						<span class="block3-li-title">当前环数</span>
+						<p class="block3-li-data" id="currRing"></p>
+					</div>
+				</li>
+				<li>
+					<div class="block3-li-container">
+						<span class="block3-li-title">已完成工作量</span>
+						<p class="block3-li-data" id="finish"></p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="scoDrive-block3 band">
+			<h1 class="block-title">
+				<i class="scoDrive-icons title-icon7"></i><span class="block-txt">盾构施工进度</span>
+			</h1>
+			<ul>
+				<li>
+					<div id="fun_jqcs" class="block3-li-container" style="background-color: #ffffff;">
+						<p class="icon iconfont" style="font-size: 32px">&#xe6fc;</p>
+						<span class="block3-li-title">机器参数</span>
+					</div>
+				</li>
+				<li>
+					<div id="fun_spjk" class="block3-li-container" style="background-color: #ffffff;">
+						<p class="icon iconfont" style="font-size: 32px">&#xe820;</p>
+						<span class="block3-li-title">视频监控</span>
+					</div>
+				</li>
+				<li>
+					<div id="fun_xmxx" class="block3-li-container" style="background-color: #ffffff;">
+						<p class="icon iconfont" style="font-size: 32px">&#xe6b3;</p>
+						<span class="block3-li-title">项目信息</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="scoDrive-block0 band">
+			<h1 class="block-title">
+				<i class="scoDrive-icons title-icon7"></i><span class="block-txt"
+					id="img">施工线路地图</span>
+			</h1>
+			<img id="smap"
+				src="http://restapi.amap.com/v3/staticmap?scale=2&amp;zoom=15&amp;size=600*300&amp;location=116.31604,39.96491&amp;markers=mid,,:116.31604,39.96491&amp;paths=5,0x0000FF,1,,:116.31604,39.96491;116.320816,39.966606;116.321785,39.966827;116.32361,39.966957&amp;key=ee95e52bf08006f63fd29bcfbcf21df0"
+				style="width: 100%; height: ?">
+		</div>
+
+	</div>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/jshelper.js"></script>
+	<script src="../js/common-1.0.2.js"></script>
+
+	<script type="text/javascript">
+
+		var i1 = 0, i2 = 0, i3 = 0;
+
+		function OnLoad() {
+			document.documentElement.style.webkitTouchCallout = "none"; //禁止弹出菜单
+			document.documentElement.style.webkitUserSelect = "none";//禁止选中
+		}
+
+		$(function() {
+
+			$("#box").click(function() {
+				var hrefa = location.href;
+				location.href = hrefa;
+			});
+			$(".tbox").click(function() {
+				//$(".tiao ").css("width", "0");
+				//xh();
+			});
+			$("#fun_jqcs").click(function() {
+				Android.openMachineData();
+				//location.href = "/open/jqsj/machineDatePage?proId=b89bc80ae8894c2a84f33ffef04d411c";
+			});
+			$("#fun_spjk").click(function() {
+				Android.openVideo();
+				//location.href = "../video/videoList.html";
+			});
+			$("#fun_xmxx").click(function() {
+				Android.openProInfo();
+				//location.href = "../video/videoList.html";
+			});
+			loadDriveInfo(true);
+
+			setInterval(loadDriveInfo,10000);// 注意函数名没有引号和括弧！ 
+			
+		});
+
+		function loadDriveInfo(falt) {
+			var lid = jshelper.getUrlQuery("lid");
+
+			var params = {
+				lid : lid
+			};
+			$
+					.ajax({
+						type : "get",
+						url : "/open/jqsj/DrivingBehavior",
+						data : params
+					})
+					.done(
+							function(msg) {
+								msg = strToJson(msg);
+								if (msg.res) {
+
+									if (msg.result.LineData) {
+
+										var LineData = msg.result.LineData;
+										var TbmData = msg.result.TbmData;
+										var GeoData = msg.result.GeoData;
+
+										var com = "<p> </p><br>预计剩余" + TbmData.days
+												+ "天完工";
+										com = com + "<br>更新时间："
+												+ TbmData.dataTime;
+										$(".pcontent").html(com);
+
+										loadImg(parseInt(TbmData.finish),falt);//加载圆圈
+										xh1(parseInt("82"));//加载质量进度条
+										xh2(parseInt("93"));//加载安全进度条
+										xh3(parseInt("78"));//加载工况进度条
+
+										$("#prosellinName").html(
+												LineData.Pro_Name + " "
+														+ LineData.Section_Name
+														+ " "
+														+ LineData.Line_Name);
+
+										$("#line_mileage").html(
+												TbmData.line_mileage + "米");
+										$("#ring_Count").html(
+												TbmData.ring_Count + "环");
+										$("#tunnelTime").html(
+												TbmData.tunnelTime + "天");
+
+										$("#ageRing").html(
+												TbmData.ageRing + "环/天");
+										$("#currRing").html(
+												TbmData.currRing + "环");
+										$("#finish").html(TbmData.finish + "%");
+
+										var url_smap = "http://restapi.amap.com/v3/staticmap?scale=2&zoom=15&size=600*300&location="
+												+ GeoData.cur_position
+												+ "&markers=mid,,:"
+												+ GeoData.cur_position
+												+ "&paths=5,0x0000FF,1,,:"
+												+ GeoData.line_paths
+												+ "&key=3d61c9dfbcfe02c1c09785f971e80df9";
+										$("#smap").attr('src', url_smap);
+
+									}
+
+									
+									$(".block6-data").html('无异常工况数据');
+								}
+							})
+		}
+
+		function GoUrl(vv) {
+			if (vv == 1) {
+				location.href = 'oil-raiders.html';
+			} else if (vv == 2) {
+				location.href = 'safe-raiders.html';
+			} else if (vv == 3) {
+				location.href = 'sco-carsituation.html';
+			}
+		}
+
+		//圆圈
+		function loadImg(data,falt) {
+
+			var object = document.getElementById('box');
+
+			var i = 0;
+			if(falt){
+				setInterval(function() {
+					i++
+					if (i > data) {
+						i = data
+					}
+					var imgLeft = -(i * 88 + (i * 20)) + 'px'
+					object.style.backgroundPosition = imgLeft + '\t' + '0px'
+					object.innerHTML = i + '';
+				}, 30);
+			}else{
+				var imgLeft = -(data * 88 + (i * 20)) + 'px'
+				object.style.backgroundPosition = imgLeft + '\t' + '0px'
+				object.innerHTML = data + '/100';
+			}
+			
+			var j = 0;
+			setInterval(function() {
+				j++
+				if (j > data) {
+					j = data;
+				} else if (j <= 30) {
+					$("#box").css("color", "#cb3c34")
+				} else if (30 < j && j <= 70) {
+					$("#box").css("color", "#ffaa00")
+				} else if (70 < j && j <= 100) {
+					$("#box").css("color", "#75c625")
+				}
+
+			}, 30);
+			if (data < 1) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-0.png)")
+
+			} else if (data >= 1 && data <= 10) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-1.png)")
+			} else if (data > 10 && data <= 20) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-2.png)")
+			} else if (data > 20 && data <= 30) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-3.png)")
+			} else if (data > 30 && data <= 40) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-4.png)")
+			} else if (data > 40 && data <= 50) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-5.png)")
+			} else if (data > 50 && data <= 60) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-6.png)")
+			} else if (data > 60 && data <= 70) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-7.png)")
+			} else if (data > 70 && data <= 80) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-8.png)")
+			} else if (data > 80 && data <= 99) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-9.png)")
+			} else if (data >= 100) {
+				$(".r-block1-star").css("backgroundImage",
+						"url(../image/score/star-10.png)")
+			}
+		}
+
+		//进度条
+		/*add——创建tbx下的div加文字和变宽度的方法*/
+		function add1(i) {
+			var tbox1 = $(".tbox1");
+			var tiao1 = $(".tiao1");
+			var percent1 = $(".m-percent1");
+			tiao1.css("width", i + "%");
+			percent1.html(i + "分");
+		}
+		function add2(i) {
+
+			var tbox2 = $(".tbox2");
+			var tiao2 = $(".tiao2");
+			var percent2 = $(".m-percent2");
+			tiao2.css("width", i + "%");
+			percent2.html(i + "分");
+		}
+		function add3(i) {
+
+			var tbox3 = $(".tbox3");
+			var tiao3 = $(".tiao3");
+			var percent3 = $(".m-percent3");
+			tiao3.css("width", i + "%");
+			percent3.html(i + "分");
+		}
+
+		/*创建方法（i++循环起来）*/
+		function xh1(data) {
+			if (i1 <= data) {
+				add1(i1);
+				i1++;
+				setTimeout(function() {
+					xh1(data);
+				}, 30);
+			}
+		}
+		function xh2(data) {
+			if (i2 <= data) {
+				add2(i2);
+				i2++;
+				setTimeout(function() {
+					xh2(data);
+				}, 30);
+			}
+		}
+		function xh3(data) {
+			if (i3 <= data) {
+				add3(i3);
+				i3++;
+				setTimeout(function() {
+					xh3(data);
+				}, 30);
+			}
+		}
+		function strToJson(str){ 
+			var json = eval('(' + str + ')'); 
+			return json; 
+			} 
+	</script>
+
+</body>
+</html>

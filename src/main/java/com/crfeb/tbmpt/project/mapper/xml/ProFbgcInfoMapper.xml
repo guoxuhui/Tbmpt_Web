@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProFbgcInfoMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		ID, PRO_ID AS proId,FBGCNAME, DWGC_ID AS dwgcId,
+		REMARKS
+	</sql>
+	
+	<select id="selectVoListByDwgcId" resultType="ProFbgcVo">
+		select
+		f.ID,f.PRO_ID AS proId,p.PRO_NAME proName, f.FBGCNAME, f.REMARKS
+		from PRO_FBGC_INFO f,PRO_PROJECTINFO p 
+		where f.pro_id = p.id and f.DWGC_ID=#{dwgcId}
+		
+	</select>
+
+    
+    <select id="selectVoList" resultType="ProFbgcVo">
+        select
+               f.ID,f.FBGCNAME, f.REMARKS,
+               f.PRO_ID AS proId, p.PRO_NAME proName,
+               f.DWGC_ID AS dwgcId, d.DWGCNAME AS dwgcName 
+        from PRO_FBGC_INFO f,PRO_DWGC_INFO d, PRO_PROJECTINFO p,SYS_ORGZ o 
+        <where>
+	         f.pro_id = p.id and f.DWGC_ID = d.id and p.parent_id = o.id  
+	        <if test=" params.code != null and params.code != '' ">
+	            and o.code like '%${params.code}%'
+	        </if>
+	        <if test=" params.dwgcId != null and params.dwgcId != '' ">
+	            and f.dwgc_id = #{params.dwgcId}
+	        </if>
+	         <if test=" params.proId != null and params.proId != '' ">
+	            and f.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.fbgcname != null and params.fbgcname != '' ">
+	           and f.fbgcname like '%${params.fbgcname}%'
+	        </if>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if> 
+		</where>
+    </select>
+    
+    <!-- 调用接口查找用户拥有的项目信息 -->
+    <select id="selectVoList2" resultType="ProFbgcVo">
+        select
+               f.ID,f.FBGCNAME, f.REMARKS,
+               f.PRO_ID AS proId, p.PRO_NAME proName,
+               f.DWGC_ID AS dwgcId, d.DWGCNAME AS dwgcName 
+        from PRO_FBGC_INFO f,PRO_DWGC_INFO d, PRO_PROJECTINFO p
+        <where>
+	         f.pro_id = p.id and f.DWGC_ID = d.id 
+	        <if test=" params.dwgcId != null and params.dwgcId != '' ">
+	            and f.dwgc_id = #{params.dwgcId}
+	        </if>
+	         <if test=" params.proId != null and params.proId != '' ">
+	            and f.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.fbgcname != null and params.fbgcname != '' ">
+	           and f.fbgcname like '%${params.fbgcname}%'
+	        </if>
+			${params.sqlPurview}
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if> 
+		</where>
+    </select>
+
+</mapper>

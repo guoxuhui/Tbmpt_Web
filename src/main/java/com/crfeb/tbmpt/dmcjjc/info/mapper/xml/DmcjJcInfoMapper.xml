@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dmcjjc.info.mapper.DmcjJcInfoMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id,gcbh,jctime,tianqi,ifqr,impfilepath,remarks
+	</sql>
+
+	<select id="selectJcInfoPage" resultType="com.crfeb.tbmpt.dmcjjc.info.model.vo.DmcjJcInfoDto">
+		select i.id,i.gcbh,i.jctime,i.tianqi,i.ifqr,i.impfilepath,i.remarks,
+	    p.pro_name as projName
+	  from dmcj_jc_info i
+	  inner join pro_projectinfo p on 
+		i.gcbh = p.id
+		<where>
+			1=1
+			<if test="ins !=null and ins != ''">
+		  		and i.gcbh in (${ins})
+			</if>
+			<if test=" gcbh != null and gcbh != '' ">
+                and i.gcbh = #{gcbh}
+            </if>
+            <if test=" beginTime != null and beginTime != '' ">
+             	and to_date(i.jctime,'yyyy-mm-dd,hh24:mi:ss') &gt;= to_date(#{beginTime},'yyyy-mm-dd,hh24:mi:ss')
+            </if>
+            <if test=" endTime != null and endTime != '' ">
+             	and to_date(i.jctime,'yyyy-mm-dd,hh24:mi:ss') &lt;= to_date(#{endTime},'yyyy-mm-dd,hh24:mi:ss')
+            </if>
+            <if test=" ifqr != null and ifqr != '' ">
+                and i.ifqr = #{ifqr}
+            </if>
+            <if test="ids !=null and ids != ''">
+		  		and i.id in (${ids})
+			</if>
+		</where>
+		order by i.jctime desc
+	</select>
+	
+	<update id="qy">
+		update dmcj_jc_info set ifqr='已确认' where id=#{id}
+	</update>
+	
+	<update id="jy">
+		update dmcj_jc_info set ifqr='未确认' where id=#{id}
+	</update>
+	
+	<select id="selectJcInfos" resultType="com.crfeb.tbmpt.dmcjjc.info.model.JcInfo">
+		select
+		<include refid="Base_Column_List" />
+		from dmcj_jc_info
+		<if test="list !=null and list.size() &gt; 0">
+			<where>
+				 id in
+					<foreach collection="list" item="id" index="index" open="(" close=")" separator=","> 
+			  			#{id}        
+					</foreach>
+			</where>
+		</if>
+		order by gcbh
+	</select>
+</mapper>

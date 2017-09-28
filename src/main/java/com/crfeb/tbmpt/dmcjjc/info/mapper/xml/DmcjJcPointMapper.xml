@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dmcjjc.info.mapper.DmcjJcPointMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id,gcbh,jcdbh,qjbh,xlbh,sjtype,weizhi,licheng,csgc,sjtimetype,remarks,ifqy,maxControl,minControl,maxAlarm,minAlarm    
+	</sql>
+
+	<!-- 根据监测点编号取日常监测中的上次高程 -->
+	<select id="getJcInfoScgc" resultType="float">
+		select a.bcgc from (select i.jctime,d.* from dmcj_jc_details d    
+		left join dmcj_jc_info i 
+		on d.fid = i.id
+		where d.jcdno=#{jcdno} and d.gcbh=#{pid} and 
+		to_date(i.jctime,'yyyy-mm-dd,hh24:mi:ss') &lt; to_date(#{jcTime},'yyyy-mm-dd,hh24:mi:ss')
+		 order by jctime desc) a 
+		where rownum = 1
+	</select>
+	
+	<!-- 根据监测点编号取监测报告中的上次高程 -->
+	<select id="getJcBgScgc" resultType="float">
+		select a.bcgc from (select i.jctime,d.* from dmcj_jcbg_details d    
+		left join dmcj_jcbg_info i 
+		on d.fid = i.id
+		where d.jcdno=#{jcdno} and d.gcbh=#{pid} and
+		to_date(i.jctime,'yyyy-mm-dd,hh24:mi:ss') &lt; to_date(#{jcTime},'yyyy-mm-dd,hh24:mi:ss')
+		 order by jctime desc) a 
+		where rownum = 1
+	</select>
+
+<!-- 根据监测点编号取监测报告中的上次高程 -->
+	<select id="getJcBgsbScgc" resultType="float">
+		select a.bcgc from (select i.jctime,d.* from dmcj_jcbgsb_details d    
+		left join dmcj_jcbgsb_info i 
+		on d.fid = i.id
+		where d.jcdno=#{jcdno} and d.gcbh=#{pid} and
+		to_date(i.jctime,'yyyy-mm-dd,hh24:mi:ss') &lt; to_date(#{jcTime},'yyyy-mm-dd,hh24:mi:ss')
+		 order by jctime desc) a 
+		where rownum = 1
+	</select>
+
+	<select id="selectJcPointPage" resultType="com.crfeb.tbmpt.dmcjjc.info.model.vo.DmcjJcPointDto">
+		select
+		t.id,gcbh,jcdbh,qjbh,xlbh,sjtype,weizhi,licheng,csgc,sjtimetype,remarks,ifqy,maxControl,minControl,maxAlarm,minAlarm    ,  
+		 s.section_name as qujianName,l.line_name as xianluName
+		from dmcj_jcpoint t
+		left join pro_r_project_section s on t.qjbh=s.id
+		left join pro_r_section_line l on t.xlbh=l.id
+		inner join pro_projectinfo p on 
+		t.gcbh = p.id
+		<where>
+			1=1
+			<if test="params.ins !=null and params.ins != ''">
+		  		and t.gcbh in (${params.ins})
+			</if>
+			<if test=" params.gcbh != null and params.gcbh != '' ">
+               and t.gcbh = #{params.gcbh}
+            </if>
+            <if test=" params.jcdbh != null and params.jcdbh != '' ">
+               and t.jcdbh like '%${params.jcdbh}%'
+            </if>
+            <if test=" params.qjbh != null and params.qjbh != '' ">
+               and t.qjbh = #{params.qjbh}
+            </if>
+            <if test=" params.xlbh != null and params.xlbh != '' ">
+               and t.xlbh = #{params.xlbh}
+            </if>
+            <if test=" params.sjType != null and params.sjType != '' ">
+               and t.sjtype = #{params.sjType}
+            </if>
+            <if test=" params.sjTimeType != null and params.sjTimeType != '' ">
+               and t.sjtimetype = #{params.sjTimeType}
+            </if>
+            <if test="params.ids !=null and params.ids != ''">
+		  		and t.id in (${params.ids})
+			</if>
+		</where>
+		<if test=" sort != null and sort != '' and order != null and order != ''">
+                order by ${sort} ${order}
+        </if>
+		<!-- order by t.jcdbh -->
+	</select>
+	
+	<update id="qy">
+		update dmcj_jcpoint set ifqy='启用' where id=#{id}
+	</update>
+	
+	<update id="jy">
+		update dmcj_jcpoint set ifqy='禁用' where id=#{id}
+	</update>
+	
+	<select id="selectJcPoints" resultType="com.crfeb.tbmpt.dmcjjc.info.model.JcPoint">
+		select
+		<include refid="Base_Column_List" />
+		from dmcj_jcpoint
+		<if test="list !=null and list.size() &gt; 0">
+			<where>
+				 id in
+					<foreach collection="list" item="id" index="index" open="(" close=")" separator=","> 
+			  			#{id}        
+					</foreach>
+			</where>
+		</if>
+		order by jcdbh
+	</select>
+	
+	<select id="selectJcPointsByJcdno" resultType="com.crfeb.tbmpt.dmcjjc.info.model.vo.DmcjJcPointDto">
+		select
+		t.*,s.section_name as qujianName,l.line_name as xianluName
+		from dmcj_jcpoint t
+		left join pro_r_project_section s on t.qjbh=s.id
+		left join pro_r_section_line l on t.xlbh=l.id
+		where t.jcdbh in
+		<foreach collection="list" item="vo" index="index" open="(" close=")" separator=","> 
+  			#{vo.jcd}        
+		</foreach>
+	</select>
+	
+	<select id="countPointByJcdno" resultType="int">
+		select count(id) from dmcj_jcpoint where jcdbh = #{jcdbh}
+	</select>
+	
+	<select id="getZdcjddbData" resultType="com.crfeb.tbmpt.dmcjjc.zdcjddb.model.Zdcjddb">
+			
+		select * from (
+			select * from (
+			select bg.jctime,tt.jcdno,tt.qujian,tt.xianlu,t.csgc,tt.bcgc,
+			case  
+			when (tt.bcgc = 0 or t.csgc=0   or tt.bcgc is null or t.csgc is null) then 0
+			when (tt.bcgc!=0 and t.csgc!=0 and tt.bcgc is not null and t.csgc is not null)  then (tt.bcgc-t.csgc)*1000 end js
+			from DMCJ_JCBGSB_DETAILS tt
+			left join dmcj_jcpoint t on t.jcdbh=tt.jcdno and t.gcbh=tt.gcbh and t.qjbh=tt.qujian and t.xlbh=tt.xianlu
+			left join dmcj_jcbgsb_info bg on bg.id=tt.fid
+			where bg.jctime >= #{sDate} and bg.jctime &lt;= #{eDate} and  tt.qujian in 
+			<foreach collection="qujians" item="qujian" index="index" open="(" close=")" separator=","> 
+  				#{qujian}      
+			</foreach>
+			order by js ) where rownum=1) r  
+			 union all
+			select * from (
+			select * from (
+			select bg.jctime,tt.jcdno,tt.qujian,tt.xianlu,t.csgc,tt.bcgc,
+			case  
+			when (tt.bcgc = 0 or t.csgc=0   or tt.bcgc is null or t.csgc is null) then 0 
+			when (tt.bcgc!=0 and t.csgc!=0 and tt.bcgc is not null and t.csgc is not null)  then (tt.bcgc-t.csgc)*1000 end js
+			from DMCJ_JCBGSB_DETAILS tt
+			left join dmcj_jcpoint t on t.jcdbh=tt.jcdno and t.gcbh=tt.gcbh and t.qjbh=tt.qujian and t.xlbh=tt.xianlu
+			left join dmcj_jcbgsb_info bg on bg.id=tt.fid
+			where bg.jctime >= #{sDate} and bg.jctime &lt;= #{eDate} and  tt.qujian in 
+			<foreach collection="qujians" item="qujian" index="index" open="(" close=")" separator=","> 
+  				#{qujian}      
+			</foreach>
+			order by js desc) where rownum=1) rr 
+	</select>
+	
+	<select id="getZdcjddbDetailsData" resultType="com.crfeb.tbmpt.dmcjjc.zdcjddb.model.ZdcjddbDetails">
+
+		select ttt.jctime,ttt.jcdno,ttt.qujian ,ttt.xianlu, max(ttt.js) maxjs  from (
+		select   substr(bg.jctime,0,10) jctime,tt.jcdno,tt.qujian,tt.xianlu,t.csgc,tt.bcgc,
+		case  
+		when (tt.bcgc = 0 or t.csgc=0   or tt.bcgc is null or t.csgc is null) then 0 
+		when (tt.bcgc!=0 and t.csgc!=0 and tt.bcgc is not null and t.csgc is not null)  then (tt.bcgc-t.csgc)*1000 end js
+		from DMCJ_JCBGSB_DETAILS tt
+		left join dmcj_jcpoint t on t.jcdbh=tt.jcdno and t.gcbh=tt.gcbh and t.qjbh=tt.qujian and t.xlbh=tt.xianlu
+		left join dmcj_jcbgsb_info bg on bg.id=tt.fid
+		where bg.jctime >= #{sDate} and bg.jctime &lt;= #{eDate} 
+		and tt.qujian in 
+		<foreach collection="qujians" item="qujian" index="index" open="(" close=")" separator=","> 
+  				#{qujian}      
+		</foreach>
+		and tt.jcdno = #{jcdno} 
+		 ) ttt group by ttt.jctime,ttt.jcdno,ttt.qujian,ttt.xianlu
+	</select>
+	
+</mapper>

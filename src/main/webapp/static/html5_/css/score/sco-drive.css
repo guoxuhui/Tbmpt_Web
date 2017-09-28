@@ -1,0 +1,67 @@
+ul{overflow:auto;}
+.scoDrive-icons{background-image:url(../../image/score/jspf-icons.png);width:24px;height:24px;display:inline-block;float:left;}
+.yh-icon1{background-position:0 0;}
+.aq-icon2{background-position:-24px 0;}
+.ck-icon3{background-position:-48px 0;}
+.title-icon4{background-position:0 -24px;}
+.title-icon5{background-position:-24px -24px;}
+.title-icon6{background-position:-48px -24px;}
+.title-icon7{background-position:-72px -24px;}
+/*block1*/
+.scoDrive-block0{overflow:auto;}
+.scoDrive-block1{overflow:auto;border-bottom: 1px solid #90bdda;}
+#box{width:88px;height:88px;line-height: 88px;text-align: center;background: url(../../image/score/circle.png);cursor:pointer;  font-size: 40px;
+  font-family: Arial;
+  color: #75c625;}
+.l-block1{float:left;}
+.r-block1{margin-left:100px;}
+.r-block1-star{height:32px;background:url(../../image/score/star-0.png) 0 0 no-repeat;margin-bottom:10px;}
+/*block2*/
+.scoDrive-block2 li{padding:10px 30px 10px 0;overflow:auto;position:relative;}
+.scoDrive-block2 .block-txt{float:left;}
+.l-li{float:left;}
+.r-li{float:right;}
+.m-li{padding: 0 45px 0 77px;}
+.block-txt{display:inline-block;line-height:24px;margin-left:5px;margin-right:10px;}
+.tbox1,.tbox2,.tbox3{width:100%; height:22px; background:#dfe2e4;float:left;display:inline-block;}
+.tbox1 div,.tbox2 div,.tbox3 div{width:0px; height:22px; background:#008cea;}
+.m-percent1,.m-percent2,.m-percent3{display:inline-block;line-height:24px;margin-left:5px;}
+.l-arrow{position:absolute;top:10px;right:0;width:24px;height:24px;background:url(../../image/score/l-arrow.png) 0 0 no-repeat;}
+/*block3*/
+.block-title{font-size:14px;font-weight:normal;padding-bottom:5px;border-bottom:1px solid #90bdda;margin-bottom:10px;}
+.scoDrive-block3 li,.scoDrive-block4 li,.scoDrive-block5 li{float:left;width:33.3%;padding:1px;box-sizing:border-box;font-size:12px;}
+.block3-li-container,.block4-li-container,.block5-li-container{background-color:#f7f7f7;padding:20px 2px;text-align:center;}
+.block3-li-data,.block4-li-data,.block5-li-data{color:#1180dd;font-size:18px;margin-top:5px;}
+/*block4*/
+.scoDrive-block4 li,.scoDrive-block5 li{width:25%;}
+.block5-li-title{color:#ff860f;font-size:18px;}
+.block5-li-data{color:inherit;font-size:12px;}
+/*block6*/
+.block6-data{display:block;}
+.block6-nodata{text-align:center;display:none;}
+.table-bordered {
+  border: 1px solid #90bdda;
+}
+.table-bordered>thead>tr>th{color:#1180dd;}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{border-color:#90bdda;}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+  border-bottom-width: 1px;
+}
+.redTxt{color:red;}
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2) {
+.scoDrive-icons{background-image:url(../../image/score/jspf-icons@2x.png);background-size:144px auto;}
+.r-block1-star{background-image:url(../../image/score/star-0@2x.png);background-size:131px auto;}
+.r-block1-star{background-image:url(../../image/score/star-1@2x.png);background-size:129px auto;}
+.r-block1-star{background-image:url(../../image/score/star-2@2x.png);background-size:131px auto;}
+.r-block1-star{background-image:url(../../image/score/star-3@2x.png);background-size:129px auto;}
+.r-block1-star{background-image:url(../../image/score/star-4@2x.png);background-size:131px auto;}
+.r-block1-star{background-image:url(../../image/score/star-5@2x.png);background-size:129px auto;}
+.r-block1-star{background-image:url(../../image/score/star-6@2x.png);background-size:131px auto;}
+.r-block1-star{background-image:url(../../image/score/star-7@2x.png);background-size:129px auto;}
+.r-block1-star{background-image:url(../../image/score/star-8@2x.png);background-size:131px auto;}
+.r-block1-star{background-image:url(../../image/score/star-9@2x.png);background-size:129px auto;}
+.r-block1-star{background-image:url(../../image/score/star-10@2x.png);background-size:131px auto;}
+#box { background-image: url(../../image/score/circle@2x.png); background-size:10920px auto;}
+}

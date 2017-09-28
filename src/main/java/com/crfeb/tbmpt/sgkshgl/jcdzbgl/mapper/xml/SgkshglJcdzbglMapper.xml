@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sgkshgl.jcdzbgl.mapper.SgkshglJcdzbglMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 OBJECTID, PRO_ID AS proId, SEC_ID AS secId, JC_ID AS jcId, JC_TYPE AS jcType, LC, HH, XX, SX, X, Y, Z, BZ, SHAPE, PRO_NAME AS proName, SEC_NAME AS secName
+	</sql>
+	
+	<select id="selectJcPointPage" resultType="SgkshglJcdzbglDto">
+		select
+		t.objectid,t.PRO_ID AS proId, t.SEC_ID AS secId, t.JC_ID AS jcId, t.JC_TYPE AS jcType, t.LC, t.HH, t.XX, t.SX, t.X, t.Y, t.Z, t.BZ, t.SHAPE,
+		s.section_name as secName,p.pro_name as proName 		 
+		from  TBMPT_SP.jcpoint_new t	
+		left join pro_r_project_section s on t.SEC_ID=s.id
+		left join pro_projectinfo p on t.PRO_ID = p.id	
+		<where>
+			1=1
+			<if test="ins !=null and ins != ''">
+		  		and t.PRO_ID in (${ins})
+			</if>
+			<if test=" proId != null and proId != '' ">
+               and t.PRO_ID = #{proId}
+            </if>
+            <if test=" jcId != null and jcId != '' ">
+               and t.JC_ID like '%${jcId}%'
+            </if>
+            <if test=" secId != null and secId != '' ">
+               and t.SEC_ID = #{secId}
+            </if>
+            
+            <if test=" jcType != null and jcType != '' ">
+               and t.JC_TYPE like '${jcType}'
+            </if>
+            
+		</where>
+		order by objectid ASC
+	</select>
+	
+	<select id="selectAll" resultType="SgkshglJcdzbglDto">
+		select
+		t.objectid,t.PRO_ID AS proId, t.SEC_ID AS secId, t.JC_ID AS jcId, t.JC_TYPE AS jcType, t.LC, t.HH, t.XX, t.SX, t.X, t.Y, t.Z, t.BZ, t.SHAPE		 		 
+		from  TBMPT_SP.jcpoint_new t			
+		order by objectid DESC
+	</select>
+	
+	<insert 
+      id="insertJcdzb"
+      parameterType="SgkshglJcdzbgl"
+      flushCache="true"
+      statementType="PREPARED"
+      keyProperty=""
+      keyColumn=""
+      useGeneratedKeys="false"
+      timeout="20">
+      insert into TBMPT_SP.jcpoint_new (OBJECTID, PRO_ID , SEC_ID , JC_ID , JC_TYPE, LC, HH, XX, SX, X, Y, Z, BZ, PRO_NAME , SEC_NAME)  
+             values(#{objectid},#{proId},#{secId}, #{jcId}, #{jcType} ,#{lc} ,  #{hh},#{xx},#{sx},#{x},#{y},#{z},#{bz},#{proName}, #{secName})  
+     </insert>
+	
+	<select id="selectByObjectid" resultType="SgkshglJcdzbglDto">
+		select
+		t.objectid,t.PRO_ID AS proId, t.SEC_ID AS secId, t.JC_ID AS jcId, t.JC_TYPE AS jcType, t.LC, t.HH, t.XX, t.SX, t.X, t.Y, t.Z, t.BZ, t.SHAPE		 		 
+		from  TBMPT_SP.jcpoint_new t
+		where objectid=#{objectid}
+	</select>
+</mapper>

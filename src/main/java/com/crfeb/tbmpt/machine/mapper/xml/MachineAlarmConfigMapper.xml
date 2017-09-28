@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.machine.mapper.MachineAlarmConfigMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, NAME, ELECTRICALSYSTEM, ALARMCONDITION, ALARMCYCLE, LASTALARMTIME, NEXTALARMTIME, ISOPEN, REMARK
+	</sql>
+
+	<select id="selectAll" resultType="MachineAlarmConfig">
+		select
+		<include refid="Base_Column_List"/>
+		from Machine_Alarm_Config
+	</select>
+	
+	
+	<!-- 查询列表单 -->
+	<select id="selectList" resultType="MachineAlarmConfig">
+		select
+			<include refid="Base_Column_List"/>
+		from Machine_Alarm_Config
+		<where> 
+			1=1
+			<if test=" params.name != null and params.name != '' ">
+		        and NAME like '%${params.name}%'
+		    </if>
+			
+			<if test=" params.electricalsystem != null and params.electricalsystem != '' ">
+				and electricalsystem = #{params.electricalsystem}
+			</if>
+			
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				order by ${sort} ${order}
+			</if>
+		</where> 
+	</select>
+	
+</mapper>

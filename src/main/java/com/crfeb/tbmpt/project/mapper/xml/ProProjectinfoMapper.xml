@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProProjectinfoMapper">
+
+    <resultMap id="ProjectinfoVo" type="com.crfeb.tbmpt.project.model.vo.ProjectinfoVo">
+        <id column="id" property="id" jdbcType="BIGINT"/>        
+        <result column="proName" property="proName" jdbcType="VARCHAR"/>
+        <result column="abbreviation" property="abbreviation" jdbcType="VARCHAR"/>
+        
+        
+        <result column="EMP_ID" property="empId" jdbcType="VARCHAR"/>
+        <result column="EMPNAME" property="empName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        
+        <result column="ORGZ_ID" property="orgzId" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="PARENTNAME" property="parentName" jdbcType="VARCHAR"/>
+        
+        <result column="position" property="position" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="line" property="line" jdbcType="VARCHAR"/>
+        <result column="tender" property="tender" jdbcType="VARCHAR"/>
+        <result column="projectaddress" property="projectaddress" jdbcType="VARCHAR"/>
+        
+        <result column="tunnellength" property="tunnellength" jdbcType="DOUBLE"/>
+        <result column="ringwidth" property="ringwidth" jdbcType="DOUBLE"/>
+        <result column="startdate" property="startdate" jdbcType="TIMESTAMP"/>
+        <result column="estimateenddate" property="estimateenddate" jdbcType="TIMESTAMP"/>
+        <result column="actualenddate" property="actualenddate" jdbcType="TIMESTAMP"/>
+        
+        <result column="proState" property="proState" jdbcType="DOUBLE"/>
+        
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        
+        <result column="entertime" property="entertime" jdbcType="TIMESTAMP"/>
+        <result column="enterperson" property="enterperson" jdbcType="VARCHAR"/>
+        <result column="deleteflag" property="deleteflag" jdbcType="DOUBLE"/>
+        
+        <result column="cjdw" property="cjdw" jdbcType="VARCHAR"/>
+        <result column="jldw" property="jldw" jdbcType="VARCHAR"/>
+        <result column="jsdw" property="jsdw" jdbcType="VARCHAR"/>
+       
+    </resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, PRO_NAME AS proName,abbreviation, EMP_ID AS empId, ORGZ_ID AS orgzId,PARENT_ID AS parentId, POSITION,COUNTRY,AREA,PROVINCE,CITY,LINE,TENDER,PROJECTADDRESS, 
+			TUNNELLENGTH, RINGWIDTH, STARTDATE, ESTIMATEENDDATE, ACTUALENDDATE, PRO_STATE AS proState, DESCRIPTION, REMARK, ENTERTIME, ENTERPERSON, DELETEFLAG, CJDW ,JLDW, JSDW
+	</sql>
+	
+    <insert 
+      id="insertPro"
+      parameterType="ProProjectinfo"
+      flushCache="true"
+      statementType="PREPARED"
+      keyProperty=""
+      keyColumn=""
+      useGeneratedKeys="false"
+      timeout="20">
+      insert into PRO_PROJECTINFO(ID , PRO_NAME ,abbreviation, EMP_ID , ORGZ_ID ,PARENT_ID , POSITION,COUNTRY,AREA,PROVINCE,CITY,LINE,TENDER,PROJECTADDRESS,  TUNNELLENGTH, RINGWIDTH, STARTDATE, ESTIMATEENDDATE, ACTUALENDDATE, PRO_STATE , DESCRIPTION, REMARK, ENTERTIME, ENTERPERSON, DELETEFLAG ,CJDW ,JLDW, JSDW)  
+             values(#{id},#{proName},#{abbreviation}, #{empId}, #{orgzId} ,#{parentId} ,  #{position},#{country},#{area},#{province},#{city},#{line},#{tender},#{projectaddress}, #{tunnellength}, #{ringwidth}, #{startdate}, #{estimateenddate}, #{actualenddate}, #{proState}, #{description}, #{remark}, #{entertime}, #{enterperson}, #{deleteflag},#{cjdw} ,#{jldw},#{jsdw})  
+      </insert>
+	
+    <select id="selectByProId" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO
+        where id = #{id}
+    </select>
+    
+    
+	<!-- 删除一条记录 -->
+	<delete id="deleteByProId">
+		delete from PRO_PROJECTINFO where id = #{id}
+	</delete>
+
+    <select id="selectList" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO
+        <where>
+        	1=1
+	        <if test=" params.code != null and params.code != '' ">
+	            and o.code like '%${params.code}%'
+	        </if>
+            <if test=" params.name != null and params.name != '' ">
+                and PRO_NAME like '%${params.name}%'
+            </if>
+            <if test=" params.startTime != null and params.startTime != ''  ">
+                <![CDATA[ and ENTERTIME >= #{params.startTime} ]]>
+            </if>
+            <if test=" params.endTime != null and params.endTime != '' ">
+                <![CDATA[ and ENTERTIME <= #{params.endTime} ]]>
+            </if>
+        </where>
+        order by ${sort} ${order}
+    </select>
+    
+    <select id="selectVoList" resultType="ProjectinfoVo">
+        select
+         p.id, p.PRO_NAME AS proName,p.abbreviation,
+         p.EMP_ID AS empId,u.name as empName,u.PHONE as phone, 
+         p.ORGZ_ID AS orgzId,PARENT_ID AS parentId,
+         o.name as parentName, POSITION,COUNTRY,AREA,PROVINCE,CITY,LINE,
+         TENDER,PROJECTADDRESS, TUNNELLENGTH, RINGWIDTH, STARTDATE, 
+         ESTIMATEENDDATE,ACTUALENDDATE, PRO_STATE AS proState, DESCRIPTION, p.REMARK,
+         p.ENTERTIME, p.ENTERPERSON, p.DELETEFLAG,p.CJDW ,p.JLDW ,p.JSDW
+        from PRO_PROJECTINFO p,SYS_ORGZ o,SYS_EMPLOYEE u 
+        <where>
+	        p.emp_ID = u.id and p.parent_id = o.id 
+	        
+	       <if test=" params.code != null and params.code != '' ">
+	            and o.code like '%${params.code}%'
+	        </if>
+	         
+	        <if test=" params.name != null and params.name != '' ">
+	            and p.PRO_NAME like '%${params.name}%'
+	        </if>
+	        <if test=" params.proState != null and params.proState != '' ">
+	            and p.PRO_STATE=${params.proState} 
+	        </if>
+	        <if test=" params.abbreviation != null and params.abbreviation != '' ">
+	            and p.abbreviation like '%${params.abbreviation}%'
+	        </if>
+	        
+	        <if test=" params.startTime != null and params.startTime != ''  ">
+	            <![CDATA[ and p.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and p.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+         </where>
+        order by ${sort} ${order}
+    </select>
+    
+    <!-- 调用接口查询用户拥有哪些项目 -->
+    <select id="selectVoList2" resultType="ProjectinfoVo">
+        select
+         p.id, p.PRO_NAME AS proName,p.abbreviation,
+         p.EMP_ID AS empId,u.name as empName,u.PHONE as phone, 
+         p.ORGZ_ID AS orgzId,PARENT_ID AS parentId,
+         POSITION,COUNTRY,AREA,PROVINCE,CITY,LINE,
+         TENDER,PROJECTADDRESS, TUNNELLENGTH, RINGWIDTH, STARTDATE, 
+         ESTIMATEENDDATE,ACTUALENDDATE, PRO_STATE AS proState, DESCRIPTION, p.REMARK,
+         p.ENTERTIME, p.ENTERPERSON, p.DELETEFLAG,p.CJDW ,p.JLDW ,p.JSDW
+        from PRO_PROJECTINFO p,SYS_EMPLOYEE u 
+        <where>
+	        p.emp_ID = u.id
+	        	         
+	        <if test=" params.name != null and params.name != '' ">
+	            and p.PRO_NAME like '%${params.name}%'
+	        </if>
+	        <if test=" params.proState != null and params.proState != '' ">
+	            and p.PRO_STATE=${params.proState} 
+	        </if>
+	        <if test=" params.abbreviation != null and params.abbreviation != '' ">
+	            and p.abbreviation like '%${params.abbreviation}%'
+	        </if>
+	        
+	        <if test=" params.startTime != null and params.startTime != ''  ">
+	            <![CDATA[ and p.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and p.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+	        ${params.sqlPurview}
+         </where>
+        order by ${sort} ${order}
+    </select>
+    
+    <!-- 根据部门code查询用下属项目 -->
+    <select id="selectListByOrgzCode" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO p
+		where p.orgz_id in (
+			select id from sys_orgz z where (z.code like '${code}%' and z.type = 1) or 
+			(length('${code}') > 8 and z.code = substr('${code}',1,8))
+		)
+		
+    </select>
+    
+    <!-- 调整项目组织机构变动  此sql废弃 -->
+    <select id="selectByUserId_20161221" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO p
+		where p.orgz_id in (
+			SELECT t.id
+          FROM sys_orgz t
+         where type = 1
+         START WITH id =
+                    (select orgz_id
+                       from SYS_USER
+                      where id = '${userId}')
+        CONNECT BY PRIOR pid = id
+        union
+        SELECT t.id
+          FROM sys_orgz t
+         where type = 1
+         START WITH id =
+                    (select orgz_id
+                       from SYS_USER
+                      where id = '${userId}')
+        CONNECT BY PRIOR id = pid
+		)
+		
+		
+		
+    </select>
+    
+    <select id="selectByUserId" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO p
+		where p.orgz_id in (
+			SELECT id
+			FROM sys_orgz
+			where type = 1
+			START WITH id = (select orgz_id from SYS_USER where id = '${userId}')
+			CONNECT BY PRIOR ID=pid
+			
+			union all
+			
+			SELECT id
+			FROM sys_orgz
+			WHERE type = 1 and id = (select pid from SYS_USER t, sys_orgz org  where t.orgz_id = org.id and t.id = '${userId}')
+
+		)
+		
+    </select>
+    
+    <select id="selectAllByNull" resultType="ProProjectinfo">
+    	select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO
+    </select>
+    
+    <select id="selectByProName" resultType="String">
+    	select
+    	ID
+    	from PRO_PROJECTINFO
+    	where pro_name like '${proName}'
+    </select>
+    
+    <select id="getProjectInfosBylist" resultType="ProProjectinfo">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_PROJECTINFO p
+    </select>
+    
+</mapper>

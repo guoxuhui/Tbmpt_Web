@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjjdw.bzdw.mapper.DgjjdwPlcBzdwMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, NAME, DWLX, DWDW, SSXT, DGJLX, MS, BZ
+	</sql>
+
+    <select id="selectDgjjdwPlcBzdwList" resultType="DgjjdwPlcBzdw">
+        select
+        <include refid="Base_Column_List" />
+            from PRO_PLC_BZDW 
+        <where>
+         1=1
+            <if test="condition.id !=null and condition.id != ''">
+		  		and ID like '%${condition.id}%'
+			</if>
+			<if test="condition.name !=null and condition.name != ''">
+		  		and NAME like '%${condition.name}%'
+			</if>
+			<if test="condition.dwlx !=null and condition.dwlx != ''">
+		  		and DWLX like '%${condition.dwlx}%'
+			</if>
+			<if test="condition.dgjlx !=null and condition.dgjlx != ''">
+		  		and DGJLX like '%${condition.dgjlx}%'
+			</if>
+			 order by ${sort} ${order}
+        </where>
+    </select>
+  <!--   
+   <insert 
+      id="insertBzdw"
+      parameterType="DgjjdwPlcBzdw"
+      flushCache="true"
+      statementType="PREPARED"
+      keyProperty=""
+      keyColumn=""
+      useGeneratedKeys="false"
+      timeout="20">
+      insert into PRO_PLC_BZDW(ID,NAME,DWLX,DWDW,SSXT,DGJLX,MS,BZ)  
+             values(#{id}, #{name},#{dwlx},#{dwdw}, #{ssxt}, #{dgjlx} ,#{ms} ,  #{bz})  
+      </insert> 
+      -->
+   
+    	<select id="listAllBzdw" resultType="DgjjdwPlcBzdwDto">
+		select
+		<include refid="Base_Column_List"/>
+		from PRO_PLC_BZDW
+	</select>
+    
+    
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.base.mapper.SysFujianMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.fileName ,t.filePath ,t.minImgPath ,t.fileType ,t.fileSize ,t.resId ,t.foreignId ,t.orderno ,t.backupOne ,t.backupTwo ,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+
+    <select id="selectSysFujianList" resultType="SysFujian">
+        select
+        <include refid="Base_Column_List" />
+            from SYS_FUJIAN t
+        <where>
+        	<if test="condition.fileName!=null and condition.fileName!=''">
+       		and  t.fileName like '%${condition.fileName}%'
+        	</if>
+        	<if test="condition.fileType!=null and condition.fileType!=''">
+       		and  t.fileType like '%${condition.fileType}%'
+        	</if>
+        	<if test="condition.resId!=null and condition.resId!=''">
+       		and  t.resId like '%${condition.resId}%'
+        	</if>
+        	<if test="condition.createUsername!=null and condition.createUsername!=''">
+       		and  t.create_username like '%${condition.createUsername}%'
+        	</if>
+        	<if test="condition.createOrgzname!=null and condition.createOrgzname!=''">
+       		and  t.create_orgzname like '%${condition.createOrgzname}%'
+        	</if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.machine.mapper.MachineAlarmMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, ALARMNAME, ALARMCONTENT, ALARMTYPE, ALARMTIME, ELECTRICALSYSTEM, PARAM, TBMID, TBMNAME, PROID, PRONAME, SECTIONID, SECTIONNAME, LINEID, LINENAME, REMARK
+	</sql>
+
+	<select id="selectPageList" resultType="MachineAlarm">
+		select
+		<include refid="Base_Column_List"/>
+		from MACHINE_ALARM l
+		<where> 
+			1=1 
+			<if test=" params.proId != null and params.proId != '' ">
+	            and l.proid = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and l.sectionid = #{params.sectionId}
+	        </if>
+	        <if test=" params.lineName != null and params.lineName != '' ">
+	            and l.lineid like '%${params.lineId}%'
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and l.alarmtime >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and l.alarmtime <= #{params.endTime} ]]>
+	        </if>
+	        <if test=" params.sqlPurview != null and params.sqlPurview != '' ">
+	           ${params.sqlPurview}
+	        </if>
+		</where>
+		<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+			order by ${sort} ${order}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.dgjj.mapper.DgjjBzglMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, FID as fid, BZ_NAME as bzname, START_TIME as startTime, END_TIME as endTime
+    </sql>
+
+    <!-- 作用：根据线路Id 查询 班组表信息，   返回：班组集合 -->
+    <select id="selectDgjjBzglListByXlbh" resultType="DgjjBzgl">
+        select
+        <include refid="Base_Column_List" />
+        from dgjj_bzgl  
+        where FID = #{xlbh} order by id
+    
+    </select>
+    
+    <select id="selectVoList" resultType="DgjjBzglDto">
+		select     
+		b.ID,b.FID,b.BZ_NAME as bzname,b.START_TIME AS startTime,b.END_TIME AS endTime,
+		l.LINE_NAME AS lineName,l.ID AS lineId,
+		s.section_name as sectionName,s.ID AS sectionId,
+		p.pro_name as proName,p.ID AS proId
+		from DGJJ_BZGL b,PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p,SYS_ORGZ o 
+		where
+		b.fid=l.id and l.pro_id = p.id and l.section_id = s.id and p.parent_id = o.id
+	        <if test=" params.code != null and params.code != '' ">
+	            and o.code like '%${params.code}%'
+	        </if>
+	        <if test=" params.proId != null and params.proId != '' ">
+	            and l.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and l.section_id = #{params.sectionId}
+	        </if>
+	        <if test=" params.lineName != null and params.lineName != '' ">
+	            and l.line_name like '%${params.lineName}%'
+	        </if>
+	        <if test=" params.bzName != null and params.bzName != '' ">
+	            and b.bz_name like '%${params.bzName}%'
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and l.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and l.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+	        <if test=" params.sqlPurview != null and params.sqlPurview != '' ">
+	           ${params.sqlPurview}
+	        </if>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if>
+    </select>
+    
+    <!-- 调用接口获取用户项目信息 -->
+    <select id="selectVoList2" resultType="DgjjBzglDto">
+		select     
+		b.ID,b.FID,b.BZ_NAME as bzname,b.START_TIME AS startTime,b.END_TIME AS endTime,
+		l.LINE_NAME AS lineName,l.ID AS lineId,
+		s.section_name as sectionName,s.ID AS sectionId,
+		p.pro_name as proName,p.ID AS proId
+		from DGJJ_BZGL b,PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p 
+		where
+		b.fid=l.id and l.pro_id = p.id and l.section_id = s.id
+	        <if test=" params.proId != null and params.proId != '' ">
+	            and l.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and l.section_id = #{params.sectionId}
+	        </if>
+	        <if test=" params.lineName != null and params.lineName != '' ">
+	            and l.line_name like '%${params.lineName}%'
+	        </if>
+	        <if test=" params.bzName != null and params.bzName != '' ">
+	            and b.bz_name like '%${params.bzName}%'
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and l.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and l.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+	        <if test=" params.sqlPurview != null and params.sqlPurview != '' ">
+	           ${params.sqlPurview}
+	        </if>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if>
+    </select>
+
+</mapper>

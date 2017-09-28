@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sddzgl.mapper.SddzglDzxxMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		
+	</sql>
+	
+	<!-- 查询列表单 -->
+	<select id="selectDtoList" resultType="SddzglDzxxDto">
+		select
+			d.ID AS id,d.YTMC AS ytmc,d.YTBH AS ytbh,d.ZKID AS zkId,
+			d.CZLTZZ AS czltzz,d.YSML AS ysml,d.YTSGFC AS ytsgfc,
+			d.TCMS AS tcms,d.DCMS AS dcms,d.BZ AS bz,z.ZKBH AS zkBh
+		from SDDZGL_DZXX d,SDDZGL_ZKXX z,SYS_ORGZ o,PRO_PROJECTINFO p
+		<where> 
+			 o.id = p.parent_id and p.ID = z.XMID  and z.ID = d.ZKID
+			 <if test=" params.code != null and params.code != '' ">
+		        and o.code like '%${params.code}%'
+		    </if>
+			<if test=" params.ytmc != null and params.ytmc != '' ">
+		        and d.YTMC like '%${params.ytmc}%'
+		    </if>
+			<if test=" params.zkBh != null and params.zkBh != '' ">
+				and z.ZKBH like '%${params.zkBh}%'
+			</if>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				order by ${sort} ${order}
+			</if>
+		</where> 
+	</select>
+
+    <select id="listDzxx" resultType="SddzglDzxxDto">
+		select
+			d.ID AS id,d.YTMC AS ytmc,d.YTBH AS ytbh,d.ZKID AS zkId,
+			d.CZLTZZ AS czltzz,d.YSML AS ysml,d.YTSGFC AS ytsgfc,
+			d.TCMS AS tcms,d.DCMS AS dcms,d.BZ AS bz,z.ZKBH AS zkBh
+		from SDDZGL_DZXX d,SDDZGL_ZKXX z
+		where d.ZKID = z.ID
+	</select>
+
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProRSectionLineMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, LINE_NAME AS lineName, START_MILEAGE AS startMileage, 
+		 END_MILEAGE AS endMileage, RING_COUNT AS ringCount, MILEAGE_PREFIX AS mileagePrefix,
+		 USING_TBM_ID AS usingTbmId,TBM_ID AS tbmId, SECTION_ID AS sectionId, PRO_ID AS proId, 
+		 TUNNELLENGTH, TUNNELTIME, START_RINGNUM AS startRingnum, START_POSITION AS startPosition,
+		 LINE_STATUS AS lineStatus, ENTERTIME, ENTERPERSON, DELETEFLAG,
+		 YJSFRQ,YJCDRQ,SJSFRQ,SJCDRQ,dg_chauffeur AS dgChauffeur
+	</sql>
+	
+	<select id="getLineList" resultType="ProRSectionLine">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_R_SECTION_LINE
+        
+    </select>
+	
+	<select id="selectByLineId" resultType="ProRSectionLine">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_R_SECTION_LINE
+        where id = #{id}
+    </select>
+    
+	<!-- 删除一条记录 -->
+	<delete id="deleteByLineId">
+		delete from PRO_R_SECTION_LINE where id = #{id}
+	</delete>
+
+	<select id="getLineBySectionId" resultType="ProRSectionLine">
+		select
+		<include refid="Base_Column_List" />
+		from PRO_R_SECTION_LINE
+		where SECTION_ID = #{sectionId}
+	</select>
+	
+	<!-- wpg: 根据区间 、线路 名称  查询线路Id -->
+	<select id="getLineBySectionIdLineName" resultType="String">
+        select  ID  from PRO_R_SECTION_LINE
+        where SECTION_ID = #{sectionId}  and LINE_NAME = #{lineName}
+    </select>
+	
+	<!-- 根据项目Id分组查询  -->
+    <select id="selectVoList" resultType="SectionLineVo">
+        select
+
+		l.ID,l.LINE_NAME AS lineName, l.START_MILEAGE AS startMileage, l.END_MILEAGE AS endMileage, 
+		l.RING_COUNT AS ringCount, l.MILEAGE_PREFIX AS mileagePrefix, 
+		l.SECTION_ID AS sectionId,s.section_name as sectionName, l.PRO_ID AS proId, p.pro_name as proName, 
+		l.TUNNELLENGTH,l.YJSFRQ,l.YJCDRQ,l.SJSFRQ,l.SJCDRQ,l.dg_chauffeur AS dgChauffeur, l.TUNNELTIME, l.START_RINGNUM AS startRingnum, 
+		l.START_POSITION AS startPosition, l.ENTERTIME, l.ENTERPERSON, l.DELETEFLAG,
+		
+		l.USING_TBM_ID as usingTbmId,(select TBM_CODE from PRO_TBMINFO where id = l.USING_TBM_ID) AS usingTbmName,
+		l.TBM_ID as tbmId,(select TBM_CODE from PRO_TBMINFO where id = l.TBM_ID) AS tbmName,
+		l.LINE_STATUS as lineStatus 
+		
+        from PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p,SYS_ORGZ o 
+        <where>
+	        l.pro_id = p.id and l.section_id = s.id and p.parent_id = o.id  
+	        <if test=" params.code != null and params.code != '' ">
+	            and o.code like '%${params.code}%'
+	        </if>
+	        <if test=" params.proId != null and params.proId != '' ">
+	            and l.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and l.section_id = #{params.sectionId}
+	        </if>
+	        <if test=" params.lineName != null and params.lineName != '' ">
+	            and l.line_name like '%${params.lineName}%'
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and l.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and l.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+	        <if test=" params.sqlPurview != null and params.sqlPurview != '' ">
+	           ${params.sqlPurview}
+	        </if>
+        </where>
+             <![CDATA[ group by l.PRO_ID,
+                        l.ID,l.LINE_NAME , l.START_MILEAGE, l.END_MILEAGE , 
+                        l.RING_COUNT , l.MILEAGE_PREFIX , l.SECTION_ID ,s.section_name , 
+                        l.PRO_ID , p.pro_name ,l.TUNNELLENGTH,l.YJSFRQ,l.YJCDRQ,l.SJSFRQ,
+                        l.SJCDRQ,l.dg_chauffeur, l.TUNNELTIME, l.START_RINGNUM , l.START_POSITION ,
+                        l.ENTERTIME, l.ENTERPERSON, l.DELETEFLAG, l.USING_TBM_ID ,l.TBM_ID ,l.LINE_STATUS      
+            ]]>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if>
+    </select>
+    
+    <!--根据接口查询用户拥有的项目的线路  -->
+    <select id="selectVoList2" resultType="SectionLineVo">
+        select
+
+		l.ID,l.LINE_NAME AS lineName, l.START_MILEAGE AS startMileage, l.END_MILEAGE AS endMileage, 
+		l.RING_COUNT AS ringCount, l.MILEAGE_PREFIX AS mileagePrefix, 
+		l.SECTION_ID AS sectionId,s.section_name as sectionName, l.PRO_ID AS proId, p.pro_name as proName, 
+		l.TUNNELLENGTH,l.YJSFRQ,l.YJCDRQ,l.SJSFRQ,l.SJCDRQ,l.dg_chauffeur AS dgChauffeur, l.TUNNELTIME, l.START_RINGNUM AS startRingnum, 
+		l.START_POSITION AS startPosition, l.ENTERTIME, l.ENTERPERSON, l.DELETEFLAG,
+		
+		l.USING_TBM_ID as usingTbmId,(select TBM_CODE from PRO_TBMINFO where id = l.USING_TBM_ID) AS usingTbmName,
+		l.TBM_ID as tbmId,(select TBM_CODE from PRO_TBMINFO where id = l.TBM_ID) AS tbmName,
+		l.LINE_STATUS as lineStatus 
+		
+        from PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p 
+        <where>
+	        l.pro_id = p.id and l.section_id = s.id
+	        <if test=" params.proId != null and params.proId != '' ">
+	            and l.pro_id = #{params.proId}
+	        </if>
+	        <if test=" params.sectionId != null and params.sectionId != '' ">
+	            and l.section_id = #{params.sectionId}
+	        </if>
+	        <if test=" params.lineName != null and params.lineName != '' ">
+	            and l.line_name like '%${params.lineName}%'
+	        </if>
+	        <if test=" params.startTime != null and params.startTime != '' ">
+	            <![CDATA[ and l.ENTERTIME >= #{params.startTime} ]]>
+	        </if>
+	        <if test=" params.endTime != null and params.endTime != '' ">
+	            <![CDATA[ and l.ENTERTIME <= #{params.endTime} ]]>
+	        </if>
+	        <if test=" params.sqlPurview != null and params.sqlPurview != '' ">
+	           ${params.sqlPurview}
+	        </if>
+        </where>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				  order by ${sort} ${order}
+			</if>
+    </select>
+	
+	<!-- 通过id查找线路信息 -->
+	<select id="selectByXlId" resultType="SectionLineVo">
+		select
+
+		l.ID,l.LINE_NAME AS lineName, l.START_MILEAGE AS startMileage, l.END_MILEAGE AS endMileage, 
+		l.RING_COUNT AS ringCount, l.MILEAGE_PREFIX AS mileagePrefix, 
+		l.SECTION_ID AS sectionId,s.section_name as sectionName, l.PRO_ID AS proId, p.pro_name as proName, 
+		l.TUNNELLENGTH,l.YJSFRQ,l.YJCDRQ,l.SJSFRQ,l.SJCDRQ,l.dg_chauffeur AS dgChauffeur, l.TUNNELTIME, l.START_RINGNUM AS startRingnum, 
+		l.START_POSITION AS startPosition, l.ENTERTIME, l.ENTERPERSON, l.DELETEFLAG,
+		
+		l.USING_TBM_ID as usingTbmId,(select TBM_CODE from PRO_TBMINFO where id = l.USING_TBM_ID) AS usingTbmName,
+		l.TBM_ID as tbmId,(select TBM_CODE from PRO_TBMINFO where id = l.TBM_ID) AS tbmName,
+		l.LINE_STATUS as lineStatus 
+		
+        from PRO_R_SECTION_LINE l,PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p,SYS_ORGZ o
+        <where>
+	        l.pro_id = p.id and l.section_id = s.id and p.parent_id = o.id  
+	        and l.id=#{xlId}
+	        
+        </where> 
+	
+	</select>
+</mapper>

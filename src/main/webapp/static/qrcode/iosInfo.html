@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<title>在 iOS 9 中运行企业版应用</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style type="text/css">
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn,
+	em, 　　img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt,
+	var, b, u, i, center, 　　dl, dt, dd, ol, ul, li, fieldset, form, label,
+	legend, table, caption, 　　tbody, tfoot, thead, tr, th, td, article,
+	aside, canvas, details, embed, 　　figure, figcaption, footer, header,
+	hgroup, menu, nav, output, 　　ruby, section, summary, time, mark, audio,
+	video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+
+p {
+	margin: 15px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup,
+	menu, nav, section {
+	display: block
+}
+
+body {
+	line-height: 1
+}
+
+　　 ol, ul {
+	list-style: none
+}
+
+blockquote, q {
+	quotes: none
+}
+
+　　 blockquote:before, blockquote:after, 　　q:before, q:after {
+	content: '';
+	content: none
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+a {
+	text-decoration: none
+}
+
+img {
+	border: none
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: normal
+}
+
+body {
+	width: 100%;
+	text-align: center;
+	background-color: #fff601;
+	font: 12px "微软雅黑", Helvetica, Arial, sans-serif
+}
+
+
+header {
+	width: 90%;
+	margin: 0 auto;
+	background-color: #FFF
+}
+
+header .logo {
+	margin: 0 8px;
+	height: 58px;
+	background-position: 0 -108px;
+	border-bottom: 1px solid #dedede
+}
+
+header .info {
+	width: 260px;
+	margin: 0 auto;
+	position: relative;
+	padding-top: 5px;
+	padding-bottom: 5px
+}
+
+header .info:after {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	content: "";
+	width: 70px;
+	height: 35px;
+	background-position: 0 -74px
+}
+
+header .info p {
+	font-size: 14px;
+	line-height: 20px;
+	color: #7b6c18
+}
+
+.u-main {
+	padding-bottom: 20px
+}
+
+.u-main>h2 {
+	margin: 15px auto 5px auto;
+	height: 42px;
+	width: 270px;
+	text-indent: -9999px;
+	background-position: 0 -185px
+}
+
+.u-main>p {
+	color: #7b6c18;
+	margin-bottom: 10px
+}
+
+.u-main>span {
+	display: block;
+	color: #625026;
+	padding-top: 5px;
+	padding-bottom: 5px
+}
+
+.u-main a.dl {
+	display: block;
+	width: 45%;
+	height: 37px;
+	margin: 0 auto;
+	text-align: center;
+	background-color: #09e5f1
+}
+
+.u-main a.dl span {
+	display: block;
+	width: 138px;
+	margin: 0 auto;
+	height: 37px;
+	background-position: 0 -37px
+}
+
+.u-main a.ios span {
+	width: 100px;
+	background-position: 0 0
+}
+
+.u-main .banner {
+	padding-top: 10px
+}
+
+.u-main .banner img {
+	dislay: block;
+	margin: 0 auto
+}
+</style>
+</head>
+<body>
+	<header>
+		<div class="info"><p><font size="4" >在 iOS 9 中运行企业版应用</font></p></div>
+	</header>
+	<section class="u-main">
+
+		<p ><font size="3" >在 iOS 9 中，苹果对企业签名的应用运行时，进行了更严格的限制。因此，在 iOS 9 中，企业签名后的应用安装好之后，是无法直接启动的。默认情况下，在 iOS 9 中运行一款企业签名的应用时，会弹出类似这样的提示：</font></p>
+
+		<p><img src="img/0.jpg" alt="inhouse_ios9" title="" /></p>
+
+		<p ><font size="3" >可以看到，应用不再是像之前的版本那样直接启动，而是弹出了一个安全提示。此时，如果我们确认要运行的应用是安全的，可以按照以下步骤来设置：</font></p>
+		<p ><font size="3" >在系统中打开 设置 - 通用 - 描述文件，此时，可以看到有一个和刚刚弹出的提示中文字类似的描述文件。然后，点击对应描述文件进入后，再点击按钮 信任，来让系统允许拥有这个证书的应用运行。如图所示：</font></p>
+
+		<p><img src="img/1.jpg" alt="inhouse_ios9" title="" /></p>
+
+		<p ><font size="3" >之后，我们就可以回到桌面，重新运行刚才的应用，就会发现应用可以正常打开了。</font></p>
+		<p ><font size="3" >完整的步骤，如下图所示：</font></p>
+
+		<p><img src="img/2.gif" alt="inhouse_ios9" title="" /></p>
+
+
+		<br/>
+		<br/>
+
+	</section>
+</body>
+
+</html>

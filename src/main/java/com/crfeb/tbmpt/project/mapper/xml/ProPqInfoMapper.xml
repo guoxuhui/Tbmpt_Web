@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProPqInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, PQ_NAME AS pqName, PQ_PERSON AS pqPerson, PHONE, BEIZHU
+	</sql>
+	
+	<select id="selectVoList" resultType="ProPqInfoVo">
+		select 
+		<include refid="Base_Column_List"/>
+		from PRO_PQ_INFO p
+		<where>
+			<if test=" params.pqName != null and params.pqName != '' ">
+	             p.PQ_NAME like '${params.pqName}'
+	        </if>
+	        <if test=" params.pqPerson != null and params.pqPerson != '' ">
+	             and PQ_PERSON like '${params.pqPerson}'
+	        </if>
+		</where>
+	</select>
+	<select id="selectByName" resultType="ProPqInfoVo">
+		select 
+		<include refid="Base_Column_List"/>
+		from PRO_PQ_INFO p		
+	</select>
+</mapper>

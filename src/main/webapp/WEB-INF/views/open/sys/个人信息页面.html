@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<link rel="stylesheet" href="css/weui.min.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<style>
+			.weui-input {
+				text-align: right;
+			}
+		</style>
+
+		<script>
+			function input_onclick(obj) {
+				obj.style.color = 'black';
+			}
+
+			function input_onblur(obj) {
+				obj.style.color = '#999999';
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container" id="container">
+			<form>
+				<div class="weui-cells weui-cells_form">
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">头像</label></div>
+						<div align="right" style="width: 100%;">
+							<img class="weui-img" src="images/icon_nav_button.png" align="right">
+							</img>
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">账号：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="请输入账号" value="admin" disabled="disabled" />
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">名字：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="请输入名字" value="张工" />
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">所属机构：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="请输入所属机构" value="中国中铁一局" />
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">地区：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" value="广东广州" />
+						</div>
+					</div>
+				</div>
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">手机号：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="number" placeholder="请输入手机号" maxlength="11" value="11008610086" />
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">邮箱：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="email" placeholder="请输入邮箱" value="test@163.com" />
+						</div>
+					</div>
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width: 8em;">个性签名：</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="请输入个性签名" value="个性签名" />
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+</body>
+
+</html>

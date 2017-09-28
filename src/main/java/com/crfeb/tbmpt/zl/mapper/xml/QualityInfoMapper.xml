@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zl.mapper.QualityInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		ID, PRO_NAME AS proName, SECTION, LINE, CYCLE_NO AS cycleNo, HAS_PROBLEM AS hasProblem, PROBLEM_TYPE AS problemType, PROBLEM_DESC AS problemDesc,
+		FIX_DATE AS fixDate, UP_DATE AS sbDate, UP_USER AS upUser, LINK_WAY AS linkWay, STATUS,
+		PIC, REMARK
+	</sql>
+    <select id="selectPageList" resultType="QualityInfoVo">
+        select
+        <include refid="Base_Column_List"/>
+        FROM QUALITY_INFO 
+        order by ${sort} ${order}
+    </select>
+    
+      <select id="selectVoList" resultType="QualityInfoVo">
+    	SELECT
+    	Q.ID, Q.PRO_NAME AS PRONAME, Q.SECTION, Q.LINE, Q.CYCLE_NO AS CYCLENO,
+		Q.HAS_PROBLEM AS HASPROBLEM, Q.PROBLEM_TYPE AS PROBLEMTYPE, Q.PROBLEM_DESC AS PROBLEMDESC,
+		Q.FIX_DATE AS FIXDATE, Q.UP_DATE AS SBDATE, Q.UP_USER AS UPUSER, Q.LINK_WAY AS LINKWAY,
+		Q.STATUS, Q.REMARK,
+    	L.SECTION_ID AS SECTIONID,S.SECTION_NAME AS SECTIONNAME, L.PRO_ID AS PROID,
+		P.PRO_NAME AS PRONAME1,L.LINE_NAME AS LINENAME,
+		(select SU.name from SYS_USER SU where SU.id = Q.UP_USER and SU.id is not null  and rownum = 1) AS UPUSERNAME
+		
+    	FROM QUALITY_INFO Q,PRO_R_SECTION_LINE L,PRO_R_PROJECT_SECTION S,PRO_PROJECTINFO P
+        <where>
+	        Q.PRO_NAME=P.ID AND Q.SECTION=S.ID AND Q.LINE=L.ID  
+	        <if test=" params.proName != null and params.proName != '' ">
+	            AND Q.PRO_NAME = '${params.proName}'
+	        </if>
+	        <if test="params.ids !=null and params.ids != ''">
+		  		and P.ID in (${params.ids})
+			</if>
+			<if test=" params.section != null and params.section != '' ">
+				AND Q.SECTION = '${params.section}'
+			</if>
+			<if test=" params.line != null and params.line != '' ">
+				AND Q.LINE = '${params.line}'
+			</if>
+			<if test=" params.status != null and params.status != '' ">
+				AND Q.STATUS = '${params.status}'
+			</if>
+			<if test=" params.hasProblem != null and params.hasProblem != '' ">
+				AND Q.HAS_PROBLEM = '${params.hasProblem}'
+			</if>			
+			<if test=" params.upDateStart != null and params.upDateStart != ''  ">
+				<![CDATA[ AND Q.UP_DATE >= #{params.upDateStart} ]]>
+			</if>
+			<if test=" params.upDateEnd != null and params.upDateEnd != ''  ">
+				<![CDATA[ AND Q.UP_DATE <= #{params.upDateEnd} ]]>
+			</if>
+         </where>
+        order by ${sort} ${order},Q.PRO_NAME desc,Q.SECTION desc,Q.LINE desc,to_number(Q.CYCLE_NO) desc
+    </select>
+    
+    <select id="selectVoListApp" resultType="QualityInfoVo">
+    	SELECT 
+    	Q.ID, Q.PRO_NAME AS PRONAME, Q.SECTION, Q.LINE, Q.CYCLE_NO AS CYCLENO, Q.HAS_PROBLEM AS HASPROBLEM,
+		Q.PROBLEM_TYPE AS PROBLEMTYPE, Q.PROBLEM_DESC AS PROBLEMDESC, Q.FIX_DATE AS FIXDATE, Q.UP_DATE AS SBDATE, Q.UP_USER AS UPUSER,
+		Q.LINK_WAY AS LINKWAY, Q.STATUS, Q.REMARK,
+    	L.SECTION_ID AS SECTIONID,S.SECTION_NAME AS SECTIONNAME, L.PRO_ID AS PROID, P.PRO_NAME AS PRONAME1,L.LINE_NAME AS LINENAME,
+
+		(select SU.name from SYS_USER SU where SU.id = Q.UP_USER and SU.id is not null  and rownum = 1) AS UPUSERNAME
+		
+    	FROM QUALITY_INFO Q,PRO_R_SECTION_LINE L,PRO_R_PROJECT_SECTION S,PRO_PROJECTINFO P
+        <where>
+	        Q.PRO_NAME=P.ID AND Q.SECTION=S.ID AND Q.LINE=L.ID  
+	        <if test=" params.upUser != null and params.upUser != '' ">
+	            AND Q.UP_USER = '${params.upUser}'
+	        </if>
+			<if test=" params.proName != null and params.proName != '' ">
+				and q.PRO_NAME = '${params.proName}'
+			</if>
+			<if test=" params.section != null and params.section != '' ">
+				and q.SECTION = '${params.section}'
+			</if>
+			<if test=" params.line != null and params.line != '' ">
+				and q.LINE = '${params.line}'
+			</if>	
+			<if test=" params.hasProblem != null and params.hasProblem != '' ">
+				and q.HAS_PROBLEM = '${params.hasProblem}'
+			</if>
+			<if test=" params.status != null and params.status != '' ">
+				and q.STATUS = '${params.status}'
+			</if>
+			<if test=" params.startTime != null and params.startTime != '' ">
+				<![CDATA[and q.UP_DATE >= #{params.startTime}]]>
+			</if>
+			<if test=" params.endTime != null and params.endTime != '' ">
+				<![CDATA[and q.UP_DATE <= #{params.endTime}]]>
+			</if>																	
+			<if test="params.ids !=null and params.ids != ''">
+		  		and P.ID in (${params.ids})
+			</if>
+	        <if test="params.time != null and params.time[0] != '' ">
+	            <![CDATA[ AND Q.UP_DATE >= #{params.time[0]} ]]>
+	        </if>
+	        <if test="params.time != null and params.time[1] != ''">
+	            <![CDATA[ AND Q.UP_DATE <= #{params.time[1]} ]]>
+	        </if>
+         </where>
+        order by Q.PRO_NAME,Q.SECTION,Q.LINE,to_number(Q.CYCLE_NO) desc
+    </select>
+    
+    
+    <select id="selectProIdUpUserUpDateConut" resultType="Long">
+        SELECT COUNT(*) FROM QUALITY_INFO
+        <where>
+        	1=1
+        	AND PRO_NAME='${proName}'
+
+			<if test=" upUser != null and upUser != '' ">
+				AND UP_USER = '${upUser}'
+			</if>
+
+	        <if test="time != null and time[0] != '' ">
+	            <![CDATA[ AND UP_DATE >= #{time[0]} ]]>
+	        </if>
+	        <if test="time != null and time[1] != ''">
+	            <![CDATA[ AND UP_DATE <= #{time[1]} ]]>
+	        </if>
+        </where>
+    </select>
+
+    <select id="selectProIdTypeUpDateConut" resultType="Long">
+        SELECT COUNT(*) FROM QUALITY_INFO
+        <where>
+        	1=1
+        	AND PRO_NAME='${proName}'
+
+			<if test=" type != null and type != '' ">
+				AND PROBLEM_TYPE = '${type}'
+			</if>
+
+	        <if test="time != null and time[0] != '' ">
+	            <![CDATA[ AND UP_DATE >= #{time[0]} ]]>
+	        </if>
+	        <if test="time != null and time[1] != ''">
+	            <![CDATA[ AND UP_DATE <= #{time[1]} ]]>
+	        </if>
+        </where>
+    </select>
+
+
+	<select id="selectVoQualityInfoByProId" resultType="QualityInfoVo">
+		select
+		Q.ID, Q.PRO_NAME AS PRONAME, Q.SECTION, Q.LINE, Q.CYCLE_NO AS CYCLENO, Q.HAS_PROBLEM AS HASPROBLEM,
+		Q.PROBLEM_TYPE AS PROBLEMTYPE, Q.PROBLEM_DESC AS PROBLEMDESC, Q.FIX_DATE AS FIXDATE, Q.UP_DATE AS SBDATE, Q.UP_USER AS UPUSER,
+		Q.LINK_WAY AS LINKWAY, Q.STATUS, Q.REMARK,
+		L.SECTION_ID AS SECTIONID,S.SECTION_NAME AS SECTIONNAME, L.PRO_ID AS PROID, P.PRO_NAME AS PRONAME1,L.LINE_NAME AS LINENAME
+		FROM QUALITY_INFO Q,PRO_R_SECTION_LINE L,PRO_R_PROJECT_SECTION S,PRO_PROJECTINFO P
+		<where>
+			q.PRO_NAME=p.ID AND q.SECTION=s.ID AND q.LINE=l.ID and
+			q.PRO_NAME = '${proId}'
+			<if test="userId != null and userId !='' ">
+				AND q.UP_USER = '${userId}'
+			</if>
+		</where>
+		order by up_date desc
+	</select>
+
+
+
+
+	<select id="selectVoQualityInfoByChartData" resultType="QualityInfo">
+		select
+		Q.ID, Q.PRO_NAME AS PRONAME, Q.SECTION, Q.LINE, Q.CYCLE_NO AS CYCLENO, Q.HAS_PROBLEM AS HASPROBLEM,
+		Q.PROBLEM_TYPE AS PROBLEMTYPE, Q.PROBLEM_DESC AS PROBLEMDESC, Q.FIX_DATE AS FIXDATE, Q.UP_DATE AS SBDATE, Q.UP_USER AS UPUSER,
+		Q.LINK_WAY AS LINKWAY, Q.STATUS, Q.REMARK,
+		L.SECTION_ID AS SECTIONID,S.SECTION_NAME AS SECTIONNAME, L.PRO_ID AS PROID, P.PRO_NAME AS PRONAME1,L.LINE_NAME AS LINENAME
+		FROM QUALITY_INFO Q,PRO_R_SECTION_LINE L,PRO_R_PROJECT_SECTION S,PRO_PROJECTINFO P
+		<where>
+			q.PRO_NAME=p.ID AND q.SECTION=s.ID AND q.LINE=l.ID
+			<if test="timeStart != null and timeStart !='' ">
+				<![CDATA[ AND q.UP_DATE >= #{timeStart} ]]>
+			</if>
+			<if test="timeEnd != null and timeEnd !='' ">
+				<![CDATA[ AND q.UP_DATE < #{timeEnd} ]]>
+			</if>
+			<if test="proName != null and proName !='' ">
+				AND q.PRO_NAME = '${proName}'
+			</if>
+			<if test="section != null and section !='' ">
+				AND q.SECTION = '${section}'
+			</if>
+			<if test="line != null and line !='' ">
+				AND q.LINE = '${line}'
+			</if>
+			<if test="problemType != null and problemType !='' ">
+				AND q.PROBLEM_TYPE = '${problemType}'
+			</if>
+		</where>
+		order by up_date desc
+	</select>
+	
+	
+	<select id="selectQualityListByLineId" resultType="QualityInfo">
+		select
+		      id,PRO_NAME AS proName,section,line,CYCLE_NO AS cycleNo
+		FROM QUALITY_INFO 
+		<where>
+		    1=1  
+			<if test="line != null and line !='' ">
+				AND LINE = '${line}'
+			</if>
+			
+		</where>
+		order by CYCLE_NO desc
+	</select>
+	
+	<select id="selectQualityInfoByCycleNo" resultType="QualityInfo">
+		select
+		     <include refid="Base_Column_List"/>
+		FROM QUALITY_INFO 
+		<where>
+		    1=1 AND rownum = 1
+		    <if test="line != null and line !='' ">
+				AND LINE = '${line}'
+			</if>
+			<if test="cycleNo != null and cycleNo !='' ">
+				AND CYCLE_NO = '${cycleNo}'
+			</if>
+			
+		</where>
+		order by CYCLE_NO desc
+	</select>
+
+</mapper>

@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<title>盾构远程管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style type="text/css">
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn,
+	em, 　　img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt,
+	var, b, u, i, center, 　　dl, dt, dd, ol, ul, li, fieldset, form, label,
+	legend, table, caption, 　　tbody, tfoot, thead, tr, th, td, article,
+	aside, canvas, details, embed, 　　figure, figcaption, footer, header,
+	hgroup, menu, nav, output, 　　ruby, section, summary, time, mark, audio,
+	video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+
+p {
+	margin: 15px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup,
+	menu, nav, section {
+	display: block
+}
+
+body {
+	line-height: 1
+}
+
+　　 ol, ul {
+	list-style: none
+}
+
+blockquote, q {
+	quotes: none
+}
+
+　　 blockquote:before, blockquote:after, 　　q:before, q:after {
+	content: '';
+	content: none
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+a {
+	text-decoration: none
+}
+
+img {
+	border: none
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: normal
+}
+
+body {
+	width: 100%;
+	text-align: center;
+	background-color: #fff601;
+	font: 12px "微软雅黑", Helvetica, Arial, sans-serif
+}
+
+.u-icon, header .info:after, .u-main h2, .u-main a.dl span {
+	background: url(img/xht.png) no-repeat 0 0;
+	background-size: 270px 227px
+}
+
+header {
+	width: 90%;
+	margin: 0 auto;
+	background-color: #FFF
+}
+
+header .logo {
+	margin: 0 8px;
+	height: 58px;
+	background-position: 0 -108px;
+	border-bottom: 1px solid #dedede
+}
+
+header .info {
+	width: 260px;
+	margin: 0 auto;
+	position: relative;
+	padding-top: 5px;
+	padding-bottom: 5px
+}
+
+header .info:after {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	content: "";
+	width: 70px;
+	height: 35px;
+	background-position: 0 -74px
+}
+
+header .info p {
+	font-size: 14px;
+	line-height: 20px;
+	color: #7b6c18
+}
+
+.u-main {
+	padding-bottom: 20px
+}
+
+.u-main>h2 {
+	margin: 15px auto 5px auto;
+	height: 42px;
+	width: 270px;
+	text-indent: -9999px;
+	background-position: 0 -185px
+}
+
+.u-main>p {
+	color: #7b6c18;
+	margin-bottom: 10px
+}
+
+.u-main>span {
+	display: block;
+	color: #625026;
+	padding-top: 5px;
+	padding-bottom: 5px
+}
+
+.u-main a.dl {
+	display: block;
+	width: 45%;
+	height: 37px;
+	margin: 0 auto;
+	text-align: center;
+	background-color: #09e5f1
+}
+
+.u-main a.dl span {
+	display: block;
+	width: 138px;
+	margin: 0 auto;
+	height: 37px;
+	background-position: 0 -37px
+}
+
+.u-main a.ios span {
+	width: 100px;
+	background-position: 0 0
+}
+
+.u-main .banner {
+	padding-top: 10px
+}
+
+.u-main .banner img {
+	dislay: block;
+	margin: 0 auto
+}
+
+</style>
+</head>
+<body>
+	<header>
+		<div class="logo u-icon"></div>
+		<div class="info"><p>如果您正在使用微信浏览，<br>请点击右上角，<br>选择“在浏览器中打开”!</p></div>
+	</header>
+	<section class="u-main">
+		<h2>盾构远程管理APP下载</h2>
+		<br/>
+		
+		
+		<p><a id="iosInfo" href="iosInfo.html" ><font size="4" color="red"><span>IOS9用户需要打开 设置 -> 通用 -> 描述文件，然后点击对应描述文件进入后,再点击按钮 信任。点击查看详细步奏。</span></font></a></p>
+		
+		<br/>
+		<br/>
+		<!--Tbmpt_v0.0.1_20161224.ipa-->
+		<a id="a_ios" href="itms-services://?action=download-manifest&url=https://dn-hanyi366.qbox.me/Tbmpt.plist" class="dl ios"><span></span></a>
+		<span id="s_ios" >支持ios8.0以上系统</span>
+		
+		<a id="a_android" href="https://dn-hanyi366.qbox.me/Tbmpt.apk" class="dl andriod"><span></span></a>
+		<span id="s_android" >支持Andriod4.0以上系统</span>
+
+	</section>
+</body>
+
+<script type="text/javascript">
+	/*
+	 * 智能机浏览器版本信息:
+	 *
+	 */
+	var browser = {
+		versions: function() {
+			var u = navigator.userAgent, app = navigator.appVersion;
+			return {//移动终端浏览器版本信息
+				trident: u.indexOf('Trident') > -1, //IE内核
+				presto: u.indexOf('Presto') > -1, //opera内核
+				webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+				gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+				mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+				ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+				android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+				iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+				iPad: u.indexOf('iPad') > -1, //是否iPad
+				webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+			};
+		}(),
+		language: (navigator.browserLanguage || navigator.language).toLowerCase()
+	}
+
+	if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad) {
+		document.getElementById("a_android").style.display="none";
+		document.getElementById("s_android").style.display="none";
+	}
+	else if (browser.versions.android) {
+		document.getElementById("a_ios").style.display="none";
+		document.getElementById("s_ios").style.display="none";
+	}
+
+	if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad) {
+		document.getElementById("iosInfo").style.display="inline";
+	}
+	else if (browser.versions.android) {
+		document.getElementById("iosInfo").style.display="none";
+	}
+	
+</script>
+</html>

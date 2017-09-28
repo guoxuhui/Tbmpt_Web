@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sddzgl.mapper.SddzglZkxxMapper">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		
+	</sql>
+	
+	<!-- 查询列表单 -->
+	<select id="selectDtoList" resultType="SddzglZkxxDto">
+		select
+			z.ID AS id,z.ZKBH AS zkbh,z.ZKSGDW AS zksgdw,z.ZKLX AS zklx,
+			z.XMID AS xmId, p.PRO_NAME AS xmMc,
+			z.QJID AS qjId, s.SECTION_NAME AS qjMc,
+			z.XLID AS xlId, l.LINE_NAME AS xlMc,
+			z.ZKWZX AS zkwzX,z.ZKWZY AS zkwzY,z.DYHH AS dyhh,
+			z.ZKLC AS zklc,z.BZ AS bz 
+		from SDDZGL_ZKXX z,SYS_ORGZ o,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l
+		<where> 
+			z.XMID = p.ID and p.parent_id = o.id and z.QJID =s.ID and z.XLID = l.ID 
+			<if test=" params.code != null and params.code != '' ">
+		        and o.code like '%${params.code}%'
+		    </if>
+			<if test=" params.zkbh != null and params.zkbh != '' ">
+		        and z.ZKBH like '%${params.zkbh}%'
+		    </if>
+			<if test=" params.xmId != null and params.xmId != '' ">
+				and z.XMID = #{params.xmId}
+			</if>
+			<if test=" params.qjId != null and params.qjId != '' ">
+				and z.QJID = #{params.qjId}
+			</if>
+			<if test=" params.xlId != null and params.xlId != '' ">
+				and z.XLID = #{params.xlId}
+			</if>
+			<if test=" (sort != null and sort != '') || (order != null and order != '') ">
+				order by ${sort} ${order}
+			</if>
+		</where> 
+	</select>
+	
+    <!-- 查询列表单 -->
+	<select id="selectList" resultType="SddzglZkxxDto">
+		select
+			z.ID AS id, z.ZKBH AS zkbh
+		from SDDZGL_ZKXX z,PRO_PROJECTINFO p,PRO_R_PROJECT_SECTION s,PRO_R_SECTION_LINE l
+		<where> 
+			z.XMID = p.ID and z.QJID =s.ID and z.XLID = l.ID
+		</where> 
+	</select>
+
+</mapper>

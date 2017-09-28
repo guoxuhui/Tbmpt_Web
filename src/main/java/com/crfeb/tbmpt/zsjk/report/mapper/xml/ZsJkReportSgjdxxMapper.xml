@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportSgjdxxMapper">
+
+    <!-- 通用查询结果列-->
+   <sql id="Base_Column_List">
+        s.id,s.xmId,s.xlId,s.xmmc,s.xmzc,s.yth,s.pjjjsd7,s.jhgq,s.tjjzrq,s.yjwgrq,s.jhrjjsd, s.rjjsdhgfw
+    </sql> 
+
+    <select id="selectSgjdxxList" resultType="ZsJkReportSgjdxx">
+        select
+          s.xmId,s.xmmc,s.xmzc,s.yth,s.pjjjsd7,s.jhgq,s.tjjzrq,s.yjwgrq,s.jhrjjsd, s.rjjsdhgfw
+        from ZSJK_REPORT_SGJDXX s
+        <where>
+            1=1
+			<if test="params.xmId !=null and params.xmId != ''">
+		  		and s.xmId =#{params.xmId}
+			</if>
+			<if test="params.xlId != null and params.xlId != '' ">
+                and s.xlId =#{params.xlId}
+            </if>
+            <if test=" params.dgjId != null and params.dgjId != '' ">
+             	and s.dgjId =#{params.dgjId}
+            </if>
+        </where>
+    </select> 
+    
+    
+</mapper>

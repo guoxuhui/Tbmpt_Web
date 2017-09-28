@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gpztcl.base.mapper.GpztclSczxpcMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.gc_Bh as gcBh ,t.ql_Bh as qlBh ,t.xl_Bh as xlBh ,t.starNo ,t.endNo ,t.clType ,t.clTime ,t.impMan ,t.impTime ,t.sendState ,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+    
+    <sql id="Base_Column_List2">
+        t.id,t.gc_Bh as gcBh ,t.ql_Bh as qlBh ,t.xl_Bh as xlBh ,t.starNo ,t.endNo ,t.clType ,t.clTime ,t.impMan ,t.impTime ,t.sendState ,
+        (select prj.pro_name from pro_projectinfo prj where prj.id=t.gc_bh)as gcName,
+        (select sect.section_name from pro_r_project_section sect where sect.id=t.ql_bh)as qlName,
+        (select line.line_name from pro_r_section_line line where line.id=t.xl_bh)as xlName,
+        (select ry.name from sys_user ry where ry.emp_id=t.impMan)as impManName,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+
+    <select id="selectGpztclSczxpcList" resultType="GpztclSczxpc">
+        select
+        <include refid="Base_Column_List" />
+            from GPZTCL_SCZXPC t
+        <where>
+        	 <if test="condition.gcBh!=null and condition.gcBh!=''">
+       		and  t.gc_Bh = '${condition.gcBh}'
+        	</if>
+        	<if test="condition.qlBh!=null and condition.qlBh!=''">
+       		and  t.ql_Bh = '${condition.qlBh}'
+        	</if>
+        	<if test="condition.xlBh!=null and condition.xlBh!=''">
+       		and  t.xl_Bh = '${condition.xlBh}'
+        	</if>
+        	<if test="condition.clType!=null and condition.clType!=''">
+       		and  t.clType like '%${condition.clType}%'
+        	</if>
+        	<if test="condition.clTime!=null and condition.clTime!=''">
+       		and  t.clTime like '%${condition.clTime}%'
+        	</if>
+        	<if test="condition.autoritySql!=null and condition.autoritySql!=''">
+       		  <![CDATA[  ${condition.autoritySql}]]>
+        	</if>
+        </where>
+         order by t.clTime desc
+    </select>
+    
+    <select id="selectGpztclSczxpcDtoList" resultType="GpztclSczxpcDto">
+        select
+        <include refid="Base_Column_List2" />
+            from GPZTCL_SCZXPC t
+        <where>
+           <if test="condition.gcBh!=null and condition.gcBh!=''">
+       		and  t.gc_Bh = '${condition.gcBh}'
+        	</if>
+        	<if test="condition.qlBh!=null and condition.qlBh!=''">
+       		and  t.ql_Bh = '${condition.qlBh}'
+        	</if>
+        	<if test="condition.xlBh!=null and condition.xlBh!=''">
+       		and  t.xl_Bh = '${condition.xlBh}'
+        	</if>
+        	<if test="condition.clType!=null and condition.clType!=''">
+       		and  t.clType like '%${condition.clType}%'
+        	</if>
+        	<if test="condition.clTime!=null and condition.clTime!=''">
+       		and  t.clTime like '%${condition.clTime}%'
+        	</if>
+        	<if test="condition.ids!=null and condition.ids!=''">
+       		   <![CDATA[  and  t.id in   (${condition.ids})]]>
+        	</if>
+        	<if test="condition.autoritySql!=null and condition.autoritySql!=''">
+       		  <![CDATA[  ${condition.autoritySql}]]>
+        	</if>
+        </where>
+        
+        order by t.clTime desc
+    </select>
+    
+    
+     <select id="selectDtoById" resultType="GpztclSczxpcDto">
+        select
+        <include refid="Base_Column_List2" />
+            from GPZTCL_SCZXPC t
+        <where>
+         <choose>
+                <when test="id!=null and id!=''">
+                       t.id = #{id}
+                </when>
+                <otherwise>
+                       t.id = '-1'
+                 </otherwise>
+         </choose>
+        </where>
+    </select>
+    
+    
+    <!-- 更新上报状态-->
+    <update id="updateSbStateByIds">
+         update GPZTCL_SCZXPC t set t.sendState= #{sendState}
+        <where>
+           <![CDATA[    t.id in  (${ids})]]>
+        </where>
+    </update>
+</mapper>

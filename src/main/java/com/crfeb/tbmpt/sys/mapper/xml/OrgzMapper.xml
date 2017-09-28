@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.sys.mapper.OrgzMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, name, address, code, icon, pid, seq, type,create_time AS createTime
+    </sql>
+
+    <select id="selectByPIdNull" resultType="Orgz">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from sys_orgz where pid is null order by seq
+    </select>
+
+    <select id="selectAllByPId" resultType="Orgz">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from sys_orgz where pid = #{pId} order by seq
+    </select>
+    
+    <select id="selectMaxByPId" resultType="String">
+        select max(code)
+        from sys_orgz where pid = #{pId} order by seq
+    </select>
+    
+    <select id="selectMaxByPIdNull" resultType="String">
+        select max(code)
+        from sys_orgz where pid is null order by seq
+    </select>
+    
+    <select id="selectAll" resultType="Orgz">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_orgz order by seq
+    </select>
+    
+    <select id="selectAllBycode" resultType="Orgz">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_orgz where code like '${code}%' order by seq
+    </select>
+</mapper>

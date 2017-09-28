@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportTyyctjMapper">
+<sql id="Base_Column_List">
+	t.xlId,t.xlMc,t.tylychs,t.jjhs
+</sql>
+<select id="selectZsJkReportTyyctjListByMap" resultType="ZsJkReportTyyctjDto">
+select
+	t.xlId,t.xlMc,sum(t.tylychs) as tylyczhs,sum(t.jjhs) as jjzhs
+	from zsjk_report_tyyctj t
+	<where>
+	<if test="condition.xmId!=null and condition.xmId!=''">
+     t.xmId=#{condition.xmId}
+    </if>
+	<if test="condition.kssj!=null and condition.kssj!=''">
+     <![CDATA[ and t.rq >=#{condition.kssj}]]>
+    </if>
+    <if test="condition.jssj!=null and condition.jssj!=''">
+     <![CDATA[ and t.rq <=#{condition.jssj}]]>
+    </if>
+	</where>
+	group by t.xlId,t.xlMc
+</select>
+</mapper>

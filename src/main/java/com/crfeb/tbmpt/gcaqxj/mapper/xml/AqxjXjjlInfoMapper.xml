@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gcaqxj.mapper.AqxjXjjlInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		CREATE_USERNAME AS createUsername, CREATE_ORGZ AS createOrgz, CREATE_ORGZNAME AS createOrgzname,
+		CREATE_TIME AS createTime, UPDATE_USER AS updateUser, UPDATE_USERNAME AS updateUsername,
+		 UPDATE_ORGZ AS updateOrgz, UPDATE_ORGZNAME AS updateOrgzname, UPDATE_TIME AS updateTime,
+		  ID,PROJECTID,PROJECTNAME,MINGCHENG,ITEMID,ITEMTYPE,ITEMADRESS ,ZERENRID,ZERENRMC,JIANDURID,
+		  JIANDURMC,JIANCHAPC,JIANCHAJG,JIEGUOMS,JIANCHATIME,JIANCHAPERSON,issend,isview
+	</sql>
+	<!--selectAqxjXjdGLList-->
+	<select id="selectAqxjXjdGLList" resultType="AqxjXjjlInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJJL_INFO t
+		<where>
+			1=1
+			<if test="condition.proiectName!=null and condition.proiectName!=''">
+				and  t.PROJECTNAME = '${condition.proiectName}'
+			</if>
+			<if test="condition.itemtype!=null and condition.itemtype!=''">
+				and  t.itemtype = '${condition.itemtype}'
+			</if>
+			<if test="condition.mingcheng!=null and condition.mingcheng!=''">
+				and  t.MINGCHENG like  '%${condition.mingcheng}%'
+			</if>
+			<if test="condition.jianchaperson!=null and condition.jianchaperson!=''">
+				and  t.JIANCHAPERSON like '%${condition.jianchaperson}%'
+			</if>
+			<if test="condition.zerenrmc!=null and condition.zerenrmc!=''">
+				and  t.ZERENRMC like '%${condition.zerenrmc}%'
+			</if>
+			<if test="condition.jiandurmc!=null and condition.jiandurmc!=''">
+				and  t.JIANDURMC like '%${condition.jiandurmc}%'
+			</if>
+			<if test="condition.jianchaTime!=null and condition.jianchaTime!= ''" >
+				 and   t.JIANCHATIME like '%${condition.jianchaTime}%'
+			</if>
+			<if test="condition.jianchajg!=null and condition.jianchajg!= ''" >
+				and   t.JIANCHAJG = '${condition.jianchajg}'
+			</if>
+
+		</where>
+
+	</select>
+
+<!--查询推送信息-->
+	<select id="selectAqxjXjdJLPushList" resultType="AqxjXjjlInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJJL_INFO t
+		<where>
+			t.JIANCHAJG='0'
+			<if test="condition.proiectName!=null and condition.proiectName!=''">
+				and  t.PROJECTNAME = '${condition.proiectName}'
+			</if>
+
+
+			<if test="condition.isView!=null and condition.isView!=''">
+				and  t.isView = '${condition.isView}'
+			</if>
+			<if test="condition.isSend!=null and condition.isSend!=''">
+				and  t.isSend = '${condition.isSend}'
+			</if>
+			<if test="condition.zerenrmc!=null and condition.zerenrmc!=''">
+				and  t.ZERENRMC = '${condition.zerenrmc}'
+			</if>
+			ORDER  by t.isView ASC,  t.jianchatime DESC
+		</where>
+
+	</select>
+<!--更新查看状态-->
+	<update id="updateViewStatusById" >
+		update AQXJ_XJJL_INFO set isview ='1' where id=#{id}
+	</update>
+	<!--责任人不合格统计-->
+	<select id="selectReportByZerenr" resultType="Map">
+		SELECT
+			zerenren,
+			zerenren_count
+		FROM(
+			SELECT
+				ZERENRMC AS zerenren,
+				COUNT (ZERENRMC) AS zerenren_count
+			FROM
+				AQXJ_XJJL_INFO t
+				WHERE
+				JIANCHAJG='0'
+			<if test="condition.projectName!=null and condition.projectName!=''">
+				and  t.projectName = '${condition.projectName}'
+			</if>
+				<if test="condition.startDate!=null and condition.startDate!= ''" >
+				<![CDATA[  and   t.JIANCHATIME >='${condition.startDate}']]>
+			</if>
+			<if test="condition.endDate!=null and condition.endDate!= ''" >
+				<![CDATA[  and   t.JIANCHATIME <='${condition.endDate}']]>
+			</if>
+
+		GROUP BY
+				ZERENRMC
+			)
+		ORDER BY
+			zerenren_count DESC
+
+	</select>
+	<!--巡检点不合格统计-->
+	<select id="selectReportByXunjiandian" resultType="Map">
+		SELECT
+			MINGCHENG,
+			MINGCHENG_count
+		FROM
+			(
+				SELECT
+					MINGCHENG AS MINGCHENG,
+					COUNT (MINGCHENG) AS MINGCHENG_count
+				FROM
+					AQXJ_XJJL_INFO t where JIANCHAJG='0'
+		<if test="condition.projectName!=null and condition.projectName!=''">
+			and  t.projectName = '${condition.projectName}'
+		</if>
+		<if test="condition.startDate!=null and condition.startDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME >='${condition.startDate}']]>
+		</if>
+		<if test="condition.endDate!=null and condition.endDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME <='${condition.endDate}']]>
+		</if>
+				GROUP BY
+					MINGCHENG
+			)
+		ORDER BY
+			MINGCHENG_count DESC
+	</select>
+
+	<select id="selectReportByproject" resultType="Map">
+		SELECT
+		JIANCHAPERSON,
+		JIANCHAPERSON_COUNT
+		FROM(
+		SELECT
+		JIANCHAPERSON AS JIANCHAPERSON,
+		COUNT (JIANCHAPERSON) AS JIANCHAPERSON_COUNT
+		FROM
+		AQXJ_XJJL_INFO t
+		WHERE 1=1
+		<if test="condition.projectName!=null and condition.projectName!=''">
+			and  t.projectName = '${condition.projectName}'
+		</if>
+		<if test="condition.startDate!=null and condition.startDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME >='${condition.startDate}']]>
+		</if>
+		<if test="condition.endDate!=null and condition.endDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME <='${condition.endDate}']]>
+		</if>
+		GROUP BY
+		JIANCHAPERSON
+		)
+		ORDER BY
+		JIANCHAPERSON_COUNT DESC
+
+	</select>
+
+	<select id="selectReportByDay" resultType="Map">
+		SELECT
+		substr(JIANCHATIME, 0, 10) as dayTime,
+		count(*) as countByxunjian
+		FROM
+		AQXJ_XJJL_INFO t
+		WHERE 1=1
+		<if test="dayCondition.projectName!=null and dayCondition.projectName!=''">
+			and  t.projectName = '${dayCondition.projectName}'
+		</if>
+		<if test="dayCondition.startDate!=null and dayCondition.startDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME >='${dayCondition.startDate}']]>
+		</if>
+		<if test="dayCondition.endDate!=null and dayCondition.endDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME <='${dayCondition.endDate}']]>
+		</if>
+		GROUP BY substr(JIANCHATIME, 0, 10)
+		ORDER BY substr(JIANCHATIME, 0, 10) asc
+	</select>
+
+	<!--根据巡检点名称获取最后一次检查时间-->
+	<select id="selectByMingcheng" resultType="AqxjXjjlInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJJL_INFO t where t.MINGCHENG=#{mingcheng} ORDER BY JIANCHATIME DESC
+	</select>
+
+
+	<select id="selectReportByxunjiandian" resultType="Map">
+		SELECT
+		substr(JIANCHATIME, 0, 10) as dayTime, count(*)  as COUNTBYXUNJIAN, count(case when JIANCHAJG='0' then '不合格'  else null end) as isNotOk
+		FROM
+		AQXJ_XJJL_INFO t
+		WHERE 1=1
+		<if test="xunjianCondition.projectName!=null and xunjianCondition.projectName!=''">
+			and  t.projectName = '${xunjianCondition.projectName}'
+		</if>
+		<if test="xunjianCondition.mingcheng!=null and xunjianCondition.mingcheng!=''">
+			and  t.mingcheng = '${xunjianCondition.mingcheng}'
+		</if>
+		<if test="xunjianCondition.startDate!=null and xunjianCondition.startDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME >='${xunjianCondition.startDate}']]>
+		</if>
+		<if test="xunjianCondition.endDate!=null and xunjianCondition.endDate!= ''" >
+			<![CDATA[  and   t.JIANCHATIME <='${xunjianCondition.endDate}']]>
+		</if>
+		<if test="xunjianCondition.jianchaTime!=null and xunjianCondition.jianchaTime!= ''" >
+			<![CDATA[  and   t.JIANCHATIME like '${xunjianCondition.jianchaTime}']]>
+		</if>
+		GROUP BY substr(JIANCHATIME, 0, 10)
+		ORDER BY substr(JIANCHATIME, 0, 10) asc
+	</select>
+
+	<select id="selectByPKId" resultType="AqxjXjjlInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJJL_INFO t
+		where id= '${jlid}'
+	</select>
+
+</mapper>

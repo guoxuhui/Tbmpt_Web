@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.gcaqxj.mapper.AqxjXjdInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		t.ID,t.PROJECTID,t.PROJECTNAME,t.MINGCHENG,t.XUJIANDIANWEIZHI,t.XUHAO,t.BEIZHU,
+		t.ZERENRID,t.ZERENRMC,t.JIANDURID,t.JIANDURMC,t.JIANCHAPC,
+		t.TYPEID,t.TYPENAME,
+		t.CREATE_USER AS createUser,
+	   t.CREATE_USERNAME as createUsername,
+	   t.CREATE_ORGZ as createOrgz,
+	   t.CREATE_ORGZNAME as createOrgzname,
+	   t.CREATE_TIME as createTime,
+	   t.UPDATE_USER as updateUser,
+	   t.UPDATE_USERNAME as updateUsername,
+	   t.UPDATE_ORGZ as updateOrgz,
+	   t.UPDATE_ORGZNAME as updateOrgzname,
+	   t.UPDATE_TIME as updateTime
+
+	</sql>
+
+
+	<select id="selectAqxjXjdGLList" resultType="AqxjXjdInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJD_INFO t
+		<where>
+			1=1
+			<if test="condition.projectid!=null and condition.projectid!=''">
+				and  t.projectid = '${condition.projectid}'
+			</if>
+			<if test="condition.typeName!=null and condition.typeName!=''">
+				and  t.typeName = '${condition.typeName}'
+			</if>
+			<if test="condition.proiectName!=null and condition.proiectName!=''">
+				and  t.PROJECTNAME = '${condition.proiectName}'
+			</if>
+			<if test="condition.mingcheng!=null and condition.mingcheng!=''">
+				and  t.mingcheng like  '%${condition.mingcheng}%'
+			</if>
+			<if test="condition.zerenrmc!=null and condition.zerenrmc!=''">
+				and  t.zerenrmc like '%${condition.zerenrmc}%'
+			</if>
+			<if test="condition.jiandurmc!=null and condition.jiandurmc!=''">
+				and  t.jiandurmc like '%${condition.jiandurmc}%'
+			</if>
+		</where>
+
+	</select>
+
+
+	<!--按照条件查询巡检点信息-->
+	<select id="selectListByCondition" resultType="AqxjXjdInfo">
+		select
+		<include refid="Base_Column_List" />
+		from AQXJ_XJD_INFO t
+		<where>
+			1=1
+			<if test="condition.typeId!=null and condition.typeId!=''">
+				and  t.typeId = '${condition.typeId}'
+			</if>
+			<if test="condition.typeName!=null and condition.typeName!=''">
+				and  t.typeName = '${condition.typeName}'
+			</if>
+			<if test="condition.proiectName!=null and condition.proiectName!=''">
+				and  t.PROJECTNAME = '${condition.proiectName}'
+			</if>
+			<if test="condition.mingcheng!=null and condition.mingcheng!=''">
+				and  t.mingcheng like  '%${condition.mingcheng}%'
+			</if>
+		</where>
+
+	</select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportPcqxsjMapper">
+
+    <!-- 通用查询结果列-->
+   <sql id="Base_Column_List">
+        p.id,p.xmId,p.xlId,p.dgjId, p.hh, 
+        p.qksppc,p.jjsppc, p.dwsppc, p.qkczpc, p.jjczpc, p.dwczpc
+    </sql> 
+
+    <select id="selectPcqxsjList" resultType="ZsJkReportPcqxsj">
+        select
+            p.hh, p.qksppc,p.jjsppc, p.dwsppc, p.qkczpc, p.jjczpc, p.dwczpc
+        from ZSJK_REPORT_PCQXSJ p
+       <where>
+        	1=1
+			<if test="params.xmId !=null and params.xmId != ''">
+		  		and p.xmId =#{params.xmId}
+			</if>
+			<if test="params.xlId != null and params.xlId != '' ">
+                and p.xlId =#{params.xlId}
+            </if>
+            <if test=" params.dgjId != null and params.dgjId != '' ">
+             	and p.dgjId =#{params.dgjId}
+            </if>
+            <if test="params.kshs!=null and params.kshs != ''">
+			     <![CDATA[ and to_number(p.hh) >= to_number(#{params.kshs}) ]]>
+			</if>
+			<if test="params.jshs!=null and params.jshs != ''">
+			     <![CDATA[ and to_number(p.hh) <= to_number(#{params.jshs}) ]]>
+			</if> 
+			order by to_number(p.hh)
+        </where>
+    </select> 
+    
+  
+    
+    
+</mapper>

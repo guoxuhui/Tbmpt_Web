@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportDgjjcsfxMapper">
+<sql id="Base_Column_List">
+	g.id,g.xmId,g.dgjId,g.hh,g.jjsj,g.pId,g.type_name as typeName,g.type_id as typeId,g.type_number as typeNumber
+</sql>
+
+<select id="selectZsJkReportDgjjcsfxListByMap" resultType="ZsJkReportDgjjcsfxDto">
+	select
+	<include refid="Base_Column_List" />
+	from zsjk_report_dgjjcsfx g
+	<where>
+		<if test="condition.xmId!=null and condition.xmId!=''">
+           	and g.xmId =#{condition.xmId}
+        </if>
+        <if test="condition.djId!=null and condition.dgjId!=''">
+           	and g.dgjId =#{condition.dgjId}
+        </if>
+        <if test="condition.kshs!=null and condition.kshs!=''">
+           	<![CDATA[and g.hh> =#{condition.kshs}]]>
+        </if>
+        <if test="condition.jshs!=null and condition.jshs!=''">
+           	<![CDATA[and g.hh <=#{condition.jshs}]]>
+        </if>
+        <if test="list !=null and list.size() &gt; 0">
+         and type_id in 
+        <foreach collection="list" item="typeId" index="index" open="(" close=")" separator=","> 
+  			#{typeId}        
+		</foreach>
+		</if>
+	</where>
+</select>
+</mapper>

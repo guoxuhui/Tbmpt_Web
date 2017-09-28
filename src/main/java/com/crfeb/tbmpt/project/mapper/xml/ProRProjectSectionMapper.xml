@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.project.mapper.ProRProjectSectionMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 ID, SECTION_NAME AS sectionName,ABBREVIATION,DCQK,  REMARK, PRO_ID AS proId, ENTERTIME, ENTERPERSON, DELETEFLAG
+	</sql>
+	
+	<select id="selectBySectionId" resultType="ProRProjectSection">
+        select
+        <include refid="Base_Column_List"/>
+        from PRO_R_PROJECT_SECTION
+        where id = #{id}
+    </select>
+    
+	<!-- 删除一条记录 -->
+	<delete id="deleteBySectionId">
+		delete from PRO_R_PROJECT_SECTION where id = #{id}
+	</delete>
+
+	<select id="getSectionByProId" resultType="ProRProjectSection">
+		select
+		<include refid="Base_Column_List" />
+		from PRO_R_PROJECT_SECTION
+		where PRO_ID = #{proId}
+	</select>
+	
+	<!-- 根据项目Id分组查询  -->
+    <select id="selectVoList" resultType="ProjectSectionVo">
+        select
+        s.ID,s.SECTION_NAME AS sectionName,s.ABBREVIATION,s.DCQK,  
+        s.REMARK, s.PRO_ID AS proId, p.pro_name as proName,
+        s.ENTERTIME, s.ENTERPERSON, s.DELETEFLAG
+        from PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p,SYS_ORGZ o
+         <where>
+         		s.pro_id = p.id and p.parent_id = o.id 
+		        <if test=" params.code != null and params.code != '' ">
+		            and o.code like '%${params.code}%'
+		        </if>
+                 <if test=" params.proId != null and params.proId != '' ">
+		            and s.pro_id = #{params.proId}
+		        </if>
+		        <if test=" params.sectionName != null and params.sectionName != '' ">
+		            and s.section_name like '%${params.sectionName}%'
+		        </if>
+		        <if test=" params.startTime != null and params.startTime != '' ">
+		            <![CDATA[ and s.ENTERTIME >= #{params.startTime} ]]>
+		        </if>
+		        <if test=" params.endTime != null and params.endTime != '' ">
+		            <![CDATA[ and s.ENTERTIME <= #{params.endTime} ]]>
+		        </if>
+         </where>
+          <![CDATA[ group by s.PRO_ID, s.ID,s.SECTION_NAME, s.ABBREVIATION,s.DCQK,  
+                            s.REMARK, s.PRO_ID , p.pro_name ,
+                            s.ENTERTIME, s.ENTERPERSON, s.DELETEFLAG      
+            ]]>
+        <![CDATA[order by ${sort} ${order}]]>
+        
+    </select>
+    
+    <!-- 根据接口查询用户拥有哪些项目的区间 -->
+    <select id="selectVoList2" resultType="ProjectSectionVo">
+        select
+        s.ID,s.SECTION_NAME AS sectionName,s.ABBREVIATION,s.DCQK,  s.REMARK, s.PRO_ID AS proId, p.pro_name as proName,
+        s.ENTERTIME, s.ENTERPERSON, s.DELETEFLAG
+        from PRO_R_PROJECT_SECTION s,PRO_PROJECTINFO p
+         <where>
+         		s.pro_id = p.id
+                 <if test=" params.proId != null and params.proId != '' ">
+		            and s.pro_id = #{params.proId}
+		        </if>
+		        <if test=" params.sectionName != null and params.sectionName != '' ">
+		            and s.section_name like '%${params.sectionName}%'
+		        </if>
+		        <if test=" params.startTime != null and params.startTime != '' ">
+		            <![CDATA[ and s.ENTERTIME >= #{params.startTime} ]]>
+		        </if>
+		        <if test=" params.endTime != null and params.endTime != '' ">
+		            <![CDATA[ and s.ENTERTIME <= #{params.endTime} ]]>
+		        </if>
+		        ${params.sqlPurview}
+         </where>
+           <![CDATA[ group by s.PRO_ID, s.ID,s.SECTION_NAME, s.ABBREVIATION,s.DCQK,  
+                            s.REMARK, s.PRO_ID , p.pro_name ,
+                            s.ENTERTIME, s.ENTERPERSON, s.DELETEFLAG      
+            ]]>
+        order by ${sort} ${order}
+    </select>
+   
+    
+    <!--wpg: 通过 SECTION_NAME AS sectionName 查询 Id-->
+    <select id="getSectionBySectionName" resultType="String">
+		select ID from PRO_R_PROJECT_SECTION
+		where SECTION_NAME = #{sectionName}
+	</select>
+</mapper>

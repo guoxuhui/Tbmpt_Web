@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.jt.mapper.ZsJkJtZyClXhZTrXxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.nd ,t.jhTrz ,t.sjTrz 
+    </sql>
+
+    <select id="selectZsJkJtZyClXhZTrXxList" resultType="ZsJkJtZyClXhZTrXx">
+        select
+        <include refid="Base_Column_List" />
+            from zsjk_jt_zyclxhztrxx t
+        <where>
+        1=1
+			<if test="condition.nd !=null and condition.nd != ''">
+		  		and t.nd '%${condition.nd}%'
+			</if>
+        </where>
+    </select>
+</mapper>

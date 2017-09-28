@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.aqxj.mapper.AqxjXjdflMapper">
+
+	<!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+       t.id,t.fenlei_mc as fenleiMc,t.beizhu as beiZ,t.gc_bh as gcBh,t.gc_mc as gcMc,t.pid as pid,
+       t.create_user as createUser,
+	   t.create_username as createUsername,
+	   t.create_orgz as createOrgz,
+	   t.create_orgzname as createOrgzname,
+	   t.create_time as createTime,
+	   t.update_user as updateUser,
+	   t.update_username as updateUsername,
+	   t.update_orgz as updateOrgz,
+	   t.update_orgzname as updateOrgzname,
+	   t.update_time as updateTime
+    </sql>
+
+
+	<select id="selectAqxjXjdflList" resultType="AqxjXjdfl">
+        select
+        <include refid="Base_Column_List" />
+            from ZLXJ_XUNJIAN_FL t
+        <where>
+        	1=1 
+        	<if test="condition.fenlei_mc!=null and condition.fenlei_mc!=''">
+       		and  t.fenlei_mc like '%${condition.fenlei_mc}%' 
+        	</if>
+        </where>
+    </select>
+    
+    <select id="selectAll" resultType="AqxjXjdfl">
+        select
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t 
+         <where>
+        	1=1 
+        	<if test="condition.fenleiMc!=null and condition.fenleiMc!= ''" >
+       		and  t.fenlei_mc like '%${condition.fenleiMc}%'
+        	</if>
+        	<if test="condition.gcMc!=null  and condition.gcMc!= ''">
+       		and  t.gc_mc like '%${condition.gcMc}%'
+        	</if>
+        </where>
+    </select>
+
+
+
+  <!--2 条件是 父级 pid 为空    -->
+    <select id="selectNull" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where 1=2
+    </select>
+    
+    
+     <!--2 条件是 父级 pid 为空    -->
+    <select id="selectAllFlmc" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where 1=1 and pid is null
+    </select>
+    
+     <!--3 根据 父级id 查询子地区 -->
+    <select id="selectAllByPId" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where pid = #{id}
+    </select>
+    
+     <!--3 根据 工程名称查询分类名称 -->
+     <select id="selectByGcMc" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where gc_mc = #{gcmc} and pid is null
+    </select>
+    
+    <select id="flmcList" resultType="AqxjXjdfl">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where t.gc_mc = #{gcmc}
+    </select>
+    
+    <!--查询巡检点分类   条件是 父级 pid 为空    -->
+     <select id="flList" resultType="AqxjXjdfl">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where t.gc_mc = #{proName} and pid is null
+    </select>
+    
+     <!--3 根据 工程名称和分类名称查询分类名称 -->
+     <select id="selectFather" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where gc_mc = #{proName} and fenlei_mc = #{fenleiMc}
+    </select>
+    
+      <!--3 根据 工程名称和分类名称查询分类名称 -->
+     <select id="selectFlNullPid" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where gc_mc = #{currentProName} and fenlei_mc = #{flMc} and pid is null
+    </select>
+    
+    
+     <!--3 根据 工程名称和分类名称查询分类名称 -->
+     <select id="selectFlByNullPid" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where gc_mc = #{currentProName} and fenlei_mc = #{flMc} and pid is null
+    </select>
+    
+      <!--3 根据 pid和分类名称查询分类名称 -->
+     <select id="seledtByPidAndMc" resultType="AqxjXjdfl">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_FL t where pid = #{currPid} and fenlei_mc = #{currFengL} 
+    </select>
+    
+</mapper>

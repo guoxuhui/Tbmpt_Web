@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.zsjk.report.mapper.ZsJkReportCjzdjcdfxMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+         c.id,c.xmId,c.qjId,c.jcsj,c.hh,c.ljbhl
+    </sql> 
+
+    <select id="selectCjzdjcdfxList" resultType="ZsJkReportCjzdjcdfx">
+        select
+            c.hh,c.ljbhl
+        from ZSJK_REPORT_CJZDJCDFX c
+        <where>
+        	1=1
+			 <if test="dto.xmId !=null and dto.xmId != ''">
+		  		 and c.xmId =#{dto.xmId}
+			</if>
+			<if test="dto.qjId != null and dto.qjId != '' ">
+                and c.qjId =#{dto.qjId}
+            </if> 
+            <if test=" dto.kssj != null and dto.kssj != '' ">
+             	<![CDATA[ and c.jcsj >= #{dto.kssj} ]]>
+            </if>
+            <if test=" dto.jssj != null and dto.jssj != '' ">
+                <![CDATA[ and c.jcsj <= #{dto.jssj} ]]>
+            </if>   
+            <if test=" dto.hsjg != null and dto.hsjg != ''and dto.hsjg != '0' ">
+             	<![CDATA[ and MOD(to_number(c.hh),(to_number(#{dto.hsjg})+1))= 1 ]]> 
+            </if> 
+            <if test=" dto.zdcjl != null and dto.zdcjl != '' ">
+                <![CDATA[ and to_number(c.ljbhl) <= to_number(#{dto.zdcjl}) ]]>
+            </if>
+            order by to_number(c.hh)
+        </where>
+    </select> 
+    
+  
+    
+    
+</mapper>

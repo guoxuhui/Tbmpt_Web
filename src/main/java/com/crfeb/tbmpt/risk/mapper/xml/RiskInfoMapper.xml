@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.risk.mapper.RiskInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		RIF.ID, 
+		RIF.SECTION AS SECTION,
+		(SELECT PPI.PQ_NAME FROM PRO_PQ_INFO PPI WHERE PPI.ID=RIF.SECTION) AS SECTIONSTR,
+		RIF.PRO_NAME AS PRONAME,
+		(SELECT PP.PRO_NAME FROM PRO_PROJECTINFO PP WHERE PP.ID=RIF.PRO_NAME) AS PRONAMESTR,
+		RIF.RIKE_LEVEL AS RIKELEVEL,
+		(SELECT RL.LEVEL_NAME FROM RISK_LEVEL RL WHERE RL.ID=RIF.RIKE_LEVEL) AS RIKELEVELSTR,
+		(SELECT RL.COLOR_FLAG FROM RISK_LEVEL RL WHERE RL.ID=RIF.RIKE_LEVEL) AS RIKECOLOR,
+		RIF.RIKE_DESC AS RIKEDESC,
+		RIF.UP_USER AS UPUSER,
+		(SELECT SU.NAME FROM SYS_USER SU WHERE SU.ID=RIF.UP_USER) AS UPUSERNAME,
+		RIF.UP_USER_PHONE AS UPUSERPHONE,
+		RIF.RIKE_TIME_START AS RIKETIMESTART,
+		RIF.RIKE_TIME_END AS RIKETIMEEND,
+		RIF.UP_TIME AS UPTIME, 
+		RIF.IS_OUT AS ISOUT,
+		RIF.EMP_ID AS EMPID,
+		RIF.ORGZ_ID AS ORGZID,
+		RIF.PARENT_ID AS PARENTID,
+		RIF.DPTS AS DPTS,
+		RIF.PERSOON AS PERSOON,
+		RIF.MAIN_CONTROL_METHOD AS MAINCONTROLMETHOD,
+		RIF.REMARK AS REMARK
+	</sql>
+     
+    <select id="selectPageList" resultType="RiskInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from risk_info rif
+        order by ${sort} ${order}
+    </select>
+    
+    
+    
+    <select id="selectVoList" resultType="RiskInfoVo">
+    	select 
+    	<include refid="Base_Column_List"/>
+    	from risk_info RIF,RISK_LEVEL LEV 
+        <where>
+	        1=1 and RIF.RIKE_LEVEL = LEV.ID 
+			<if test=" params.upUser != null and params.upUser != '' ">
+				AND RIF.UP_USER = '${params.upUser}'
+			</if>
+	        <if test=" params.proName != null and params.proName != '' ">
+	            AND RIF.PRO_NAME like '%${params.proName}%'
+	        </if>
+	        <if test=" params.empId != null and params.empId != '' ">
+	            AND RIF.EMP_ID ='${params.empId}'
+	        </if>
+	        <if test=" params.isOut != null and params.isOut != '' ">
+	            AND RIF.IS_OUT ='${params.isOut}'
+	        </if>
+	        <if test=" params.rikeLevel != null and params.rikeLevel != '' ">
+	            AND RIF.RIKE_LEVEL ='${params.rikeLevel}'
+	        </if>
+	          <if test=" params.upUser != null and params.upUser != '' ">
+	            AND RIF.UP_USER ='${params.upUser}'
+	        </if>
+	        <if test="params.ids !=null and params.ids != ''">
+		  		and RIF.PRO_NAME in (${params.ids})
+			</if>
+	        
+	        <if test="params.startUpTime != null and params.startUpTime != ''">
+	            <![CDATA[ AND RIF.UP_TIME >= #{params.startUpTime} ]]>
+	        </if>
+	        	<if test="params.endUpTime != null and params.endUpTime != ''">
+	            <![CDATA[ AND RIF.UP_TIME <= #{params.endUpTime} ]]>
+	        </if>
+	       <!--  <if test=" params.upTime != null and params.upTime != ''  ">
+	            <![CDATA[ AND RIF.UP_TIME >= #{params.upTime} ]]>
+	        </if> -->
+	        <if test=" params.rikeTimeStart != null and params.rikeTimeStart != ''  ">
+	            <![CDATA[ AND RIF.RIKE_TIME_START >= #{params.rikeTimeStart} ]]>
+	        </if>
+			<if test=" params.rikeTimeEnd != null and params.rikeTimeEnd != ''  ">
+				<![CDATA[ AND RIF.RIKE_TIME_END <= #{params.rikeTimeEnd} ]]>
+			</if>
+         </where>
+        order by LEV.SORT,${sort} ${order}
+    </select>
+    
+    <select id="selectVoListApp" resultType="RiskInfoVo">
+    	SELECT 
+    	<include refid="Base_Column_List"/>
+    	FROM RISK_INFO RIF,RISK_LEVEL LEV 
+        <where>
+	        1=1 and RIF.RIKE_LEVEL = LEV.ID 
+	        <if test=" params.upUser != null and params.upUser != '' ">
+	            AND RIF.UP_USER = '${params.upUser}'
+	        </if>
+			<if test=" params.proName != null and params.proName != '' ">
+				AND RIF.PRO_NAME = '${params.proName}'
+			</if>
+			<if test=" params.rikeLevel != null and params.rikeLevel != '' ">
+				AND RIF.RIKE_LEVEL = '${params.rikeLevel}'
+			</if>
+			<if test=" params.isOut != null and params.isOut != '' ">
+				AND RIF.IS_OUT = '${params.isOut}'
+			</if>
+			<if test=" params.startTime != null and params.startTime != '' ">
+				<![CDATA[AND RIF.UP_TIME >= #{params.startTime}]]>
+			</if>
+			<if test=" params.endTime != null and params.endTime != '' ">
+				<![CDATA[AND RIF.UP_TIME <= #{params.endTime}]]>
+			</if>												
+	        <if test="params.time != null and params.time[0] != ''">
+	            <![CDATA[ AND RIF.UP_TIME >= #{params.time[0]} ]]>
+	        </if>
+	        <if test="params.time != null and params.time[1] != ''">
+	            <![CDATA[ AND RIF.UP_TIME <= #{params.time[1]} ]]>
+	        </if>
+         </where>
+        order by LEV.SORT,${sort} ${order}
+    </select>
+
+	<select id="selectVoRiskInfoByProId" resultType="RiskInfoVo">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM RISK_INFO RIF
+		<where>
+			RIF.PRO_NAME = '${proId}'
+			<if test=" userId != null and userId != '' ">
+				AND RIF.UP_USER = '${userId}'
+			</if>
+		</where>
+		order by up_time desc
+	</select>
+
+    <select id="selectProIdUpUserRikeLevelUpTimeConut" resultType="Long">
+        SELECT COUNT(*) FROM RISK_INFO 
+        <where>
+        	1=1 
+        	AND RIKE_LEVEL='${rikeLevel}' AND PRO_NAME = '${proName}'
+			<if test=" upUser != null and upUser != '' ">
+				AND UP_USER = '${upUser}'
+			</if>
+<!--         	<if test="time != null and time[0] != '' ">
+	            <![CDATA[ AND UP_TIME >= #{time[0]} ]]>
+	        </if>
+	        <if test="time != null and time[1] != ''">
+	            <![CDATA[ AND UP_TIME <= #{time[1]} ]]>
+	        </if> -->
+        	<if test="time != null and time[0] != '' and time[1] != ''">
+	            <![CDATA[ AND ((RIKE_TIME_START <= #{time[0]} AND #{time[0]}<=RIKE_TIME_END) 
+	            OR (RIKE_TIME_START <= #{time[1]} AND #{time[1]}<=RIKE_TIME_END) 
+	            OR(#{time[0]}<=RIKE_TIME_START AND RIKE_TIME_START<=RIKE_TIME_END AND RIKE_TIME_END<=#{time[1]}))]]>
+	        </if>
+<!-- 	        <if test="time != null and time[1] != ''">
+	            <![CDATA[ AND UP_TIME <= #{time[1]} ]]>
+	        </if> -->	        
+        </where>
+    </select>
+    
+</mapper>

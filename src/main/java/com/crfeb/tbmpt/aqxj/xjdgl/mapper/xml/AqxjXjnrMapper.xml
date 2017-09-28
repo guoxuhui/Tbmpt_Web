@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crfeb.tbmpt.aqxj.xjdgl.mapper.AqxjXjnrMapper">
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        t.id,t.mingCheng ,t.ItemId ,t.xuHao ,
+        t.create_user as createUser,
+        t.create_username as createUsername,
+        t.create_orgz as createOrgz,
+        t.create_orgzname as createOrgzname,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_username as updateUsername,
+        t.update_orgz as updateOrgz,
+        t.update_orgzname as updateOrgzname,
+        t.update_time as updateTime
+    </sql>
+    
+    
+    <!--根据巡检点id查询  -->
+	<select id="selectByItemId" resultType="AqxjXjnr">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_NR t where t.ItemId = #{itemId}
+    </select>
+    
+      <!--根据巡检点id查询  -->
+	<select id="selectByMcAndItemId" resultType="AqxjXjnr">
+        select 
+        <include refid="Base_Column_List"/>
+        from ZLXJ_XUNJIAN_NR t where t.mingCheng = #{nMingcheng} and t.ItemId = #{itemId}
+    </select>
+
+    <select id="selectAqxjXjnrList" resultType="AqxjXjnr">
+        select
+        <include refid="Base_Column_List" />
+            from ZLXJ_XUNJIAN_NR t
+        <where>
+        	<if test="condition.ItemId!=null and condition.ItemId!=''">
+       		and  t.ItemId like '%${condition.ItemId}%'
+        	</if>
+        	
+        </where>
+    </select>
+</mapper>
