@@ -341,10 +341,17 @@ public class MachineInfoController extends BaseController {
 		    		
 		    		TbmData.put("dataTime", DateUtils.getToday());
 		    		TbmData.put("ring_Count", line.getRingCount());
-		    		TbmData.put("days", 281);
+		    		
+		    		int chs = Integer.parseInt(cmap.get("TY_DXXT_0001").getTagvalue());
+		    		int zhs = line.getRingCount().intValue();
+		    		
+		    		int days = (zhs - chs)/6;
+		    		int fsh = (chs*100/zhs);
+		    		
+		    		TbmData.put("days", days);
 		    		TbmData.put("tunnelTime", line.getTunneltime());
 		    		TbmData.put("ageRing", 6);
-		    		TbmData.put("finish", 48);
+		    		TbmData.put("finish", fsh);
 		    		TbmData.put("line_mileage", line.getTunnellength());
 		    		//获取线路信息GeoData
 		    		Map<String,Object> GeoData = new HashMap<String,Object>();
@@ -364,5 +371,11 @@ public class MachineInfoController extends BaseController {
 			}
 		    	
 			return result;
+		}
+	    
+	    public static void main(String[] args) {
+    			int days = (1652 - 867)/6;
+    			int fsh = (867*100/1652);
+    			System.out.println(days + " " + fsh);
 		}
 }
