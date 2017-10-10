@@ -30,7 +30,7 @@
 </style>
 </head>
 
-<body class="mui-android">
+<body class="mui-android" style="height:fit-content;background-color:#fff">
 		<!--
 		<header class="mui-bar mui-bar-nav">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -39,10 +39,10 @@
 		-->
 	<div class="mui-content">
 		<div id="hd" style="" class="mui-card">
-			<h2 class="title">
+			<h2 class="title" style="display:none;">
 				项目概况
 			</h2>
-			<div>
+			<div style="display:none;">
 
 
 				<div class="mui-input-group">
@@ -135,7 +135,7 @@
 				</div>			
 				<div class="mui-slider-item">
 
-					<div id="fd" class="mui-card" style="height: 80%;">
+					<div id="fd" class="mui-card" style="height: 80%;box-shadow:0 0 0 rgba(0,0,0,0);">
 						<h2 class="title">
 							导向系统
 						</h2>

@@ -36,11 +36,11 @@
 				<div class="tiao1" style="width: 0%;"></div>
 			</div>
 			<p class="pcontent">
-				今日已完成2环，预计剩余104天完工
+				今日已完成1环，预计剩余104天完工
 				<br>
 				2017-09-13 14:49:00
 			</p>
-			掘进状态：<span id="zgzt_title" class="weui-badge" >掘进中</span> <span class="weui-badge" style="background-color: #EC971F;">导向偏差预警</span>
+			掘进状态：<span id="zgzt_title" class="weui-badge" >掘进中</span> <!--<span class="weui-badge" style="background-color: #EC971F;">导向偏差预警</span>-->
 		</div>
 	</div>
 	<div class="scoDrive-block3 band">
@@ -226,6 +226,8 @@
 		var i1 = 0,
 		i2 = 0,
 		i3 = 0;
+		
+		todayWc = 0;
 
 		function OnLoad() {
 			document.documentElement.style.webkitTouchCallout = "none"; //禁止弹出菜单
@@ -288,7 +290,9 @@
 								var GeoData = msg.result.GeoData;
 								var WorData = msg.result.WorData;
 								
-								var com = "今日已完成2环，预计剩余" + TbmData.days +"天完工";
+								todayWc = TbmData.currRing - WorData[0].work_hs_end;
+								
+								var com = "今日已完成"+todayWc+"环，预计剩余" + TbmData.days +"天完工";
 								com = com + "<br>" +TbmData.dataTime;
 								$(".pcontent").html(com);
 		
@@ -296,7 +300,7 @@
 		
 								$("#prosellinName").html(
 									LineData.Pro_Name + " " +
-									LineData.Section_Name +" " +
+									//LineData.Section_Name +" " +
 									LineData.Line_Name);
 								
 								//盾构机状态
@@ -318,7 +322,7 @@
 								$("#currRing").html(
 									TbmData.currRing + "环");
 								$("#finish").html(TbmData.finish + "%");
-		
+								
 								for(var i=0;i<WorData.length;i++){
 									$("#jd_title_"+(i+1)).html(WorData[i].work_date);
 									$("#jd_value_"+(i+1)).html(WorData[i].work_hs_sum);

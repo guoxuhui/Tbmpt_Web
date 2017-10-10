@@ -30,7 +30,7 @@
 </style>
 </head>
 
-<body class="mui-android">
+<body class="mui-android" style="height:fit-content;background-color:#fff">
 		<!--
 		<header class="mui-bar mui-bar-nav">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -39,10 +39,10 @@
 		-->
 	<div class="mui-content">
 		<div id="hd" style="" class="mui-card">
-			<h2 class="title">
+			<h2 class="title" style="display:none;">
 				项目概况
 			</h2>
-			<div>
+			<div style="display:none;">
 
 
 				<div class="mui-input-group">
@@ -132,7 +132,7 @@
 		
 				
 				<div class="mui-slider-item">
-					<div id="bd" class="mui-card" style="height: 80%;">
+					<div id="bd" class="mui-card" style="height: 80%;box-shadow:0 0 0 rgba(0,0,0,0);">
 						<h2 class="title">
 							刀盘系统
 						</h2>
@@ -145,7 +145,7 @@
 										<span style="color: black;"> 环</span></td>
 									<td>推进压力：</td>
 									<td style="color: blue;"><span id="tuiJinYaLi">0</span> <span
-										style="color: black;"> bar</span></td>
+										style="color: black;"> MPa</span></td>
 								</tr>
 								<tr>
 									<td>推进速度：</td>
@@ -177,7 +177,7 @@
 									</div>
 									<div style="font-size: 8px;">
 										C 组推进压力 <br /> <span style="font-size: 8px; color: blue;"
-											id="CZuTuiJinYaLi">0</span> bar
+											id="CZuTuiJinYaLi">0</span> MPa
 									</div>
 								</td>
 								<td width="60%" style="text-align: center;" id="canvas_td">
@@ -190,7 +190,7 @@
 										</div>
 										<div style="font-size: 8px;">
 											D 组推进压力 <span style="font-size: 8px; color: blue;"
-												id="DZuTuiJinYaLi">0</span> bar
+												id="DZuTuiJinYaLi">0</span> MPa
 										</div>
 
 										<canvas id="canvas" width="100%" height="50%">
@@ -203,7 +203,7 @@
 										</div>
 										<div style="font-size: 8px;">
 											B 组推进压力 <span style="font-size: 8px; color: blue;"
-												id="BZuTuiJinYaLi">0</span> bar
+												id="BZuTuiJinYaLi">0</span> MPa
 										</div>
 									</div>
 								</td>
@@ -214,7 +214,7 @@
 									</div>
 									<div style="font-size: 8px;">
 										A 组推进压力<br /> <span style="font-size: 8px; color: blue;"
-											id="AZuTuiJinYaLi">0</span> bar
+											id="AZuTuiJinYaLi">0</span> MPa
 									</div>
 								</td>
 							</tr>
@@ -234,7 +234,7 @@
 	<script src="${staticPath}/static/open/js/selector.js"></script>
 	<script src="${staticPath}/static/open/js/jquery.chained.js"></script>
 	<script src="${staticPath}/static/open/js/mui.min.js"></script>
-	<script src="${staticPath}/static/open/js/draw.js?v=20170915"></script>
+	<script src="${staticPath}/static/open/js/draw.js?v=20171010"></script>
 
 	<script type="text/javascript" id="draw">
 		mui.init()
